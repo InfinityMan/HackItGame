@@ -5,11 +5,13 @@
  */
 package hack;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Dima
  */
-public class Software {
+public class Software implements Serializable {
     
     public String name,desc;
     
