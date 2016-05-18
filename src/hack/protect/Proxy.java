@@ -58,10 +58,10 @@ public class Proxy extends Protect implements Serializable{
             mh = new MiniHacknet();
             mh.setVisible(true);
             
-            for (int i = needPower; i > 0; i = i - hacknet.user.powerCPU) {
+            for (int i = needPower; i > 0; i = i - hacknet.user.powerCPU*2) {
                 mh.print(Base.randomCombineString(16));
                 try {
-                    sleep(500);
+                    sleep(1000);
                 } catch (InterruptedException ex) {
                     exit(1);
                 }
