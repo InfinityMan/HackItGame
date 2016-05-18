@@ -68,14 +68,12 @@ public class SPro extends Protect implements Serializable{
                 mh.print(randomBinary(16));
                 try {
                     sleep(500);
-                    System.err.println(hacknet.user.powerCPU);
-                    System.err.println(i);
                 } catch (InterruptedException ex) {
                     exit(1);
                 }
             }
-            mh.print("Complete hack of SSHPort");
-            hacknet.print("Complete hack of SSHPort");
+            mh.print("Complete hack of SPro");
+            hacknet.print("Complete hack of SPro");
             open = true;
             try {
                 sleep(1_500);

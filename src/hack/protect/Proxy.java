@@ -26,7 +26,7 @@ public class Proxy extends Protect implements Serializable{
     public Proxy() {
         needPower = 6000;
         id = 2;
-        gateway = false;
+        gateway = true;
     }
 
     @Override
@@ -62,7 +62,6 @@ public class Proxy extends Protect implements Serializable{
                 mh.print(Base.randomCombineString(16));
                 try {
                     sleep(500);
-                    System.err.println(needPower);
                 } catch (InterruptedException ex) {
                     exit(1);
                 }
