@@ -256,10 +256,10 @@ public final class Hacknet extends javax.swing.JFrame {
             } else if(command[0].startsWith("com")) {
                 try {
                     if (Base.stringToInt(command[1]) > 0 && Base.stringToInt(command[1]) < user.gettedContractsNumber-1) {
-                        if (user.currentContracts.get(Base.stringToInt(command[1])).isComplited()) {
+                        if (user.searchForId(Base.stringToInt(command[1])).isComplited()) {
                             //award
                             print("You successfully completed a contract " + command[1]);
-                            user.currentContracts.remove(Base.stringToInt(command[1]));
+                            user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
                         }
                     } else {
                         print("Nope, this contract can not be");

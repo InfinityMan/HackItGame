@@ -98,6 +98,16 @@ public class User implements Serializable {
         serData("hAcKsave.hsf", this);
     }
     
+    public Contract searchForId(int id) {
+        for (int i = 0; i < currentContracts.size(); i++) {
+            Contract get = currentContracts.get(i);
+            if(get.id == id) {
+                return get;
+            }
+        }
+        return null;
+    }
+    
     public void addMission(Contract contr) {
         currentContracts.add(contr);
     }
