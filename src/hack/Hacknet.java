@@ -304,7 +304,11 @@ public final class Hacknet extends javax.swing.JFrame {
         if(currentTarget != null) {
             if(currentTarget.hacked) {
                 if(currentTarget.hasFile(file)) {
-                    currentTarget.rmFile(file, user.ip);
+                    if(currentTarget.rmFile(file, user.ip)) {
+                        print("File "+file+" deleted");
+                    } else {
+                        print("Super error");
+                    }
                 } else {
                     print("Oh, file is not exits");
                 }
