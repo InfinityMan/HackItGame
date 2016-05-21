@@ -6,6 +6,7 @@
 package hack;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -19,9 +20,19 @@ public class Log implements Serializable {
     
     public Type type;
     
-    public String id,message; //id for number of log in sys
+    public String message;
     
-    public Log(Type type, String lastID, String userIP) {
+    private boolean deleted;
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    
+    public Log(Type type, String userIP) {
         
         this.type = type;
         
@@ -43,8 +54,37 @@ public class Log implements Serializable {
                 break;
         }
         
-        id = lastID + "1"; //change to normal gen id
-        
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.type);
+        hash = 83 * hash + Objects.hashCode(this.message);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Log other = (Log) obj;
+        if (!Objects.equals(this.message, other.message)) {
+            return false;
+        }
+        if (this.type != other.type) {
+            return false;
+        }
+        return true;
+    }
+    
+    
     
 }
