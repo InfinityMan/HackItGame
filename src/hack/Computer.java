@@ -73,15 +73,16 @@ public class Computer implements Serializable {
         
     }
     
-    public void rmFile(GFile file, String userIP) {
+    public boolean rmFile(GFile file, String userIP) {
         for (int i = 0; i < files.size(); i++) {
             GFile get = files.get(i);
             if(get.equals(file)) {
                 listOfLog.put(listOfLog.size()-1, new Log(Log.Type.FILE_DELETED, userIP));
                 files.remove(i);
-                System.err.println("ok");
+                return true;
             }
         }
+        return false;
     }
     
     public void rmFile(String nameOfFile, String userIp) {
