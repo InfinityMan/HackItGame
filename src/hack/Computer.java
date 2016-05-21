@@ -14,25 +14,27 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import ru.epiclib.base.Base;
 import static java.lang.Thread.sleep;
+import java.util.HashMap;
+import static ru.epiclib.base.FileWorker.read;
+import static java.lang.Thread.sleep;
 import static ru.epiclib.base.FileWorker.read;
 
 
 public class Computer implements Serializable {
     
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
     
     public static final int[] EXPS = {8,14,22,48,80,190};
     public static final int[] LVLTOCOMP = {1,8,17,24,32,43};
     public static final String[] TYPES = {"Old server","Local server","Small server","Normal server","Big server","Super server"};
     public static final String[] SUFNAME = {"workstation","station","base","frame","mainframe","grandframe"};
     
-    public ArrayList<Protect> defenseList;
+    private ArrayList<Protect> defenseList;
+    private ArrayList<GFile> files;
     
     public int trace,exp;
     
     public String ip, nameComputer;
-    
-    public ArrayList<GFile> files;
     
     public String prefix;
     
@@ -40,7 +42,93 @@ public class Computer implements Serializable {
     
     public AuthWindow aw;
     
-    public String nameOfFileDeleted;
+    public HashMap<Integer,Log> listOfLog;
+    
+    //--------------------------------------------------------------------------
+    
+    public void addToFilesList(GFile file) {
+        files.add(file);
+    }
+    
+    public void addToDefenseList(Protect protect) {
+        defenseList.add(protect);
+    }
+    
+    public Protect getProtect(int idOfProtect) {
+        
+        int id = -1;
+
+        for (int i = 0; i < defenseList.size(); i++) {
+            Protect get = defenseList.get(i);
+            if (get.id == idOfProtect) {
+                id = i;
+            }
+        }
+
+        if (id != -1) {
+            return defenseList.get(id);
+        } else {
+            return null;
+        }
+        
+    }
+    
+    public void rmFile(GFile file, String userIP) {
+        for (int i = 0; i < files.size(); i++) {
+            GFile get = files.get(i);
+            if(get.equals(file)) {
+                listOfLog.put(listOfLog.size()-1, new Log(Log.Type.FILE_DELETED, userIP));
+                files.remove(i);
+                System.err.println("ok");
+            }
+        }
+    }
+    
+    public void rmFile(String nameOfFile, String userIp) {
+        rmFile(new GFile(nameOfFile), userIp);
+    }
+    
+    public boolean hasProtect(int idOfProtect) {
+        return false;
+    }
+    
+    public boolean hasFile(String name) {
+        return true;
+    }
+    
+    public void setDeletedToLog(int keyOfLog) {
+        listOfLog.get(keyOfLog).setDeleted(true);
+    }
+    public void setUndeletedToLog(int keyOfLog) {
+        listOfLog.get(keyOfLog).setDeleted(false);
+    }
+    
+    public void addFile(GFile file) {
+        files.add(file);
+    }
+    
+    public GFile getFile(int idInCollection) {
+        return files.get(idInCollection);
+    }
+    
+    public int sizeOfListFiles() {
+        return files.size();
+    }
+    
+    public boolean userCanHackThis() {
+        int needOpen = defenseList.size();
+        for (int i = 0; i < defenseList.size(); i++) {
+            Protect get = defenseList.get(i);
+            if (get.open) {
+                needOpen--;
+            }
+        }
+        if (needOpen == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     public String print() {
         return TYPES[getType()] + ", name: \""+nameComputer+"\", ip: "+ip+", hacked: "+hacked;
@@ -114,14 +202,13 @@ public class Computer implements Serializable {
                 break;
         }
         
-        this.ip = ip;
         this.nameComputer = nameComputer + " " + SUFNAME[type];
         this.prefix = prefix;
         
         ArrayList<GFile> gf = new ArrayList<>();
         
         for (int i = 0; i < Base.randomNumber(7, 17); i++) {
-            gf.add(new GFile(prefix+"-"+Base.randomNumber(101, 99999999), "dat"));
+            gf.add(new GFile(prefix+"-"+Base.randomNumber(101, 99999999)+".dat"));
         }
         
         files = gf;
@@ -176,147 +263,13 @@ public class Computer implements Serializable {
         ArrayList<GFile> gf = new ArrayList<>();
         
         for (int i = 0; i < Base.randomNumber(7, 17); i++) {
-            gf.add(new GFile(prefix+"-"+Base.randomNumber(101, 99999999), "dat"));
+            gf.add(new GFile(prefix+"-"+Base.randomNumber(101, 99999999)+"dat"));
         }
         
         files = gf;
         
     }
     
-    /*public Computer(int level) {
-    
-    int code = 0;
-    
-    int[] a = {1,2,4,5,6,10,25,35,0,0};
-    int[] b = {3,4,6,9,12,27,40,0,0,0};
-    int[] c = {4,6,10,15,28,40,0,0,0,0};
-    int[] d = {6,8,14,20,38,0,0,0,0,0};
-    int[] e = {9,12,25,40,0,0,0,0,0,0};
-    int[] f = {15,27,40,0,0,0,0,0,0,0};
-    int[] g = {30,60,0,0,0,0,0,0,0,0};
-    
-    if(level >= 54) {
-    code = Base.chances(a);
-    } else if(level >= 48) {
-    code = Base.chances(b);
-    } else if(level >= 42) {
-    code = Base.chances(c);
-    } else if(level >= 31) {
-    code = Base.chances(d);
-    } else if(level >= 25) {
-    code = Base.chances(e);
-    } else if(level >= 18) {
-    code = Base.chances(f);
-    } else if(level >= 8) {
-    code = Base.chances(g);
-    } else code = 0;
-    
-    boolean pro1 = Base.chance(75);
-    boolean pro2 = Base.chance(75);
-    
-    defenseList = new ArrayList<>();
-    defenseList.add(new SPro());
-    
-    
-    switch(code) {
-    case 0:
-    power = 8;
-    trace = 0;
-    break;
-    case 1:
-    power = 14;
-    trace = 0;
-    if(pro1) defenseList.add(new FTPPort());
-    break;
-    case 2:
-    power = 26;
-    trace = 0;
-    
-    defenseList.add(new FTPPort());
-    
-    if(pro1) defenseList.add(new HTTPPort());
-    if(pro2) defenseList.add(new PassiveAntivirus());
-    break;
-    case 3:
-    power = 36;
-    trace = 180;
-    
-    defenseList.add(new FTPPort());
-    defenseList.add(new HTTPPort());
-    defenseList.add(new PassiveAntivirus());
-    
-    if(pro1) defenseList.add(new SQLPort());
-    if(pro2) defenseList.add(new ActiveAntivirus());
-    break;
-    case 4:
-    power = 100;
-    trace = 120;
-    
-    defenseList.add(new FTPPort());
-    defenseList.add(new HTTPPort());
-    defenseList.add(new PassiveAntivirus());
-    defenseList.add(new SQLPort());
-    defenseList.add(new ActiveAntivirus());
-    
-    if(pro1) defenseList.add(new Proxy());
-    if(pro2) defenseList.add(new Beta());
-    break;
-    case 5:
-    power = 180;
-    trace = 90;
-    
-    defenseList.add(new FTPPort());
-    defenseList.add(new HTTPPort());
-    defenseList.add(new PassiveAntivirus());
-    defenseList.add(new SQLPort());
-    defenseList.add(new ActiveAntivirus());
-    defenseList.add(new Proxy());
-    defenseList.add(new Beta());
-    
-    if(pro1) defenseList.add(new Prote());
-    break;
-    case 6:
-    power = 250;
-    trace = 60;
-    
-    defenseList.add(new FTPPort());
-    defenseList.add(new HTTPPort());
-    defenseList.add(new PassiveAntivirus());
-    defenseList.add(new SQLPort());
-    defenseList.add(new ActiveAntivirus());
-    defenseList.add(new Proxy());
-    defenseList.add(new Beta());
-    defenseList.add(new Prote());
-    
-    if(pro1) defenseList.add(new Firewall());
-    if(pro2) defenseList.add(new Alpha());
-    break;
-    case 7:
-    power = 500;
-    trace = 30;
-    
-    defenseList.add(new FTPPort());
-    defenseList.add(new HTTPPort());
-    defenseList.add(new PassiveAntivirus());
-    defenseList.add(new SQLPort());
-    defenseList.add(new ActiveAntivirus());
-    defenseList.add(new Proxy());
-    defenseList.add(new Beta());
-    defenseList.add(new Prote());
-    defenseList.add(new Firewall());
-    defenseList.add(new Alpha());
-    
-    if(pro1) defenseList.add(new Zeus());
-    break;
-    }
-    
-    ip = genIP();
-    
-    nameComputer = ip + " base";
-    
-    }*/
-    
-
     public static String genIP() {
         return Base.randomCombineString(5);
     }
@@ -329,30 +282,28 @@ public class Computer implements Serializable {
         }
     }
     
+    public void deleteHacknetOfProtect() {
+        for (int i = 0; i < defenseList.size(); i++) {
+            Protect get = defenseList.get(i);
+            get.hacknet = null;
+        }
+    }
+    
     public boolean hasFile(GFile file) {
         boolean ret = false;
         for (int i = 0; i < files.size(); i++) {
             GFile get = files.get(i);
-            if(get.name.equals(file.name)) {
+            if(get.equals(file)) {
                 ret = true;
             }
             System.err.println("hack.Computer.hasFile() : ");
-            System.err.println(" "+get.name);
-            System.err.println(" "+file.name);
+            System.err.println(" "+get.toString());
+            System.err.println(" "+file.toString());
         }
         return ret;
     }
     
-    public void rm(GFile file) {
-        for (int i = 0; i < files.size(); i++) {
-            GFile get = files.get(i);
-            if(get.name.equals(file.name)) {
-                nameOfFileDeleted = file.toString();
-                files.remove(i);
-                System.err.println("ok");
-            }
-        }
-    }
+    
     
     public String printScan() {
         String first = "Result of scan: \n"
