@@ -17,6 +17,14 @@ public class AuthWindow extends javax.swing.JFrame {
     public AuthWindow() {
         initComponents();
     }
+    
+    public void setPass(String pass) {
+        jPasswordField1.setText(pass);
+    }
+    
+    public void setUsername(String username) {
+        jTextField1.setText(username);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
