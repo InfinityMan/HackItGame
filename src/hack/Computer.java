@@ -118,7 +118,7 @@ public class Computer implements Serializable {
         int needOpen = defenseList.size();
         for (int i = 0; i < defenseList.size(); i++) {
             Protect get = defenseList.get(i);
-            if (get.open) {
+            if (get.open || get.gateway) {
                 needOpen--;
             }
         }
@@ -287,9 +287,6 @@ public class Computer implements Serializable {
             if(get.equals(file)) {
                 ret = true;
             }
-            System.err.println("hack.Computer.hasFile() : ");
-            System.err.println(" "+get.toString());
-            System.err.println(" "+file.toString());
         }
         return ret;
     }
@@ -328,6 +325,7 @@ public class Computer implements Serializable {
                     String a = read("words.txt").split(" ")[i];
                     mh.print(a);
                     aw.setPass(a);
+                    aw.setName("admin");
                 } catch (FileNotFoundException ex) {
                     exit(1);
                 }
@@ -348,6 +346,7 @@ public class Computer implements Serializable {
                 exit(1);
             }
             mh.dispose();
+            aw.dispose();
         });
         myThready.start();
         

@@ -91,6 +91,10 @@ public class User implements Serializable {
             Contract get = currentContracts.get(i);
             get.target.deleteHacknetOfProtect();
         }
+        for (int i = 0; i < availableContracts.size(); i++) {
+            Contract get = availableContracts.get(i);
+            get.target.deleteHacknetOfProtect();
+        }
         
         serData("hAcKsave.hsf", this);
     }
