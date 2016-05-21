@@ -27,18 +27,14 @@ public class Contract implements Serializable {
     
     public int id;
     public int needLvl;
-    public int type;
+    
+    public enum Type {DESTROY,COPY,VIRUS};
+    
+    public Type type;
     
     public GFile targetFile;
     
-    /*
-    type:
-    0 - destroy
-    1 - copy
-    2 - virus
-    */
-    
-    public Contract(int type, User user) {
+    public Contract(Type type, User user) {
         
         this.type = type;
         
@@ -49,7 +45,22 @@ public class Contract implements Serializable {
             JOptionPane.showMessageDialog(null, "Not loaded missions","Error",JOptionPane.ERROR_MESSAGE);
             
         }
-        String[] mission = all.split("\n")[type].split(";");
+        
+        int intType = 0;
+        
+        switch(type) {
+            case DESTROY :
+                intType = 0;
+                break;
+            case COPY :
+                intType = 1;
+                break;
+            case VIRUS :
+                intType = 2;
+                break;
+        }
+        
+        String[] mission = all.split("\n")[intType].split(";");
         
         missionFull = mission[0];
         missionShort = mission[Base.randomNumber(1, mission.length)];
@@ -84,7 +95,7 @@ public class Contract implements Serializable {
         
         target = lvlComps.get(Base.randomNumber(0, lvlComps.size()));
         
-        if(type == 0 || type == 1) {
+        if(type == Type.DESTROY || type == Type.COPY) {
             targetFile = target.files.get(Base.randomNumber(0, target.files.size()-1));
             missionFull += "\n\n"+targetFile.toString();
         } else {
@@ -94,7 +105,7 @@ public class Contract implements Serializable {
     }
     
     public boolean isComplited() {
-        if(type == 0) {
+        if(type == Type.DESTROY) {
             if(target.nameOfFileDeleted.equals(targetFile.toString())) {
                 return true;
             } else {
