@@ -331,7 +331,7 @@ public final class Hacknet extends javax.swing.JFrame {
     }
     
     private void genMission() {
-        Contract con = new Contract(0, user);
+        Contract con = new Contract(Contract.Type.DESTROY, user);
         print(con.id+", "+con.target.ip+", "+con.missionShort);
         user.currentContracts.add(con); //EEEEEEEEEEEEEEEEEEEEE
         user.gettedContractsNumber++;
