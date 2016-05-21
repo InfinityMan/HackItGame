@@ -15,29 +15,25 @@ import java.util.logging.Logger;
  */
 public class GFile implements Serializable {
     
-    public String name,format;
+    private String name;
+    
+    public GFile(String nameOfFile) {
+        name = nameOfFile;
+    }
 
-    public GFile(String name, String format) {
-        this.name = name;
-        this.format = format;
+    @Override
+    public String toString() {
+        return name;
     }
     
-    public GFile(String nameOfFileWithFormat) {
-        System.err.println(nameOfFileWithFormat);
-        //if (nameOfFileWithFormat.contains(".")) {
-            //String[] nOFWF = nameOfFileWithFormat.split(".");
-            //name = nOFWF[0];
-            //format = nOFWF[1];
-        //} else {
-            name = nameOfFileWithFormat;
-        //}
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + Objects.hashCode(this.name);
-        hash = 59 * hash + Objects.hashCode(this.format);
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
@@ -56,18 +52,8 @@ public class GFile implements Serializable {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.format, other.format)) {
-            return false;
-        }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return name + '.' + format;
-    }
-    
-    
     
     private static final Logger LOG = Logger.getLogger(GFile.class.getName());
     
