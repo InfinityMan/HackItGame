@@ -22,7 +22,7 @@ public class Log implements Serializable {
     
     public String message;
     
-    private boolean deleted;
+    private boolean deleted = false;
 
     public boolean isDeleted() {
         return deleted;
