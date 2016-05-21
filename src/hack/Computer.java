@@ -171,6 +171,8 @@ public class Computer implements Serializable {
         
         defenseList = df;
         
+        listOfLog = new HashMap<>();
+        
         switch(type) {
             case 0:
                 trace = 0;
