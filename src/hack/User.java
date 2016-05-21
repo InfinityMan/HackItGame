@@ -19,13 +19,15 @@ import static ru.epiclib.base.FileWorker.read;
 
 public class User implements Serializable {
     
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
     
     //computer:
     
     public ArrayList<Software> soft;
     public ArrayList<GFile> files;
     public int powerCPU = 200;
+    
+    public String ip;
     
     //end
     
