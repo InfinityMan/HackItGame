@@ -18,7 +18,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
 import static javax.swing.UIManager.setLookAndFeel;
-import static javax.swing.UIManager.setLookAndFeel;
 
 /**
  *
