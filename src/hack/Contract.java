@@ -96,7 +96,7 @@ public class Contract implements Serializable {
         target = lvlComps.get(Base.randomNumber(0, lvlComps.size()));
         
         if(type == Type.DESTROY || type == Type.COPY) {
-            targetFile = target.files.get(Base.randomNumber(0, target.files.size()-1));
+            targetFile = target.getFile(Base.randomNumber(0, target.sizeOfListFiles()-1));
             missionFull += "\n\n"+targetFile.toString();
         } else {
             
@@ -104,13 +104,9 @@ public class Contract implements Serializable {
         
     }
     
-    public boolean isComplited() {
+    public boolean isComplited(String userIp) {
         if(type == Type.DESTROY) {
-            if(target.nameOfFileDeleted.equals(targetFile.toString())) {
-                return true;
-            } else {
-                return false;
-            }
+            return target.listOfLog.containsValue(new Log(Log.Type.FILE_DELETED,userIp));
         } else {
             return false;
         }
