@@ -18,6 +18,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
 import static javax.swing.UIManager.setLookAndFeel;
+import static javax.swing.UIManager.setLookAndFeel;
 
 /**
  *
@@ -256,7 +257,7 @@ public final class Hacknet extends javax.swing.JFrame {
             } else if(command[0].startsWith("com")) {
                 try {
                     if (Base.stringToInt(command[1]) > 0 && Base.stringToInt(command[1]) < user.gettedContractsNumber-1) {
-                        if (user.searchForId(Base.stringToInt(command[1])).isComplited()) { //TODO (Null)
+                        if (user.searchForId(Base.stringToInt(command[1])).isComplited(user.ip)) { //TODO (Null)
                             //award
                             print("You successfully completed a contract " + command[1]);
                             user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
@@ -303,7 +304,7 @@ public final class Hacknet extends javax.swing.JFrame {
         if(currentTarget != null) {
             if(currentTarget.hacked) {
                 if(currentTarget.hasFile(file)) {
-                    currentTarget.rm(file);
+                    currentTarget.rmFile(file, user.ip);
                 } else {
                     print("Oh, file is not exits");
                 }
@@ -356,38 +357,19 @@ public final class Hacknet extends javax.swing.JFrame {
                 hack(9);
                 break;
             case "pass":
-                int needOpen = currentTarget.defenseList.size();
-                for (int i = 0; i < currentTarget.defenseList.size(); i++) {
-                    Protect get = currentTarget.defenseList.get(i);
-                    if(get.open) {
-                        needOpen--;
-            }
-                }
-                if(needOpen == 0) {
+                if (currentTarget.userCanHackThis()) {
                     currentTarget.hack(user);
                 } else {
                     print("Protects are not destroyed");
                 }
                 break;
-            default :
+            default:
                 print("Not found subject");
         }
     }
     
     private void hack(int idOfProtect) {
-        int id = -1;
-
-        for (int i = 0; i < currentTarget.defenseList.size(); i++) {
-            Protect get = currentTarget.defenseList.get(i);
-            if (get.id == idOfProtect) {
-                id = i;
-            }
-        }
-
-        if (id != -1) {
-            currentTarget.defenseList.get(id).hackThis();
-        }else {
-        }
+        currentTarget.getProtect(idOfProtect).hackThis();
     }
     
     /**
