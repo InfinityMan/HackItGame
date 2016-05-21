@@ -152,16 +152,6 @@ public class Computer implements Serializable {
                 return 0;
         }
     }
-
-    public Computer(ArrayList<Protect> defenseList, int trace, int power, String ip, String nameComputer, ArrayList<GFile> files, String prefix) {
-        this.defenseList = defenseList;
-        this.trace = trace;
-        this.exp = power;
-        this.ip = ip;
-        this.nameComputer = nameComputer;
-        this.files = files;
-        this.prefix = prefix;
-    }
     
     public Computer(int type, String nameComputer, String prefix) {
         exp = EXPS[type];
