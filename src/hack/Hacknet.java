@@ -401,7 +401,9 @@ public final class Hacknet extends javax.swing.JFrame {
             target.loadHacknetToProtect(this);
             currentTarget = target;
             print("Connected to "+target.nameComputer);
-            new AuthWindow().setVisible(true);
+            AuthWindow aw = new AuthWindow();
+            currentTarget.aw = aw;
+            aw.setVisible(true);
         } else {
             print("Invalid ip");
         }
