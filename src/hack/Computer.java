@@ -270,14 +270,14 @@ public class Computer implements Serializable {
             mh = new MiniHacknet();
             mh.setVisible(true);
             
-            aw.setName("admin");
+            aw.setUsername("admin");
             
             for (int i = exp * 2; i > 0; i--) {
                 try {
                     String a = read("words.txt").split(" ")[i];
                     mh.print(a);
+                    aw.setUsername("admin");
                     aw.setPass(a);
-                    aw.setName("admin");
                 } catch (FileNotFoundException ex) {
                     exit(1);
                 }

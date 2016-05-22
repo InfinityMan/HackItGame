@@ -152,8 +152,8 @@ public class Protect implements Serializable {
                     throw new Error("Protect.hack.switch:default!!!");
             }
             
-            mh.print("Complete hack of SPro");
-            hacknet.print("Complete hack of SPro");
+            mh.print("Complete hack of "+printThis());
+            hacknet.print("Complete hack of "+printThis());
             open = true;
             try {
                 sleep(1_500);
