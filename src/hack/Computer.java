@@ -38,7 +38,7 @@ public class Computer implements Serializable {
     
     public boolean hacked = false, virused = false;
     
-    public AuthWindow aw;
+    transient public AuthWindow aw;
     
     public HashMap<Integer,Log> listOfLog;
     
@@ -270,13 +270,6 @@ public class Computer implements Serializable {
         for (int i = 0; i < defenseList.size(); i++) {
             Protect get = defenseList.get(i);
             get.hacknet = hacknet;
-        }
-    }
-    
-    public void deleteHacknetOfProtect() {
-        for (int i = 0; i < defenseList.size(); i++) {
-            Protect get = defenseList.get(i);
-            get.hacknet = null;
         }
     }
     
