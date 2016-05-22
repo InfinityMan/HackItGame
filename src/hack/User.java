@@ -62,40 +62,17 @@ public class User implements Serializable {
         availableContracts = new ArrayList<>();
         currentContracts = new ArrayList<>();
     }
-    
-    /**
-     *
-     * @param hacknet
-     * @return
-     */
-    public static User load(Hacknet hacknet) {
+
+    public static User load(Hacknet hacknet) throws IOException {
         User loadedUser;
-        try {
-            loadedUser = (User) deserData("hAcKsave.hsf");
-            hacknet.print("Save loaded: "+loadedUser.nick);
-            
-        } catch (IOException ex) {
-            loadedUser = new User(hacknet);
-            hacknet.print("Save files are not finded : Register");
-            System.err.println(ex);
-        }
+
+        loadedUser = (User) deserData("hAcKsave.hsf");
+        hacknet.print("Save loaded: " + loadedUser.nick);
+
         return loadedUser;
     }
     
-    /**
-     *
-     */
     public void save() {
-        
-        for (int i = 0; i < currentContracts.size(); i++) {
-            Contract get = currentContracts.get(i);
-            get.target.deleteHacknetOfProtect();
-        }
-        for (int i = 0; i < availableContracts.size(); i++) {
-            Contract get = availableContracts.get(i);
-            get.target.deleteHacknetOfProtect();
-        }
-        
         serData("hAcKsave.hsf", this);
     }
     
