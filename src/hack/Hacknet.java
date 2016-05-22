@@ -25,6 +25,8 @@ import static javax.swing.UIManager.setLookAndFeel;
  */
 public final class Hacknet extends javax.swing.JFrame {
     
+    public static final String GAME_VERSION = "0.4a";
+    
     public User user;
     
     public ArrayList<Computer> computers;
@@ -32,7 +34,7 @@ public final class Hacknet extends javax.swing.JFrame {
     public Computer currentTarget;
     
     public boolean loaded = false;
-
+    
     /**
      *
      * @param args
@@ -195,18 +197,24 @@ public final class Hacknet extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadUser() {
+        print("Hello. This is only developer verison : "+GAME_VERSION);
+        try {
+            user = load(this);
+            print("Save file are finded : " + user.nick);
+        } catch (IOException ex) {
+            user = new User("Dmig", "*******", 180, 17);
+            print("Save files are not finded : Register");
+            System.err.println(ex);
+        }
+    }
+    
     private void CommandTypeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CommandTypeKeyPressed
         if(evt.getKeyCode() == VK_ENTER) {
             
-            if(!loaded) {
-                print("Hello. This is only developer verison : 0.2");
-                //user = load(this);
-                user = new User("Dmig", "*******", 160, 17);
+            if (!loaded) {
+                loadUser();
                 loaded = true;
-                /*for (int i = 0; i < computers.size(); i++) {
-                Computer get = computers.get(i);
-                System.out.println(get.print());
-                }*/
             }
             
             String commandAll = CommandType.getText();
@@ -237,7 +245,7 @@ public final class Hacknet extends javax.swing.JFrame {
                 user.save();
                 Base.serData("CompsDataBase.comps", computers);
             } else if(command[0].equalsIgnoreCase("load")) {
-                user = load(this);
+                loadUser();
             } else if(command[0].equalsIgnoreCase("exit")) {
                 dc();
                 user.save();
