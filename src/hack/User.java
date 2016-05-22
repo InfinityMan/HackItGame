@@ -15,6 +15,9 @@ import static ru.epiclib.base.Base.deserData;
 import static ru.epiclib.base.Base.serData;
 import static ru.epiclib.base.Base.stringToInt;
 import static ru.epiclib.base.FileWorker.read;
+import static ru.epiclib.base.FileWorker.read;
+import static ru.epiclib.base.FileWorker.read;
+import static ru.epiclib.base.FileWorker.read;
 
 
 public class User implements Serializable {
@@ -25,7 +28,7 @@ public class User implements Serializable {
     
     public ArrayList<Software> soft;
     public ArrayList<GFile> files;
-    public int powerCPU = 200;
+    public int powerCPU = Computer.CPUS_POWER[1];
     
     public String ip;
     

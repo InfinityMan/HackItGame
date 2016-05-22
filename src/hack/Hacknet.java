@@ -18,6 +18,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
 import static javax.swing.UIManager.setLookAndFeel;
+import static javax.swing.UIManager.setLookAndFeel;
+import static javax.swing.UIManager.setLookAndFeel;
+import static javax.swing.UIManager.setLookAndFeel;
 
 /**
  *
@@ -356,16 +359,10 @@ public final class Hacknet extends javax.swing.JFrame {
     public void hack(String subject) {
         switch (subject) {
             case "SPro":
-                hack(1);
+                hack(Protect.Type.SPRO);
                 break;
             case "Proxy":
-                hack(2);
-                break;
-            case "HTTPPort":
-                hack(7);
-                break;
-            case "SQLPort":
-                hack(9);
+                hack(Protect.Type.PROXY);
                 break;
             case "pass":
                 if (currentTarget.userCanHackThis()) {
@@ -379,8 +376,8 @@ public final class Hacknet extends javax.swing.JFrame {
         }
     }
     
-    private void hack(int idOfProtect) {
-        currentTarget.getProtect(idOfProtect).hackThis();
+    private void hack(Protect.Type type) {
+        currentTarget.getProtect(type).hackThis();
     }
     
     /**

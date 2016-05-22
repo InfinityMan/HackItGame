@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="6">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="7">
+        <file>
+            <url>src/hack/Log.java</url>
+            <bookmark id="7">
+                <name/>
+                <line>54</line>
+                <key/>
+            </bookmark>
+        </file>
         <file>
             <url>src/hack/Hacknet.java</url>
             <bookmark id="6">
@@ -23,7 +31,7 @@
             <url>src/hack/Contract.java</url>
             <bookmark id="3">
                 <name/>
-                <line>94</line>
+                <line>105</line>
                 <key/>
             </bookmark>
         </file>
@@ -31,24 +39,26 @@
             <url>src/hack/Computer.java</url>
             <bookmark id="5">
                 <name/>
-                <line>345</line>
+                <line>293</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Dima/Hack/src/hack/Software.java</file>
-            <file>file:/C:/Dima/Hack/src/hack/Computer.java</file>
             <file>file:/C:/Dima/Hack/src/hack/protect/SPro.java</file>
-            <file>file:/C:/Dima/Hack/src/hack/User.java</file>
             <file>file:/C:/Dima/Hack/src/hack/util.java</file>
             <file>file:/C:/Dima/Hack/src/hack/protect/Proxy.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/res/Link.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/Hacknet.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/Contract.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/GFile.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/Software.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/Computer.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/User.java</file>
             <file>file:/C:/Dima/Hack/src/hack/ContractsList.java</file>
             <file>file:/C:/Dima/Hack/src/hack/AuthWindow.java</file>
-            <file>file:/C:/Dima/Hack/src/hack/GFile.java</file>
-            <file>file:/C:/Dima/Hack/src/hack/Contract.java</file>
-            <file>file:/C:/Dima/Hack/src/hack/Hacknet.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/Log.java</file>
         </group>
     </open-files>
 </project-private>

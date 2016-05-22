@@ -6,7 +6,6 @@
 package hack;
 
 import static hack.User.levelText;
-import hack.protect.*;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import static java.lang.System.exit;
@@ -16,16 +15,23 @@ import ru.epiclib.base.Base;
 import java.util.HashMap;
 import static java.lang.Thread.sleep;
 import static ru.epiclib.base.FileWorker.read;
+import static java.lang.Thread.sleep;
+import static ru.epiclib.base.FileWorker.read;
+import static java.lang.Thread.sleep;
+import static ru.epiclib.base.FileWorker.read;
+import static java.lang.Thread.sleep;
+import static ru.epiclib.base.FileWorker.read;
 
 
 public class Computer implements Serializable {
     
     private static final long serialVersionUID = 3L;
     
+    public static final int[] CPUS_POWER = {100,200,400,600,800,1600};
     public static final int[] EXPS = {8,14,22,48,80,190};
-    public static final int[] LVLTOCOMP = {1,8,17,24,32,43};
+    public static final int[] LVL_TO_COMP = {1,8,17,24,32,43};
     public static final String[] TYPES = {"Old server","Local server","Small server","Normal server","Big server","Super server"};
-    public static final String[] SUFNAME = {"workstation","station","base","frame","mainframe","grandframe"};
+    public static final String[] SUFFIX_NAME = {"workstation","station","base","frame","mainframe","grandframe"};
     
     private ArrayList<Protect> defenseList;
     private ArrayList<GFile> files;
@@ -52,14 +58,15 @@ public class Computer implements Serializable {
         defenseList.add(protect);
     }
     
-    public Protect getProtect(int idOfProtect) {
+    public Protect getProtect(Protect.Type type) {
         
         int id = -1;
 
         for (int i = 0; i < defenseList.size(); i++) {
             Protect get = defenseList.get(i);
-            if (get.id == idOfProtect) {
+            if (get.type == type) {
                 id = i;
+                break;
             }
         }
 
@@ -155,18 +162,18 @@ public class Computer implements Serializable {
     public Computer(int type, String nameComputer, String prefix) {
         exp = EXPS[type];
         ArrayList<Protect> df = new ArrayList<>();
-        df.add(new SPro());
-        if(type > 0) df.add(new Proxy());
+        df.add(new Protect(Protect.Type.SPRO));
+        if(type > 0) df.add(new Protect(Protect.Type.PROXY));
         if(type > 1) {
-            df.add(new Firewall());
-            df.add(new AntiHack());
+            df.add(new Protect(Protect.Type.FIREWALL));
+            df.add(new Protect(Protect.Type.ANTIHACK));
         }
         if(type > 2) {
-            df.add(new Alpha());
-            df.add(new Prote());
+            df.add(new Protect(Protect.Type.ALPHA));
+            df.add(new Protect(Protect.Type.PROTE));
         }
-        if(type > 3) df.add(new Ello());
-        if(type > 4) df.add(new Zeus());
+        if(type > 3) df.add(new Protect(Protect.Type.ELLO));
+        if(type > 4) df.add(new Protect(Protect.Type.ZEUS));
         
         defenseList = df;
         
@@ -193,7 +200,7 @@ public class Computer implements Serializable {
                 break;
         }
         
-        this.nameComputer = nameComputer + " " + SUFNAME[type];
+        this.nameComputer = nameComputer + " " + SUFFIX_NAME[type];
         this.prefix = prefix;
         
         ArrayList<GFile> gf = new ArrayList<>();
@@ -209,56 +216,8 @@ public class Computer implements Serializable {
     }
     
     public Computer(int type, String nameComputer, String prefix, String ip) {
-        exp = EXPS[type];
-        ArrayList<Protect> df = new ArrayList<>();
-        df.add(new SPro());
-        if(type > 0) df.add(new Proxy());
-        if(type > 1) {
-            df.add(new Firewall());
-            df.add(new AntiHack());
-        }
-        if(type > 2) {
-            df.add(new Alpha());
-            df.add(new Prote());
-        }
-        if(type > 3) df.add(new Ello());
-        if(type > 4) df.add(new Zeus());
-        
-        defenseList = df;
-        
-        switch(type) {
-            case 0:
-                trace = 0;
-                break;
-            case 1:
-                trace = 240;
-                break;
-            case 2:
-                trace = 120;
-                break;
-            case 3:
-                trace = 60;
-                break;
-            case 4:
-                trace = 30;
-                break;
-            case 5:
-                trace = 10;
-                break;
-        }
-        
+        this(type,nameComputer,prefix);
         this.ip = ip;
-        this.nameComputer = nameComputer + " " + SUFNAME[type];
-        this.prefix = prefix;
-        
-        ArrayList<GFile> gf = new ArrayList<>();
-        
-        for (int i = 0; i < Base.randomNumber(7, 17); i++) {
-            gf.add(new GFile(prefix+"-"+Base.randomNumber(101, 99999999)+"dat"));
-        }
-        
-        files = gf;
-        
     }
     
     public static String genIP() {

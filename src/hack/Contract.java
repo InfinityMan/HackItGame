@@ -68,11 +68,11 @@ public class Contract implements Serializable {
         id = user.gettedContractsNumber;
         
         int typeOfTarget = 0;
-        if(User.levelNum(user.exp) >= Computer.LVLTOCOMP[1]) typeOfTarget = 1;
-        if(User.levelNum(user.exp) >= Computer.LVLTOCOMP[2]) typeOfTarget = 2;
-        if(User.levelNum(user.exp) >= Computer.LVLTOCOMP[3]) typeOfTarget = 3;
-        if(User.levelNum(user.exp) >= Computer.LVLTOCOMP[4]) typeOfTarget = 4;
-        if(User.levelNum(user.exp) >= Computer.LVLTOCOMP[5]) typeOfTarget = 5;
+        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[1]) typeOfTarget = 1;
+        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[2]) typeOfTarget = 2;
+        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[3]) typeOfTarget = 3;
+        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[4]) typeOfTarget = 4;
+        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[5]) typeOfTarget = 5;
         
         ArrayList<Computer> computers = new ArrayList<>();
         
