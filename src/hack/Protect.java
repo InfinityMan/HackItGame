@@ -12,7 +12,7 @@ import static javax.swing.UIManager.getCrossPlatformLookAndFeelClassName;
 import static javax.swing.UIManager.getSystemLookAndFeelClassName;
 import static javax.swing.UIManager.setLookAndFeel;
 import javax.swing.UnsupportedLookAndFeelException;
-import static ru.epiclib.base.Base.randomBinary;
+import ru.epiclib.base.Base;
 
 /**
  *
@@ -116,11 +116,19 @@ public class Protect implements Serializable {
             mh.setVisible(true);
             
             switch (type) {
-
-                case SPRO:
-
-                    for (int i = needPower; i > 0; i = i - hacknet.user.powerCPU) {
-                        mh.print(randomBinary(16));
+                case ALPHA:
+                    break;
+                case ANTIHACK:
+                    break;
+                case ELLO:
+                    break;
+                case FIREWALL:
+                    break;
+                case PROTE:
+                    break;
+                case PROXY:
+                    for (int i = needPower; i > 0; i = i - hacknet.user.powerCPU * 2) {
+                        mh.print(Base.randomCombineString(16));
                         try {
                             sleep(500);
                         } catch (InterruptedException ex) {
@@ -128,7 +136,20 @@ public class Protect implements Serializable {
                         }
                     }
                     break;
-                    
+                case SPRO:
+                    for (int i = needPower; i > 0; i = i - hacknet.user.powerCPU) {
+                        mh.print(Base.randomBinary(16));
+                        try {
+                            sleep(250);
+                        } catch (InterruptedException ex) {
+                            exit(1);
+                        }
+                    }
+                    break;
+                case ZEUS:
+                    break;
+                default:
+                    throw new Error("Protect.hack.switch:default!!!");
             }
             
             mh.print("Complete hack of SPro");
