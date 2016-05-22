@@ -5,7 +5,6 @@
  */
 package hack;
 
-import hack.Hacknet;
 import java.io.Serializable;
 
 /**
@@ -22,7 +21,7 @@ public abstract class Protect implements Serializable {
     /**
      *
      */
-    public Hacknet hacknet;
+    transient public Hacknet hacknet;
     
     public boolean open = false;
     
