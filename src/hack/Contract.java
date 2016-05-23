@@ -95,11 +95,13 @@ public class Contract implements Serializable {
         
         target = lvlComps.get(Base.randomNumber(0, lvlComps.size()));
         
+        for (int i = 0; i < 3; i++) {
+            target.addFile(target.genFile());
+        }
+        
         if(type == Type.DESTROY || type == Type.COPY) {
             targetFile = target.getFile(Base.randomNumber(0, target.sizeOfListFiles()-1));
             missionFull += "\n\n"+targetFile.toString();
-        } else {
-            
         }
         
     }
@@ -111,5 +113,20 @@ public class Contract implements Serializable {
             return false;
         }
     }
+    
+    public boolean isComplited() {
+        if(type == Type.DESTROY) {
+            return !target.hasFile(targetFile);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Contract{" + "target=" + target + ", missionFull=" + missionFull + ", missionShort=" + missionShort + ", id=" + id + ", needLvl=" + needLvl + ", type=" + type + ", targetFile=" + targetFile + '}';
+    }
+    
+    
     
 }
