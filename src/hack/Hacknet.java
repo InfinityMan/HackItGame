@@ -290,7 +290,7 @@ public final class Hacknet extends javax.swing.JFrame {
                 }
                 print("Your save file successfully reseted");
             } else if(command[0].equalsIgnoreCase("rm")) {
-                rm(new GFile(command[1]));
+                rm(command[1]);
             } else if(command[0].equalsIgnoreCase("dc")) {
                 dc();
             } else if(command[0].startsWith("com")) {
@@ -335,7 +335,7 @@ public final class Hacknet extends javax.swing.JFrame {
         currentTarget = null;
     }
     
-    public void rm(GFile file) {
+    public void rm(String file) {
         if(currentTarget != null) {
             if(currentTarget.hacked) {
                 if(currentTarget.hasFile(file)) {

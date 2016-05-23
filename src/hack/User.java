@@ -27,7 +27,7 @@ public class User implements Serializable {
     //computer:
     
     public ArrayList<Software> soft;
-    public ArrayList<GFile> files;
+    public ArrayList<String> files;
     public int powerCPU = Computer.CPUS_POWER[1];
     
     public String ip;

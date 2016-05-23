@@ -34,7 +34,7 @@ public final class Computer implements Serializable {
     public static final String[] SUFFIX_NAME = {"workstation","station","base","frame","mainframe","grandframe"};
     
     private ArrayList<Protect> defenseList;
-    private ArrayList<GFile> files;
+    private ArrayList<String> files;
     
     public int trace,exp;
     
@@ -50,8 +50,8 @@ public final class Computer implements Serializable {
     
     //--------------------------------------------------------------------------
     
-    public void addToFilesList(GFile file) {
-        files.add(file);
+    public void addToFilesList(String str) {
+        files.add(str);
     }
     
     public void addToDefenseList(Protect protect) {
@@ -78,9 +78,9 @@ public final class Computer implements Serializable {
         
     }
     
-    public boolean rmFile(GFile file, String userIP) {
+    public boolean rmFile(String file, String userIP) {
         for (int i = 0; i < files.size(); i++) {
-            GFile get = files.get(i);
+            String get = files.get(i);
             if(get.equals(file)) {
                 listOfLog.put(listOfLog.size(), new Log(Log.Type.FILE_DELETED, userIP));
                 files.remove(i);
@@ -88,10 +88,6 @@ public final class Computer implements Serializable {
             }
         }
         return false;
-    }
-    
-    public void rmFile(String nameOfFile, String userIp) {
-        rmFile(new GFile(nameOfFile), userIp);
     }
     
     public boolean hasProtect(Protect.Type type) {
@@ -113,11 +109,11 @@ public final class Computer implements Serializable {
         listOfLog.get(keyOfLog).setDeleted(false);
     }
     
-    public void addFile(GFile file) {
+    public void addFile(String file) {
         files.add(file);
     }
     
-    public GFile getFile(int idInCollection) {
+    public String getFile(int idInCollection) {
         return files.get(idInCollection);
     }
     
@@ -207,7 +203,7 @@ public final class Computer implements Serializable {
         this.nameComputer = nameComputer + " " + SUFFIX_NAME[type];
         this.prefix = prefix;
         
-        ArrayList<GFile> gf = new ArrayList<>();
+        ArrayList<String> gf = new ArrayList<>();
         
         gf.add(genFile());
         
@@ -217,8 +213,8 @@ public final class Computer implements Serializable {
         
     }
     
-    public GFile genFile() {
-        return new GFile(prefix+"-"+Base.randomNumber(101, 99999999)+".dat");
+    public String genFile() {
+        return prefix+"-"+Base.randomNumber(101, 99999999)+".dat";
     }
     
     public Computer(int type, String nameComputer, String prefix, String ip) {
@@ -238,10 +234,10 @@ public final class Computer implements Serializable {
         }
     }
     
-    public boolean hasFile(GFile file) {
+    public boolean hasFile(String file) {
         boolean ret = false;
         for (int i = 0; i < files.size(); i++) {
-            GFile get = files.get(i);
+            String get = files.get(i);
             if(get.equals(file)) {
                 ret = true;
             }

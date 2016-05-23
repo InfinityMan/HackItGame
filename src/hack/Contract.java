@@ -32,7 +32,7 @@ public class Contract implements Serializable {
     
     public Type type;
     
-    public GFile targetFile;
+    public String targetFile;
     
     public Contract(Type type, User user) {
         
