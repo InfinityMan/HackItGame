@@ -8,9 +8,13 @@ package hack;
 import static hack.User.load;
 import static java.awt.EventQueue.invokeLater;
 import static java.awt.event.KeyEvent.VK_ENTER;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import static java.lang.System.exit;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.UIManager.getCrossPlatformLookAndFeelClassName;
 import static javax.swing.UIManager.getSystemLookAndFeelClassName;
@@ -21,6 +25,7 @@ import static javax.swing.UIManager.setLookAndFeel;
 import static javax.swing.UIManager.setLookAndFeel;
 import static javax.swing.UIManager.setLookAndFeel;
 import static javax.swing.UIManager.setLookAndFeel;
+import ru.epiclib.base.FileWorker;
 
 /**
  *
@@ -206,7 +211,7 @@ public final class Hacknet extends javax.swing.JFrame {
             user = load(this);
             print("Save file are finded : " + user.nick);
         } catch (IOException ex) {
-            user = new User("Dmig", "*******", 180, 17);
+            //user = new User("Dmig", "*******", 180, 17);
             print("Save files are not finded : Register");
             System.err.println(ex);
         }
@@ -260,6 +265,28 @@ public final class Hacknet extends javax.swing.JFrame {
                 missions();
             } else if(command[0].equalsIgnoreCase("mission")) {
                 genMission();
+            } else if(command[0].equalsIgnoreCase("files")) {
+                for (int i = 0; i < currentTarget.sizeOfListFiles(); i++) {
+                    print(currentTarget.getFile(i).toString());
+                }
+            } else if(command[0].equalsIgnoreCase("logs")) {
+                if (!currentTarget.listOfLog.isEmpty()) {
+                    currentTarget.listOfLog.entrySet().stream().forEach((en) -> {
+                        Integer key = en.getKey();
+                        Log value = en.getValue();
+                        print("@" + key + ": " + value.message);
+                    });
+                } else {
+                    print("There are no logs");
+                }
+            } else if(command[0].equalsIgnoreCase("reset")) {
+                user = new User("Dmig", "*******", 0, 0);
+                try {
+                    FileWorker.delete("hAcKsave.hsf");
+                } catch (FileNotFoundException ex) {
+                    System.err.println(ex + " for reset save file");
+                }
+                print("Your save file successfully reseted");
             } else if(command[0].equalsIgnoreCase("rm")) {
                 rm(new GFile(command[1]));
             } else if(command[0].equalsIgnoreCase("dc")) {
@@ -272,9 +299,9 @@ public final class Hacknet extends javax.swing.JFrame {
                             print("You successfully completed a contract " + command[1]);
                             user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
                         }
-                    } else {
+                        } else {
                         print("Nope, this contract can not be");
-                    }
+                        }
                 } catch (NumberFormatException ex) {
                     print("Oh, please enter a number");
                 }
