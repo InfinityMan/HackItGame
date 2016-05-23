@@ -261,6 +261,8 @@ public final class Hacknet extends javax.swing.JFrame {
                 exit(0);
             } else if(command[0].equalsIgnoreCase("stats")) {
                 print(user.print());
+            } else if(command[0].equalsIgnoreCase("teos")) {
+                //test command
             } else if(command[0].equalsIgnoreCase("missions")) {
                 missions();
             } else if(command[0].equalsIgnoreCase("mission")) {
@@ -293,15 +295,11 @@ public final class Hacknet extends javax.swing.JFrame {
                 dc();
             } else if(command[0].startsWith("com")) {
                 try {
-                    if (Base.stringToInt(command[1]) > 0 && Base.stringToInt(command[1]) < user.gettedContractsNumber-1) {
-                        if (user.searchForId(Base.stringToInt(command[1])).isComplited(user.ip)) { //TODO (Null)
-                            //award
-                            print("You successfully completed a contract " + command[1]);
-                            user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
-                        }
-                        } else {
-                        print("Nope, this contract can not be");
-                        }
+                    if (user.searchForId(Base.stringToInt(command[1])).isComplited()) { //TODO (Null)
+                        //award
+                        print("You successfully completed a contract " + command[1]);
+                        user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
+                    }
                 } catch (NumberFormatException ex) {
                     print("Oh, please enter a number");
                 }

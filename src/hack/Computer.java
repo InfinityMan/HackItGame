@@ -82,7 +82,7 @@ public final class Computer implements Serializable {
         for (int i = 0; i < files.size(); i++) {
             GFile get = files.get(i);
             if(get.equals(file)) {
-                listOfLog.put(listOfLog.size()-1, new Log(Log.Type.FILE_DELETED, userIP));
+                listOfLog.put(listOfLog.size(), new Log(Log.Type.FILE_DELETED, userIP));
                 files.remove(i);
                 return true;
             }
@@ -94,12 +94,16 @@ public final class Computer implements Serializable {
         rmFile(new GFile(nameOfFile), userIp);
     }
     
-    public boolean hasProtect(int idOfProtect) {
+    public boolean hasProtect(Protect.Type type) {
+        
+        for (int i = 0; i < defenseList.size(); i++) {
+            Protect get = defenseList.get(i);
+            if (get.type == type) {
+                return true;
+            }
+        }
+        
         return false;
-    }
-    
-    public boolean hasFile(String name) {
-        return true;
     }
     
     public void setDeletedToLog(int keyOfLog) {

@@ -48,19 +48,13 @@ public class User implements Serializable {
     public ArrayList<Contract> availableContracts;
     public ArrayList<Contract> currentContracts;
     
-
-    
-
-    public User(Hacknet hacknet) {
-        availableContracts = new ArrayList<>();
-        currentContracts = new ArrayList<>();
-    }
-    
     public User(String nick,String userPass, int exp, int getCon) {
         this.nick = nick;
         this.userPass = userPass;
         this.exp = exp;
         this.gettedContractsNumber = getCon;
+        
+        ip = Computer.genIP();
         
         availableContracts = new ArrayList<>();
         currentContracts = new ArrayList<>();
