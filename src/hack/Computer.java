@@ -23,7 +23,7 @@ import static java.lang.Thread.sleep;
 import static ru.epiclib.base.FileWorker.read;
 
 
-public class Computer implements Serializable {
+public final class Computer implements Serializable {
     
     private static final long serialVersionUID = 3L;
     
@@ -205,14 +205,16 @@ public class Computer implements Serializable {
         
         ArrayList<GFile> gf = new ArrayList<>();
         
-        for (int i = 0; i < Base.randomNumber(7, 17); i++) {
-            gf.add(new GFile(prefix+"-"+Base.randomNumber(101, 99999999)+".dat"));
-        }
+        gf.add(genFile());
         
         files = gf;
         
         ip = genIP();
         
+    }
+    
+    public GFile genFile() {
+        return new GFile(prefix+"-"+Base.randomNumber(101, 99999999)+".dat");
     }
     
     public Computer(int type, String nameComputer, String prefix, String ip) {
@@ -267,8 +269,11 @@ public class Computer implements Serializable {
 
         Thread myThready = new Thread(() -> {
             MiniHacknet mh;
+            LabelHack lh;
             mh = new MiniHacknet();
+            lh = new LabelHack();
             mh.setVisible(true);
+            lh.setVisible(true);
             
             aw.setUsername("admin");
             
