@@ -7,6 +7,7 @@ package hack;
 
 import static hack.User.load;
 import static java.awt.EventQueue.invokeLater;
+import java.awt.HeadlessException;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.UIManager.getCrossPlatformLookAndFeelClassName;
 import static javax.swing.UIManager.getSystemLookAndFeelClassName;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -209,12 +211,27 @@ public final class Hacknet extends javax.swing.JFrame {
         print("Hello. This is only developer verison : "+GAME_VERSION);
         try {
             user = load(this);
-            print("Save file are finded : " + user.nick);
         } catch (IOException ex) {
             //user = new User("Dmig", "*******", 180, 17);
             print("Save files are not finded : Register");
+            registerUser();
             System.err.println(ex);
         }
+    }
+
+    private void registerUser() throws HeadlessException {
+        String name, pass;
+        String tmp1 = JOptionPane.showInputDialog(null, "Enter your nickname","Registration",JOptionPane.QUESTION_MESSAGE);
+        while(tmp1.length() < 1) {
+            tmp1 = JOptionPane.showInputDialog(null, "Enter your nickname","Registration",JOptionPane.QUESTION_MESSAGE);
+        }
+        name = tmp1;
+        String tmp2 = JOptionPane.showInputDialog(null, "Enter your password","Registration",JOptionPane.QUESTION_MESSAGE);
+        while(tmp2.length() < 1) {
+            tmp2 = JOptionPane.showInputDialog(null, "Enter your password","Registration",JOptionPane.QUESTION_MESSAGE);
+        }
+        pass = tmp2;
+        user = new User(name, pass, 0, 0);
     }
     
     private void CommandTypeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CommandTypeKeyPressed
@@ -290,13 +307,7 @@ public final class Hacknet extends javax.swing.JFrame {
                 print("There are no logs");
             }
         } else if(command[0].equalsIgnoreCase("reset")) {
-            user = new User("Dmig", "*******", 0, 0);
-            try {
-                FileWorker.delete("hAcKsave.hsf");
-            } catch (FileNotFoundException ex) {
-                System.err.println(ex + " for reset save file");
-            }
-            print("Your save file successfully reseted");
+            reset();
         } else if(command[0].equalsIgnoreCase("rm")) {
             rm(command[1]);
         } else if(command[0].equalsIgnoreCase("dc")) {
@@ -335,6 +346,16 @@ public final class Hacknet extends javax.swing.JFrame {
         } else {
             print("Invalid command");
         }
+    }
+
+    private void reset() {
+        user = new User("Dmig", "*******", 0, 0);
+        try {
+            FileWorker.delete("hAcKsave.hsf");
+        } catch (FileNotFoundException ex) {
+            System.err.println(ex + " for reset save file");
+        }
+        print("Your save file successfully reseted");
     }
 
     public void dc() {
