@@ -5,19 +5,159 @@
  */
 package hack;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import ru.epiclib.base.Base;
+
 /**
  *
  * @author Dima
  */
 public class LabelHack extends javax.swing.JFrame {
     
-    boolean[] elements = {false,false,false,false,false,false,false,false};
+    boolean[] elementsCompleted = {false,false,false,false,false,false,false,false};
+    
+    public enum TypeOfChars {ONLY_SMALL,ONLY_BIG,ONLY_NUMBERS,SMALL_AND_NUMBERS,BIG_AND_NUMBERS,BIG_AND_SMALL,ALL};
+    public enum Difficulty {VERY_LOW,LOW,NORMAL,HIGH,VERY_HIGH};
 
-    /**
-     * Creates new form LabelHack
-     */
     public LabelHack() {
         initComponents();
+    }
+    
+    public boolean start(TypeOfChars type, Difficulty difficulty, int allTimeInSeconds) {
+        
+        double temp = allTimeInSeconds/8;
+        String tempStr = Double.toString(Math.floor(temp)) + "";
+        int secondsForElement = Integer.parseInt(tempStr);
+        int extraTime = allTimeInSeconds%8;
+        int timesInSeconds = 0;
+        
+        switch(difficulty) {
+            case VERY_LOW :
+                timesInSeconds = 10;
+                break;
+            case LOW :
+                timesInSeconds = 8;
+                break;
+            case NORMAL :
+                timesInSeconds = 5;
+                break;
+            case HIGH :
+                timesInSeconds = 2;
+                break;
+            case VERY_HIGH :
+                timesInSeconds = 1;
+                break;
+        }
+        
+        jetElement(secondsForElement+extraTime, timesInSeconds, type ,0);
+        jetElement(secondsForElement, timesInSeconds, type ,1);
+        jetElement(secondsForElement, timesInSeconds, type ,2);
+        jetElement(secondsForElement, timesInSeconds, type ,3);
+        jetElement(secondsForElement, timesInSeconds, type ,4);
+        jetElement(secondsForElement, timesInSeconds, type ,5);
+        jetElement(secondsForElement, timesInSeconds, type ,6);
+        jetElement(secondsForElement, timesInSeconds, type ,7);
+        
+        
+        return false;
+    }
+    
+    private void jetElement(int seconds,int timesInSecond, TypeOfChars typeOfChars, int number) {
+        
+        int waitInSeconds = 1000/timesInSecond;
+        ArrayList<String> aviaStrings = new ArrayList<>();
+        
+        switch(typeOfChars) {
+            case ONLY_NUMBERS :
+                addNumbers(aviaStrings);
+                break;
+            case SMALL_AND_NUMBERS :
+                addNumbers(aviaStrings);
+                addSmall(aviaStrings);
+                break;
+            case ONLY_SMALL :
+                addSmall(aviaStrings);
+                break;
+            case ONLY_BIG :
+                addBig(aviaStrings);
+                break;
+            case BIG_AND_SMALL :
+                addSmall(aviaStrings);
+                addBig(aviaStrings);
+                break;
+            case BIG_AND_NUMBERS :
+                addBig(aviaStrings);
+                addNumbers(aviaStrings);
+                break;
+            case ALL :
+                addNumbers(aviaStrings);
+                addSmall(aviaStrings);
+                addBig(aviaStrings);
+                break;
+        }
+        
+        javax.swing.JLabel label = new javax.swing.JLabel();
+        
+        switch (number) {
+            case 0:
+                label = jLabel1;
+                break;
+            case 1:
+                label = jLabel2;
+                break;
+            case 2:
+                label = jLabel3;
+                break;
+            case 3:
+                label = jLabel4;
+                break;
+            case 4:
+                label = jLabel5;
+                break;
+            case 5:
+                label = jLabel6;
+                break;
+            case 6:
+                label = jLabel7;
+                break;
+            case 7:
+                label = jLabel8;
+                break;
+        }
+        
+        int iterations = 0;
+        
+        
+        
+        for (int i = 0; i < seconds; i++) {
+            for (int j = 0; j < timesInSecond; j++) {
+                label.setText(aviaStrings.get(iterations));
+                try {
+                    Thread.sleep(waitInSeconds);
+                } catch (InterruptedException ex) {
+                    System.err.println("InterCOR");
+                    System.exit(1);
+                }
+                
+            }
+        }
+    }
+    
+    private void addNumbers(ArrayList<String> start) {
+        for (int i = 0; i < 10; i++) {
+            start.add(i+"");
+        }
+    }
+    
+    private void addSmall(ArrayList<String> start) {
+        start.addAll(Arrays.asList(Base.ENGALPHAVET));
+    }
+    
+    private void addBig(ArrayList<String> start) {
+        start.addAll(Arrays.asList(Base.ENGALPHAVETCAPS));
     }
 
     /**
