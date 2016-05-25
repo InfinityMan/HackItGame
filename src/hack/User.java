@@ -64,6 +64,7 @@ public class User implements Serializable {
         User loadedUser;
 
         loadedUser = (User) deserData("hAcKsave.hsf");
+        hacknet.print("Save file are finded : " + loadedUser.nick);
         hacknet.print("Save loaded: " + loadedUser.nick);
 
         return loadedUser;
