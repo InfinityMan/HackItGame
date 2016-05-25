@@ -5,6 +5,7 @@
  */
 package hack;
 
+import hack.res.Link;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -96,8 +97,10 @@ public class User implements Serializable {
     public static int levelNum(int exp) {
         String[] expToLevelStr = null;
         try {
-            expToLevelStr = read("level.txt").split("\n")[0].split(" ");
+            expToLevelStr = new Link().readRes("level.txt").split("\n")[0].split(" ");
         } catch (FileNotFoundException ex) {
+            exit(1);
+        } catch (IOException ex) {
             exit(1);
         }
         int[] expToLevel = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
