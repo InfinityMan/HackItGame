@@ -16,9 +16,6 @@ import static ru.epiclib.base.Base.deserData;
 import static ru.epiclib.base.Base.serData;
 import static ru.epiclib.base.Base.stringToInt;
 import static ru.epiclib.base.FileWorker.read;
-import static ru.epiclib.base.FileWorker.read;
-import static ru.epiclib.base.FileWorker.read;
-import static ru.epiclib.base.FileWorker.read;
 
 
 public class User implements Serializable {
@@ -89,12 +86,11 @@ public class User implements Serializable {
         currentContracts.add(contr);
     }
     
-    /**
-     *
-     * @param exp
-     * @return
-     */
     public static int levelNum(int exp) {
+        return levelOperations(exp, true);
+    }
+    
+    private static int levelOperations(int exp, boolean levelNum) {
         String[] expToLevelStr = null;
         try {
             expToLevelStr = new Link().readRes("level.txt").split("\n")[0].split(" ");
@@ -113,37 +109,21 @@ public class User implements Serializable {
             level++;
         }
         
-        return level;
-    }
-    
-    /**
-     *
-     * @param exp
-     * @return
-     */
-    public static int toNextLevelExp(int exp) {
-        String[] expToLevelStr = null;
-        try {
-            expToLevelStr = read("level.txt").split("\n")[0].split(" ");
-        } catch (FileNotFoundException ex) {
-            exit(1);
-        }
-        int[] expToLevel = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-        for (int i = 0; i < expToLevelStr.length; i++) {
-            expToLevel[i] = stringToInt(expToLevelStr[i]);  
-        }
-        int level = 0, currentExp = exp;
-        while(currentExp >= expToLevel[level] && level != 58) {
-            currentExp -= expToLevel[level];
-            level++;
-        }
-        
-        int ret = 0;
+        int retForMethodToNextLevelExp = 0;
         if(level != 58) {
-            ret = expToLevel[level]-currentExp;
+            retForMethodToNextLevelExp = expToLevel[level]-currentExp;
         }
         
-        return ret;
+        if(levelNum) {
+            return level;
+        } else {
+            return retForMethodToNextLevelExp;
+        }
+        
+    }
+
+    public static int toNextLevelExp(int exp) {
+        return levelOperations(exp, false);
     }
     
     /**
