@@ -256,7 +256,9 @@ public final class Computer implements Serializable {
         String second = "";
         for (int i = 0; i < defenseList.size(); i++) {
             Protect get = defenseList.get(i);
-            second += "     " + get.printThis() + "\n";
+            if(get.type != Protect.Type.ANTIHACK) {
+                second += "     " + get.printThis() + "\n";
+            }
         }
         String third = " Trace: "+trace+"\n"
                 + " Power: "+exp;

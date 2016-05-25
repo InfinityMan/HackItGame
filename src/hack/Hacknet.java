@@ -102,7 +102,7 @@ public final class Hacknet extends javax.swing.JFrame {
      *
      * @param s
      */
-    public void print(String s) {
+    public void print(Object s) {
         Console.setText(Console.getText() + s + "\n");
     }
     
@@ -343,6 +343,8 @@ public final class Hacknet extends javax.swing.JFrame {
             } else {
                 print("You need admin access");
             }
+        } else if(command[0].equalsIgnoreCase("AHScanner.exe")) {
+            print(currentTarget.hasProtect(Protect.Type.ANTIHACK));
         } else {
             print("Invalid command");
         }
