@@ -220,116 +220,122 @@ public final class Hacknet extends javax.swing.JFrame {
     private void CommandTypeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CommandTypeKeyPressed
         if(evt.getKeyCode() == VK_ENTER) {
             
-            if (!loaded) {
-                loadUser();
-                loaded = true;
-            }
-            
             String commandAll = CommandType.getText();
             print("> "+commandAll);
             CommandType.setText("");
             
             String[] command = commandAll.split(" ");
             
-            if(command[0].equalsIgnoreCase("mail")) {
-                mail();
-            } else if(command[0].startsWith("connect")) {
-                connect(command[1]);
-            } else if(command[0].equalsIgnoreCase("scan")) {
-                print(currentTarget.printScan());
-            } else if(command[0].equalsIgnoreCase("list")) {
-                for (int i = 0; i < computers.size(); i++) {
-                    Computer get = computers.get(i);
-                    System.out.println(get.print());
-                }
-            } else if(command[0].equalsIgnoreCase("auth")) {
-                AuthWindow aw = new AuthWindow();
-                aw.setVisible(true);
-                currentTarget.aw = aw;
-            } else if(command[0].startsWith("hack")) {
-                hack(command[1]);
-            } else if(command[0].equalsIgnoreCase("save")) {
-                dc();
-                user.save();
-                Base.serData("CompsDataBase.comps", computers);
-            } else if(command[0].equalsIgnoreCase("load")) {
+            if(loaded) {
+                scanCommand(command);
+            } else if (command[0].equalsIgnoreCase("init")) {
                 loadUser();
-            } else if(command[0].equalsIgnoreCase("exit")) {
-                dc();
-                user.save();
-                Base.serData("CompsDataBase.comps", computers);
-                exit(0);
-            } else if(command[0].equalsIgnoreCase("stats")) {
-                print(user.print());
-            } else if(command[0].equalsIgnoreCase("teos")) {
-                //test command
-            } else if(command[0].equalsIgnoreCase("missions")) {
-                missions();
-            } else if(command[0].equalsIgnoreCase("mission")) {
-                genMission();
-            } else if(command[0].equalsIgnoreCase("files")) {
-                for (int i = 0; i < currentTarget.sizeOfListFiles(); i++) {
-                    print(currentTarget.getFile(i).toString());
-                }
-            } else if(command[0].equalsIgnoreCase("logs")) {
-                if (!currentTarget.listOfLog.isEmpty()) {
-                    currentTarget.listOfLog.entrySet().stream().forEach((en) -> {
-                        Integer key = en.getKey();
-                        Log value = en.getValue();
-                        print("@" + key + ": " + value.message);
-                    });
-                } else {
-                    print("There are no logs");
-                }
-            } else if(command[0].equalsIgnoreCase("reset")) {
-                user = new User("Dmig", "*******", 0, 0);
-                try {
-                    FileWorker.delete("hAcKsave.hsf");
-                } catch (FileNotFoundException ex) {
-                    System.err.println(ex + " for reset save file");
-                }
-                print("Your save file successfully reseted");
-            } else if(command[0].equalsIgnoreCase("rm")) {
-                rm(command[1]);
-            } else if(command[0].equalsIgnoreCase("dc")) {
-                dc();
-            } else if(command[0].startsWith("com")) {
-                try {
-                    if (user.searchForId(Base.stringToInt(command[1])).isComplited()) { //TODO (Null)
-                        //award
-                        print("You successfully completed a contract " + command[1]);
-                        user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
-                    }
-                } catch (NumberFormatException ex) {
-                    print("Oh, please enter a number");
-                }
-            } else if(command[0].equalsIgnoreCase("virus")) {
-                if(currentTarget.hacked) {
-                    Thread tmpThread = new Thread(() -> {
-                        try {
-                            print("Start virusing device...\n Copy from disk...");
-                            Thread.sleep(1700);
-                            print("Complited\nUpload to target...");
-                            Thread.sleep(3000);
-                            print("Complited\nLaunching...");
-                            Thread.sleep(2100);
-                            print("Complited. Computer successfully virused");
-                            currentTarget.virused = true;
-                        } catch (InterruptedException ex) {
-                            System.err.println(ex);
-                            System.exit(1);
-                        }
-                    });
-                    tmpThread.start();
-                } else {
-                    print("You need admin access");
-                }
+                loaded = true;
             } else {
-                print("Invalid command");
+                print("You need init the device");
             }
             
         }
     }//GEN-LAST:event_CommandTypeKeyPressed
+
+    private void scanCommand(String[] command) {
+        if(command[0].equalsIgnoreCase("mail")) {
+            mail();
+        } else if(command[0].startsWith("connect")) {
+            connect(command[1]);
+        } else if(command[0].equalsIgnoreCase("scan")) {
+            print(currentTarget.printScan());
+        } else if(command[0].equalsIgnoreCase("list")) {
+            for (int i = 0; i < computers.size(); i++) {
+                Computer get = computers.get(i);
+                System.out.println(get.print());
+            }
+        } else if(command[0].equalsIgnoreCase("auth")) {
+            AuthWindow aw = new AuthWindow();
+            aw.setVisible(true);
+            currentTarget.aw = aw;
+        } else if(command[0].startsWith("hack")) {
+            hack(command[1]);
+        } else if(command[0].equalsIgnoreCase("save")) {
+            dc();
+            user.save();
+            Base.serData("CompsDataBase.comps", computers);
+        } else if(command[0].equalsIgnoreCase("load")) {
+            loadUser();
+        } else if(command[0].equalsIgnoreCase("exit")) {
+            dc();
+            user.save();
+            Base.serData("CompsDataBase.comps", computers);
+            exit(0);
+        } else if(command[0].equalsIgnoreCase("stats")) {
+            print(user.print());
+        } else if(command[0].equalsIgnoreCase("teos")) {
+            //test command
+        } else if(command[0].equalsIgnoreCase("missions")) {
+            missions();
+        } else if(command[0].equalsIgnoreCase("mission")) {
+            genMission();
+        } else if(command[0].equalsIgnoreCase("files")) {
+            for (int i = 0; i < currentTarget.sizeOfListFiles(); i++) {
+                print(currentTarget.getFile(i).toString());
+            }
+        } else if(command[0].equalsIgnoreCase("logs")) {
+            if (!currentTarget.listOfLog.isEmpty()) {
+                currentTarget.listOfLog.entrySet().stream().forEach((en) -> {
+                    Integer key = en.getKey();
+                    Log value = en.getValue();
+                    print("@" + key + ": " + value.message);
+                });
+            } else {
+                print("There are no logs");
+            }
+        } else if(command[0].equalsIgnoreCase("reset")) {
+            user = new User("Dmig", "*******", 0, 0);
+            try {
+                FileWorker.delete("hAcKsave.hsf");
+            } catch (FileNotFoundException ex) {
+                System.err.println(ex + " for reset save file");
+            }
+            print("Your save file successfully reseted");
+        } else if(command[0].equalsIgnoreCase("rm")) {
+            rm(command[1]);
+        } else if(command[0].equalsIgnoreCase("dc")) {
+            dc();
+        } else if(command[0].startsWith("com")) {
+            try {
+                if (user.searchForId(Base.stringToInt(command[1])).isComplited()) { //TODO (Null)
+                    //award
+                    print("You successfully completed a contract " + command[1]);
+                    user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
+                }
+            } catch (NumberFormatException ex) {
+                print("Oh, please enter a number");
+            }
+        } else if(command[0].equalsIgnoreCase("virus")) {
+            if(currentTarget.hacked) {
+                Thread tmpThread = new Thread(() -> {
+                    try {
+                        print("Start virusing device...\n Copy from disk...");
+                        Thread.sleep(1700);
+                        print("Complited\nUpload to target...");
+                        Thread.sleep(3000);
+                        print("Complited\nLaunching...");
+                        Thread.sleep(2100);
+                        print("Complited. Computer successfully virused");
+                        currentTarget.virused = true;
+                    } catch (InterruptedException ex) {
+                        System.err.println(ex);
+                        System.exit(1);
+                    }
+                });
+                tmpThread.start();
+            } else {
+                print("You need admin access");
+            }
+        } else {
+            print("Invalid command");
+        }
+    }
 
     public void dc() {
         currentTarget = null;
