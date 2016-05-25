@@ -29,8 +29,10 @@ public class LabelHack extends javax.swing.JFrame {
     public boolean start(TypeOfChars type, Difficulty difficulty, int allTimeInSeconds) {
         
         double temp = allTimeInSeconds/8;
-        String tempStr = Double.toString(Math.floor(temp)) + "";
-        int secondsForElement = Integer.parseInt(tempStr);
+        
+        Double d = Math.floor(temp);
+        
+        int secondsForElement = d.intValue();
         int extraTime = allTimeInSeconds%8;
         int timesInSeconds = 0;
         
