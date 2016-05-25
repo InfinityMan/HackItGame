@@ -15,8 +15,12 @@ import java.io.InputStreamReader;
  *
  * @author Dima
  */
-public class Link {
-    public String[] readRes(String file_name) throws IOException, FileNotFoundException {
+public final class Link {
+    public String[] readResArray(String file_name) throws IOException, FileNotFoundException {
+        return readRes(file_name).split("\n");
+    }
+    
+    public String readRes(String file_name) throws IOException, FileNotFoundException {
         InputStream is = this.getClass().getResourceAsStream(file_name);
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader bf = new BufferedReader(isr);
@@ -24,9 +28,9 @@ public class Link {
         String txtOfFile= "";
         
         while(bf.ready()) {
-            txtOfFile += "\n" + bf.readLine();
+            txtOfFile += bf.readLine() + "\n";
         }
         
-        return txtOfFile.split("\n");
+        return txtOfFile;
     }
 }
