@@ -268,42 +268,24 @@ public final class Computer implements Serializable {
     public void hack(final User user) {
 
         Thread myThready = new Thread(() -> {
-            MiniHacknet mh;
             LabelHack lh;
-            mh = new MiniHacknet();
             lh = new LabelHack();
-            mh.setVisible(true);
             lh.setVisible(true);
             
             aw.setUsername("admin");
+            lh.start(LabelHack.TypeOfChars.ALL, LabelHack.Difficulty.VERY_LOW, exp*2);
+            aw.setPass(lh.key);
             
-            for (int i = exp * 2; i > 0; i--) {
-                try {
-                    String a = read("words.txt").split(" ")[i];
-                    mh.print(a);
-                    aw.setUsername("admin");
-                    aw.setPass(a);
-                } catch (FileNotFoundException ex) {
-                    exit(1);
-                }
-                try {
-                    sleep(500);
-                } catch (InterruptedException ex) {
-                    exit(1);
-                }
-            }
-            mh.print("Complete hack of computer");
             hacked = true;
             user.exp += exp;
-            mh.print("You get " + exp + " exp, and your level now : " + levelText(user.exp));
             
             try {
                 sleep(3_000);
             } catch (InterruptedException ex) {
                 exit(1);
             }
-            mh.dispose();
             aw.dispose();
+            lh.dispose();
         });
         myThready.start();
         

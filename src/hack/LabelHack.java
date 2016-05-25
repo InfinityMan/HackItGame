@@ -19,6 +19,8 @@ public class LabelHack extends javax.swing.JFrame {
     
     boolean[] elementsCompleted = {false,false,false,false,false,false,false,false};
     
+    public String key = "";
+    
     public enum TypeOfChars {ONLY_SMALL,ONLY_BIG,ONLY_NUMBERS,SMALL_AND_NUMBERS,BIG_AND_NUMBERS,BIG_AND_SMALL,ALL};
     public enum Difficulty {VERY_LOW,LOW,NORMAL,HIGH,VERY_HIGH};
 
@@ -26,7 +28,9 @@ public class LabelHack extends javax.swing.JFrame {
         initComponents();
     }
     
-    public boolean start(TypeOfChars type, Difficulty difficulty, int allTimeInSeconds) {
+    public void start(TypeOfChars type, Difficulty difficulty, int allTimeInSeconds) {
+        
+        
         
         double temp = allTimeInSeconds/8;
         
@@ -64,7 +68,6 @@ public class LabelHack extends javax.swing.JFrame {
         jetElement(secondsForElement, timesInSeconds, type ,7);
         
         
-        return false;
     }
     
     private void jetElement(int seconds,int timesInSecond, TypeOfChars typeOfChars, int number) {
@@ -132,20 +135,30 @@ public class LabelHack extends javax.swing.JFrame {
         
         int iterations = 0;
         
-        
-        
-        for (int i = 0; i < seconds; i++) {
-            for (int j = 0; j < timesInSecond; j++) {
-                label.setText(aviaStrings.get(iterations));
-                try {
-                    Thread.sleep(waitInSeconds);
-                } catch (InterruptedException ex) {
-                    System.err.println("InterCOR");
-                    System.exit(1);
-                }
-                
-            }
+        try {
+            Thread.sleep(seconds*1000);
+            String charTemp = aviaStrings.get(Base.randomNumber(0, aviaStrings.size()));
+            label.setText(charTemp);
+            key += charTemp;
+            
+//        for (int i = 0; i < seconds; i++) {
+//            for (int j = 0; j < timesInSecond; j++) {
+//                label.setText(aviaStrings.get(iterations));
+//                try {
+//                    Thread.sleep(waitInSeconds);
+//                } catch (InterruptedException ex) {
+//                    System.err.println("InterCOR");
+//                    System.exit(1);
+//                }
+//                
+//            }
+//        }
+        } catch (InterruptedException ex) {
+            System.err.println("InterCOR");
+            System.exit(1);
         }
+
+        
     }
     
     private void addNumbers(ArrayList<String> start) {
@@ -185,49 +198,49 @@ public class LabelHack extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("C");
+        jLabel1.setText("?");
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("C");
+        jLabel2.setText("?");
         jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("C");
+        jLabel3.setText("?");
         jLabel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("C");
+        jLabel4.setText("?");
         jLabel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("C");
+        jLabel5.setText("?");
         jLabel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("C");
+        jLabel6.setText("?");
         jLabel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("C");
+        jLabel7.setText("?");
         jLabel7.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("C");
+        jLabel8.setText("?");
         jLabel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
