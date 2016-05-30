@@ -5,8 +5,6 @@
  */
 package hack;
 
-import static hack.User.levelText;
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import static java.lang.System.exit;
 import java.util.ArrayList;
@@ -14,13 +12,6 @@ import java.util.logging.Logger;
 import ru.epiclib.base.Base;
 import java.util.HashMap;
 import static java.lang.Thread.sleep;
-import static ru.epiclib.base.FileWorker.read;
-import static java.lang.Thread.sleep;
-import static ru.epiclib.base.FileWorker.read;
-import static java.lang.Thread.sleep;
-import static ru.epiclib.base.FileWorker.read;
-import static java.lang.Thread.sleep;
-import static ru.epiclib.base.FileWorker.read;
 
 
 public final class Computer implements Serializable {
@@ -107,7 +98,7 @@ public final class Computer implements Serializable {
             Protect pro = getProtect(type);
             return pro.open;
         } else {
-            return false;
+            return true;
         }
     }
     

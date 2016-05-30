@@ -10,10 +10,6 @@ import static java.lang.System.exit;
 import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javax.swing.UIManager.getCrossPlatformLookAndFeelClassName;
-import static javax.swing.UIManager.getSystemLookAndFeelClassName;
-import static javax.swing.UIManager.setLookAndFeel;
-import javax.swing.UnsupportedLookAndFeelException;
 import ru.epiclib.base.Base;
 import ru.epiclib.gui.Util;
 
