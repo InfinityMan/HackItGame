@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import static java.lang.System.exit;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Logger;
 import static ru.epiclib.base.Base.deserData;
 import static ru.epiclib.base.Base.serData;
@@ -26,25 +27,127 @@ public class User implements Serializable {
     
     public ArrayList<Software> soft;
     public ArrayList<String> files;
-    public int powerCPU = Computer.CPUS_POWER[1];
+    private int powerCPU = Computer.CPUS_POWER[1];
     
-    public String ip;
+    private String ip;
     
     //end
     
     //user txts:
     
-    public String userPass = "AU0001";
-    public String nick = "-167458";
+    private String userPass = "AU0001";
+    private String nick = "-167458";
     
     //end
     
-    public int exp;
+    private int exp;
     
-    public int gettedContractsNumber = 0;
+    private int gettedContractsNumber = 0;
     
     public ArrayList<Contract> availableContracts;
     public ArrayList<Contract> currentContracts;
+
+    /**
+     * @return the powerCPU
+     */
+    public int getPowerCPU() {
+        return powerCPU;
+    }
+
+    /**
+     * @param powerCPU the powerCPU to set
+     */
+    public void setPowerCPU(int powerCPU) {
+        boolean canBeSetted = false;
+        
+        for (int powerCPUtemp : Computer.CPUS_POWER) {
+            if(powerCPU == powerCPUtemp) canBeSetted = true; break;
+        }
+        
+        if (canBeSetted) {
+            this.powerCPU = powerCPU;
+        }
+    }
+
+    /**
+     * @return the ip
+     */
+    public String getIp() {
+        return ip;
+    }
+
+    /**
+     * @param ip the ip to set
+     */
+    public void setIp(String ip) {
+        if (ip.length() == 5) {
+            this.ip = ip;
+        }
+    }
+
+    /**
+     * @return the userPass
+     */
+    public String getUserPass() {
+        return userPass;
+    }
+
+    /**
+     * @param userPass the userPass to set
+     */
+    public void setUserPass(String userPass) {
+        if (userPass != null || !userPass.isEmpty()) {
+            this.userPass = userPass;
+        }
+    }
+
+    /**
+     * @return the nick
+     */
+    public String getNick() {
+        return nick;
+    }
+
+    /**
+     * @param nick the nick to set
+     */
+    public void setNick(String nick) {
+        if (userPass != null || !userPass.isEmpty()) {
+            this.nick = nick;
+        }
+    }
+
+    /**
+     * @return the exp
+     */
+    public int getExp() {
+        return exp;
+    }
+
+    /**
+     * @param exp the exp to set
+     */
+    public void setExp(int exp) {
+        if(exp >= 0) {
+            this.exp = exp;
+        }
+    }
+
+    /**
+     * @return the gettedContractsNumber
+     */
+    public int getGettedContractsNumber() {
+        return gettedContractsNumber;
+    }
+
+    /**
+     * @param gettedContractsNumber the gettedContractsNumber to set
+     */
+    public void setGettedContractsNumber(int gettedContractsNumber) {
+        if (gettedContractsNumber >= 0) {
+            this.gettedContractsNumber = gettedContractsNumber;
+        }
+    }
     
     public User(String nick,String userPass, int exp, int getCon) {
         this.nick = nick;
@@ -62,14 +165,28 @@ public class User implements Serializable {
         User loadedUser;
 
         loadedUser = (User) deserData("hAcKsave.hsf");
-        hacknet.print("Save file are finded : " + loadedUser.nick);
-        hacknet.print("Save loaded: " + loadedUser.nick);
+        hacknet.print("Save file are finded : " + loadedUser.getNick());
+        hacknet.print("Save loaded: " + loadedUser.getNick());
 
         return loadedUser;
     }
     
     public void save() {
         serData("hAcKsave.hsf", this);
+    }
+    
+    public void rmCurrentContract(int id) {
+        Iterator it = currentContracts.iterator();
+        while (it.hasNext()) {
+            Contract cont = (Contract) it.next();
+            if(cont.id == id) {
+                it.remove();
+            }
+        }
+    }
+    
+    public void rmCurrentContract(Contract con) {
+        rmCurrentContract(con.id);
     }
     
     public Contract searchForId(int id) {
@@ -151,10 +268,10 @@ public class User implements Serializable {
      * @return
      */
     public String print() {
-        return "Nickname: "+nick+"\n"
-                + "Password: "+userPass+"\n"
-                + "Level: "+levelText(exp)+", to next level: "+toNextLevelExp(exp)+"\n"
-                + "Contracts gets: "+gettedContractsNumber;
+        return "Nickname: "+getNick()+"\n"
+                + "Password: "+getUserPass()+"\n"
+                + "Level: "+levelText(getExp())+", to next level: "+toNextLevelExp(getExp())+"\n"
+                + "Contracts gets: "+getGettedContractsNumber();
     }
     
     public String printCurrentContracts() {
