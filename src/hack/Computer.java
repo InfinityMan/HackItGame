@@ -102,6 +102,15 @@ public final class Computer implements Serializable {
         return false;
     }
     
+    public boolean protectHacked(Protect.Type type) {
+        if(hasProtect(type)) {
+            Protect pro = getProtect(type);
+            return pro.open;
+        } else {
+            return false;
+        }
+    }
+    
     public void setDeletedToLog(int keyOfLog) {
         listOfLog.get(keyOfLog).setDeleted(true);
     }
