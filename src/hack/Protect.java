@@ -8,11 +8,14 @@ package hack;
 import java.io.Serializable;
 import static java.lang.System.exit;
 import static java.lang.Thread.sleep;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javax.swing.UIManager.getCrossPlatformLookAndFeelClassName;
 import static javax.swing.UIManager.getSystemLookAndFeelClassName;
 import static javax.swing.UIManager.setLookAndFeel;
 import javax.swing.UnsupportedLookAndFeelException;
 import ru.epiclib.base.Base;
+import ru.epiclib.gui.Util;
 
 /**
  *
@@ -28,7 +31,7 @@ public class Protect implements Serializable {
 
     transient public Hacknet hacknet;
     
-    public boolean open = false;
+    public boolean open = false; //or "hacked"
     
     public enum Type {ALPHA,ANTIHACK,ELLO,FIREWALL,PROTE,PROXY,SPRO,ZEUS};
     public Type type;
@@ -80,6 +83,7 @@ public class Protect implements Serializable {
                 needSeconds = 180;
                 break;
             default :
+                gateway = false;
                 needSeconds = 0;
         }
         
@@ -88,27 +92,12 @@ public class Protect implements Serializable {
     }
     
     public void hackThis() {
+        
         try {
-            // Set System L&F
-            setLookAndFeel(getSystemLookAndFeelClassName());
-        } catch (UnsupportedLookAndFeelException e) {
-            try {
-                // Set cross-platform Java L&F (also called "Metal")
-                setLookAndFeel(getCrossPlatformLookAndFeelClassName());
-            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                // handle exception
-            }
-            // handle exception
-            // handle exception
-            // handle exception
-            
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            // handle exception
+            Util.setStyle();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Protect.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // handle exception
-        // handle exception
-        
-        
 
         Thread myThready = new Thread( () -> {
             MiniHacknet mh;
