@@ -9,17 +9,24 @@ import static hack.User.load;
 import static java.awt.EventQueue.invokeLater;
 import java.awt.HeadlessException;
 import static java.awt.event.KeyEvent.VK_ENTER;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import static java.lang.System.exit;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
 import ru.epiclib.base.FileWorker;
 import ru.epiclib.gui.Util;
+import ru.epiclib.logging.Logging;
 
 /**
  *
@@ -36,6 +43,7 @@ public final class Hacknet extends javax.swing.JFrame {
     public Computer currentTarget;
     
     public boolean loaded = false;
+    public boolean debug = false;
     
     /**
      *
@@ -186,15 +194,57 @@ public final class Hacknet extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadUser() {
+        LOG.addHandler(new Handler() {
+            
+            PrintWriter out;
+            String str;
+            boolean firstWrite = true;
+            {
+                File file = new File("log.txt").getAbsoluteFile();
+                
+                
+                try {
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+                    str = FileWorker.read(file);
+                    this.out = new PrintWriter(file);
+                } catch (IOException ex) {}
+            }
+            
+            @Override
+            public void publish(LogRecord record) {
+                if(firstWrite) {
+                    out.println(str);
+                    firstWrite = !firstWrite;
+                }
+                out.println(Logging.getMessageFromRecord(record));
+            }
+
+            @Override
+            public void flush() {
+                out.flush();
+            }
+
+            @Override
+            public void close() throws SecurityException {
+                out.close();
+            }
+        });
         print("Hello. This is only developer verison : "+GAME_VERSION);
+        LOG.log(Level.INFO, "This is only developer verison : "+GAME_VERSION);
         try {
             user = load(this);
+            LOG.log(Level.INFO, "User successfully loaded");
         } catch (IOException ex) {
             //user = new User("Dmig", "*******", 180, 17);
             print("Save files are not finded : Register");
             registerUser();
-            System.err.println(ex);
+            print("User successfully registered");
+            LOG.log(Level.WARNING, "IOException of load : "+ex.getMessage());
         }
+        loaded = true;
+        LOG.log(Level.INFO, "Hacknet inited");
     }
 
     private void registerUser() throws HeadlessException {
@@ -210,6 +260,7 @@ public final class Hacknet extends javax.swing.JFrame {
         }
         pass = tmp2;
         user = new User(name, pass, 0, 0);
+        LOG.log(Level.INFO, "User successfully registered with name \""+name+"\" and pass \""+pass+"\"");
     }
     
     private void CommandTypeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CommandTypeKeyPressed
@@ -217,6 +268,7 @@ public final class Hacknet extends javax.swing.JFrame {
             
             String commandAll = CommandType.getText();
             print("> "+commandAll);
+            LOG.log(Level.INFO, "User command > " + commandAll);
             CommandType.setText("");
             
             String[] command = commandAll.split(" ");
@@ -225,7 +277,6 @@ public final class Hacknet extends javax.swing.JFrame {
                 scanCommand(command);
             } else if (command[0].equalsIgnoreCase("init")) {
                 loadUser();
-                loaded = true;
             } else {
                 print("You need init the device");
             }
@@ -237,8 +288,10 @@ public final class Hacknet extends javax.swing.JFrame {
         if(command[0].equalsIgnoreCase("mail")) {
             mail();
         } else if(command[0].startsWith("connect")) {
+            LOG.log(Level.INFO, "User try connect to "+command[1]);
             connect(command[1]);
         } else if(command[0].equalsIgnoreCase("scan")) {
+            LOG.log(Level.INFO, "User scan the computer");
             print(currentTarget.printScan());
         } else if(command[0].equalsIgnoreCase("list")) {
             for (int i = 0; i < computers.size(); i++) {
@@ -250,19 +303,23 @@ public final class Hacknet extends javax.swing.JFrame {
             aw.setVisible(true);
             currentTarget.aw = aw;
         } else if(command[0].startsWith("hack")) {
+            LOG.log(Level.INFO, "User want hack "+command[1]);
             hack(command[1]);
         } else if(command[0].equalsIgnoreCase("save")) {
+            LOG.log(Level.INFO, "User save the game");
             dc();
             user.save();
             Base.serData("CompsDataBase.comps", computers);
         } else if(command[0].equalsIgnoreCase("load")) {
             loadUser();
         } else if(command[0].equalsIgnoreCase("exit")) {
+            LOG.log(Level.INFO, "User exit from game");
             dc();
             user.save();
             Base.serData("CompsDataBase.comps", computers);
             exit(0);
         } else if(command[0].equalsIgnoreCase("stats")) {
+            LOG.log(Level.INFO, "User want know his stats");
             print(user.print());
         } else if(command[0].equalsIgnoreCase("teos")) {
             //test command
@@ -272,7 +329,7 @@ public final class Hacknet extends javax.swing.JFrame {
             genMission();
         } else if(command[0].equalsIgnoreCase("files")) {
             for (int i = 0; i < currentTarget.sizeOfListFiles(); i++) {
-                print(currentTarget.getFile(i).toString());
+                print(currentTarget.getFile(i));
             }
         } else if(command[0].equalsIgnoreCase("logs")) {
             if (!currentTarget.listOfLog.isEmpty()) {
