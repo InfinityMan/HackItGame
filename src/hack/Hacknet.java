@@ -28,6 +28,7 @@ import static javax.swing.UIManager.setLookAndFeel;
 import static javax.swing.UIManager.setLookAndFeel;
 import static javax.swing.UIManager.setLookAndFeel;
 import ru.epiclib.base.FileWorker;
+import ru.epiclib.gui.Util;
 
 /**
  *
@@ -73,24 +74,10 @@ public final class Hacknet extends javax.swing.JFrame {
     public static void init() {
 
         try {
-            // Set System L&F
-            setLookAndFeel(getSystemLookAndFeelClassName());
-        } catch (UnsupportedLookAndFeelException e) {
-            try {
-                // Set cross-platform Java L&F (also called "Metal")
-                setLookAndFeel(getCrossPlatformLookAndFeelClassName());
-            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                // handle exception
-            }
-            // handle exception
-            // handle exception
-            // handle exception
-            
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            // handle exception
+            Util.setStyle();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Hacknet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // handle exception
-        // handle exception
 
         invokeLater(() -> {
             new Hacknet().setVisible(true);
@@ -343,8 +330,6 @@ public final class Hacknet extends javax.swing.JFrame {
             } else {
                 print("You need admin access");
             }
-        } else if(command[0].equalsIgnoreCase("AHScanner.exe")) {
-            print(currentTarget.hasProtect(Protect.Type.ANTIHACK));
         } else {
             print("Invalid command");
         }
@@ -362,6 +347,16 @@ public final class Hacknet extends javax.swing.JFrame {
 
     public void dc() {
         currentTarget = null;
+    }
+    
+    private boolean scanForAH() { //SCAN FOR ANTIHACK IN COMPUTER (ADD GUI)
+        boolean have = currentTarget.hasProtect(Protect.Type.ANTIHACK);
+        if(have) {
+            print("AntiHack finded");
+        } else {
+            print("AntiHack no finded");
+        }
+        return have;
     }
     
     public void rm(String file) {
@@ -418,6 +413,26 @@ public final class Hacknet extends javax.swing.JFrame {
             case "Proxy":
                 hack(Protect.Type.PROXY);
                 break;
+            case "Firewall":
+                hack(Protect.Type.FIREWALL);
+                break;
+            case "Alpha":
+                hack(Protect.Type.ALPHA);
+                break;
+            case "Prote":
+                hack(Protect.Type.PROTE);
+                break;
+            case "Zeus":
+                hack(Protect.Type.ZEUS);
+                break;
+            case "AntiHack":
+                if(scanForAH()) {
+                    hack(Protect.Type.ANTIHACK);
+                }
+                break;
+            case "Ello":
+                hack(Protect.Type.ELLO);
+                break;
             case "pass":
                 if (currentTarget.userCanHackThis()) {
                     currentTarget.hack(user);
@@ -430,8 +445,40 @@ public final class Hacknet extends javax.swing.JFrame {
         }
     }
     
+    
+    
+    private boolean canHackProtect(Protect.Type type) {
+        
+        if(!new Protect(type).gateway) {
+            return true;
+        }
+        
+        switch(type) {
+            case PROXY :
+                if(currentTarget.protectHacked(Protect.Type.PROTE)) return true;
+            case FIREWALL :
+                if(currentTarget.protectHacked(Protect.Type.PROXY)) return true;
+            case PROTE :
+                if(currentTarget.protectHacked(Protect.Type.ZEUS)) return true;
+            case ZEUS :
+                return true;
+            case ANTIHACK :
+                return true;
+            default :
+                return true;
+        }
+    }
+    
     private void hack(Protect.Type type) {
-        currentTarget.getProtect(type).hackThis();
+        if (canHackProtect(type)) {
+            if(currentTarget.hasProtect(type)) {
+                currentTarget.getProtect(type).hackThis();
+            } else {
+                print("Protect not finded");
+            }
+        } else {
+            print("You can't hack this");
+        }
     }
     
     /**
