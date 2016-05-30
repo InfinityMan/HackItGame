@@ -279,7 +279,7 @@ public final class Computer implements Serializable {
             aw.setPass(lh.key);
             
             hacked = true;
-            user.exp += exp;
+            user.setExp(user.getExp() + exp);
             
             try {
                 sleep(3_000);

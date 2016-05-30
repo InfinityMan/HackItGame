@@ -368,7 +368,7 @@ public final class Hacknet extends javax.swing.JFrame {
         if(currentTarget != null) {
             if(currentTarget.hacked) {
                 if(currentTarget.hasFile(file)) {
-                    if(currentTarget.rmFile(file, user.ip)) {
+                    if(currentTarget.rmFile(file, user.getIp())) {
                         print("File "+file+" deleted");
                     } else {
                         print("Super error");
@@ -403,7 +403,7 @@ public final class Hacknet extends javax.swing.JFrame {
         Contract con = new Contract(Contract.Type.DESTROY, user);
         print(con.id+", "+con.target.ip+", "+con.missionShort);
         user.currentContracts.add(con); //EEEEEEEEEEEEEEEEEEEEE
-        user.gettedContractsNumber++;
+        user.setGettedContractsNumber(user.getGettedContractsNumber() + 1);
     }
     
     /**

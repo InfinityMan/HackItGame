@@ -13,7 +13,7 @@
             <url>src/hack/Hacknet.java</url>
             <bookmark id="2">
                 <name/>
-                <line>326</line>
+                <line>237</line>
                 <key/>
             </bookmark>
         </file>
@@ -29,7 +29,7 @@
             <url>src/hack/Computer.java</url>
             <bookmark id="5">
                 <name/>
-                <line>298</line>
+                <line>282</line>
                 <key/>
             </bookmark>
         </file>
@@ -37,6 +37,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Dima/Hack/src/hack/Software.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/AdminWindow.java</file>
             <file>file:/C:/Dima/Hack/src/hack/Computer.java</file>
             <file>file:/C:/Dima/Hack/src/hack/User.java</file>
             <file>file:/C:/Dima/Hack/src/hack/MiniHacknet.java</file>

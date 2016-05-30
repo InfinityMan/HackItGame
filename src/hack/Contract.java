@@ -18,7 +18,7 @@ import ru.epiclib.base.FileWorker;
  *
  * @author 1234
  */
-public class Contract implements Serializable {
+public final class Contract implements Serializable {
 
     public Computer target;
 
@@ -65,14 +65,14 @@ public class Contract implements Serializable {
         missionFull = mission[0];
         missionShort = mission[Base.randomNumber(1, mission.length)];
         
-        id = user.gettedContractsNumber;
+        id = user.getGettedContractsNumber();
         
         int typeOfTarget = 0;
-        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[1]) typeOfTarget = 1;
-        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[2]) typeOfTarget = 2;
-        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[3]) typeOfTarget = 3;
-        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[4]) typeOfTarget = 4;
-        if(User.levelNum(user.exp) >= Computer.LVL_TO_COMP[5]) typeOfTarget = 5;
+        if(User.levelNum(user.getExp()) >= Computer.LVL_TO_COMP[1]) typeOfTarget = 1;
+        if(User.levelNum(user.getExp()) >= Computer.LVL_TO_COMP[2]) typeOfTarget = 2;
+        if(User.levelNum(user.getExp()) >= Computer.LVL_TO_COMP[3]) typeOfTarget = 3;
+        if(User.levelNum(user.getExp()) >= Computer.LVL_TO_COMP[4]) typeOfTarget = 4;
+        if(User.levelNum(user.getExp()) >= Computer.LVL_TO_COMP[5]) typeOfTarget = 5;
         
         ArrayList<Computer> computers = new ArrayList<>();
         
@@ -101,7 +101,7 @@ public class Contract implements Serializable {
         
         if(type == Type.DESTROY || type == Type.COPY) {
             targetFile = target.getFile(Base.randomNumber(0, target.sizeOfListFiles()-1));
-            missionFull += "\n\n"+targetFile.toString();
+            missionFull += "\n\n"+targetFile;
         }
         
     }

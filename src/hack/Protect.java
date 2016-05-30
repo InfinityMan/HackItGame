@@ -127,7 +127,7 @@ public class Protect implements Serializable {
                 case PROTE:
                     break;
                 case PROXY:
-                    for (int i = needPower; i > 0; i = i - hacknet.user.powerCPU * 2) {
+                    for (int i = needPower; i > 0; i = i - hacknet.user.getPowerCPU() * 2) {
                         mh.print(Base.randomCombineString(16));
                         try {
                             sleep(500);
@@ -137,7 +137,7 @@ public class Protect implements Serializable {
                     }
                     break;
                 case SPRO:
-                    for (int i = needPower; i > 0; i = i - hacknet.user.powerCPU) {
+                    for (int i = needPower; i > 0; i = i - hacknet.user.getPowerCPU()) {
                         mh.print(Base.randomBinary(16));
                         try {
                             sleep(250);
