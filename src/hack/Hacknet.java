@@ -324,19 +324,37 @@ public final class Hacknet extends javax.swing.JFrame {
             dc();
         } else if(command[0].startsWith("com")) {
             try {
-                if (user.searchForId(Base.stringToInt(command[1])).isComplited()) { 
-                    Contract completedCon = user.searchForId(Base.stringToInt(command[1]));
-                    print("You successfully completed a contract #" + command[1] + ", your award:\n"
-                            + " Contract task difficulty: "+ completedCon.getPriceOfContract()[0] + "\n"
-                            + " Computer hack difficulty: "+ completedCon.getPriceOfContract()[1]);
-                    double allMoney = completedCon.getPriceOfContract()[0] + completedCon.getPriceOfContract()[1];
-                    user.setMoney(user.getMoney()+ allMoney);
-                    user.currentContracts.remove(completedCon);
+                boolean awarded = false;
+                int userNumber = Base.stringToInt(command[1]);
+                int[] currentContractsIds = new int[user.currentContracts.size()];
+                for (int i = 0; i < user.currentContracts.size(); i++) {
+                    Contract get = user.currentContracts.get(i);
+                    currentContractsIds[i] = get.id;
                 }
+                for (int i = 0; i < currentContractsIds.length; i++) {
+                    int currentContractId = currentContractsIds[i];
+                    if (currentContractId == userNumber) {
+                        if (user.searchForId(userNumber).isComplited()) {
+                            Contract completedCon = user.searchForId(Base.stringToInt(command[1]));
+                            print("You successfully completed a contract #" + command[1] + ", your award:\n"
+                                    + " Contract task difficulty: " + completedCon.getPriceOfContract()[0] + "\n"
+                                    + " Computer hack difficulty: " + completedCon.getPriceOfContract()[1]);
+                            double allMoney = completedCon.getPriceOfContract()[0] + completedCon.getPriceOfContract()[1];
+                            user.setMoney(user.getMoney() + allMoney);
+                            user.currentContracts.remove(completedCon);
+                            awarded = true;
+                        } else {
+                            print("You dont complete the mission");
+                        }
+                        break;
+                    }
+                }
+                if(!awarded) print("Invalid number, check the missions page");
             } catch (NumberFormatException ex) {
                 print("Oh, please enter a number");
             }
-        } else if(command[0].equalsIgnoreCase("virus")) {
+
+        } else if (command[0].equalsIgnoreCase("virus")) {
             if(currentTarget.hacked) {
                 Thread tmpThread = new Thread(() -> {
                     try {
