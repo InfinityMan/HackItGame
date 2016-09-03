@@ -390,14 +390,18 @@ public final class Hacknet extends javax.swing.JFrame {
     public void rm(String file) {
         if(currentTarget != null) {
             if(currentTarget.hacked) {
-                if(currentTarget.hasFile(file)) {
-                    if(currentTarget.rmFile(file, user.getIp())) {
-                        print("File "+file+" deleted");
+                if (!file.equals("*")) {
+                    if (currentTarget.hasFile(file)) {
+                        if (currentTarget.rmFile(file, user.getIp())) {
+                            print("File " + file + " deleted");
+                        } else {
+                            print("Super error");
+                        }
                     } else {
-                        print("Super error");
+                        print("Oh, file is not exits");
                     }
                 } else {
-                    print("Oh, file is not exits");
+                    currentTarget.rmAllFiles();
                 }
             } else {
                 print("Computer is not hacked");
@@ -438,9 +442,7 @@ public final class Hacknet extends javax.swing.JFrame {
         
         con.target = findTargetOfConInList(con.target);
         
-        for (int i = 0; i < 3; i++) {
-            con.target.addFile(con.target.genFile());
-        }
+        con.target.updateFileSys();
         
         if(con.type == Contract.Type.DESTROY || con.type == Contract.Type.COPY) {
             for (int i = 0; i < con.target.sizeOfListFiles(); i++) {
