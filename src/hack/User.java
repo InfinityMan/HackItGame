@@ -248,7 +248,7 @@ public class User implements Serializable {
      * @param exp
      * @return
      */
-    public static String levelText(int exp) {
+    public static String levelText(int exp) throws ArrayIndexOutOfBoundsException {
         int level = levelNum(exp);
         String[] nameLevel = {};
         
@@ -267,7 +267,7 @@ public class User implements Serializable {
      *
      * @return
      */
-    public String print() {
+    public String print() throws ArrayIndexOutOfBoundsException {
         return "Nickname: "+getNick()+"\n"
                 + "Password: "+getUserPass()+"\n"
                 + "Level: "+levelText(getExp())+", to next level: "+toNextLevelExp(getExp())+"\n"

@@ -5,8 +5,12 @@
  */
 package hack;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ru.epiclib.base.Base;
+import ru.epiclib.base.FileWorker;
 
 /**
  *
@@ -14,6 +18,13 @@ import ru.epiclib.base.Base;
  */
 public class util {
     public static void main(String[] args) {
+        updateBase();
+    }
+    
+    public static void updateBase() {
+        try {
+            FileWorker.delete("CompsDataBase.comps");
+        } catch (FileNotFoundException ex) {}
         ArrayList<Computer> cmrs = new ArrayList<>();
         cmrs.add(new Computer(4, "Crystal", "Crys"));
         cmrs.add(new Computer(1, "Red", "Red"));
