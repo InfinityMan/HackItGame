@@ -5,7 +5,6 @@
  */
 package hack;
 
-import static java.awt.EventQueue.invokeLater;
 import ru.epiclib.base.Base;
 
 /**

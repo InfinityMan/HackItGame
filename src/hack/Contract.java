@@ -6,7 +6,6 @@
 package hack;
 
 import hack.res.Link;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
-import ru.epiclib.base.FileWorker;
 
 /**
  *
@@ -63,7 +61,7 @@ public final class Contract implements Serializable {
         String allAuthors = "";
         try {
             allMissions = new Link().readRes("Missions.txt");
-            allAuthors = new Link().readRes("names.txt");
+            allAuthors = new Link().readRes("Authors.txt");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "I'm have a problem! Not loaded missions or authors: "+ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
         }

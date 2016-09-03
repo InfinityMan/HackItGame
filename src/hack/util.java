@@ -7,8 +7,6 @@ package hack;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ru.epiclib.base.Base;
 import ru.epiclib.base.FileWorker;
 
