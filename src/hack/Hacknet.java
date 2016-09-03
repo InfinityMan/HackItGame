@@ -295,12 +295,7 @@ public final class Hacknet extends javax.swing.JFrame {
             exit(0);
         } else if(command[0].equalsIgnoreCase("stats")) {
             LOG.log(Level.INFO, "User want know his stats");
-            try {
             print(user.print());
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                LOG.info("No stats");
-                print("No stats");
-            }
         } else if(command[0].equalsIgnoreCase("teos")) {
             //test command
         } else if(command[0].equalsIgnoreCase("missions")) {

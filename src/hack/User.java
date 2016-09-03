@@ -248,15 +248,15 @@ public class User implements Serializable {
      * @param exp
      * @return
      */
-    public static String levelText(int exp) throws ArrayIndexOutOfBoundsException {
+    public static String levelText(int exp) {
         int level = levelNum(exp);
         String[] nameLevel = {};
         
         //{"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""}
         
         try {
-            nameLevel = read("level.txt").split("\n")[1].split(" ");
-        } catch (FileNotFoundException ex) {
+            nameLevel = new Link().readRes("level.txt").split("\n")[1].split(" ");
+        } catch (IOException ex) {
             exit(1);
         }
         return nameLevel[level-1];
@@ -267,7 +267,7 @@ public class User implements Serializable {
      *
      * @return
      */
-    public String print() throws ArrayIndexOutOfBoundsException {
+    public String print() {
         return "Nickname: "+getNick()+"\n"
                 + "Password: "+getUserPass()+"\n"
                 + "Level: "+levelText(getExp())+", to next level: "+toNextLevelExp(getExp())+"\n"
