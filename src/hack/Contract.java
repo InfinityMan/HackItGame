@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
@@ -95,20 +96,20 @@ public final class Contract implements Serializable {
         
         target = lvlComps.get(Base.randomNumber(0, lvlComps.size()));
         
-        for (int i = 0; i < 3; i++) {
-            target.addFile(target.genFile());
-        }
-        
-        if(type == Type.DESTROY || type == Type.COPY) {
-            targetFile = target.getFile(Base.randomNumber(0, target.sizeOfListFiles()-1));
-            missionFull += "\n\n"+targetFile;
-        }
-        
     }
     
     public boolean isComplited(String userIp) {
         if(type == Type.DESTROY) {
-            return target.listOfLog.containsValue(new Log(Log.Type.FILE_DELETED,userIp));
+            boolean ret = false;
+            for (Map.Entry<Integer, Log> a : target.listOfLog.entrySet()) {
+                Integer key = a.getKey();
+                Log value = a.getValue();
+                if(value.equals(new Log(Log.Type.FILE_DELETED,userIp))) {
+                    ret = true;
+                    break;
+                }
+            }
+            return ret;
         } else {
             return false;
         }
