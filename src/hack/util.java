@@ -41,6 +41,14 @@ public class util {
         cmrs.add(new Computer(3, "Steos", "Ste"));
         cmrs.add(new Computer(5, "Goegle", "Gog"));
         cmrs.add(new Computer(0, "Tea", "Tea"));
+        cmrs.add(new Computer(3, "Books", "Bok"));
+        cmrs.add(new Computer(1, "School №463", "S463"));
+        cmrs.add(new Computer(5, "Cybero", "Cbr"));
+        cmrs.add(new Computer(4, "Litera", "Lit"));
+        cmrs.add(new Computer(2, "Panda", "Pnd"));
+        cmrs.add(new Computer(5, "Stim", "Stm"));
+        cmrs.add(new Computer(3, "Deos", "Des"));
+        cmrs.add(new Computer(2, "Kieon", "Kin"));
         Base.serData("CompsDataBase.comps", cmrs);
     }
 }
