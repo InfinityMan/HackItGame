@@ -20,7 +20,7 @@ import static ru.epiclib.base.Base.stringToInt;
 
 public class User implements Serializable {
     
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 4L;
     
     //computer:
     
@@ -34,8 +34,8 @@ public class User implements Serializable {
     
     //user txts:
     
-    private String userPass = "AU0001";
-    private String nick = "-167458";
+    private String userPass = "********";
+    private String nick = "Dmig";
     
     //end
     

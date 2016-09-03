@@ -265,9 +265,10 @@ public final class Hacknet extends javax.swing.JFrame {
             LOG.log(Level.INFO, "User scan the computer");
             print(currentTarget.printScan());
         } else if(command[0].equalsIgnoreCase("list")) {
+            print("List of computers: ");
             for (int i = 0; i < computers.size(); i++) {
                 Computer get = computers.get(i);
-                System.out.println(get.print());
+                print(" " + get.print());
             }
         } else if(command[0].equalsIgnoreCase("auth")) {
             AuthWindow aw = new AuthWindow();
@@ -287,6 +288,8 @@ public final class Hacknet extends javax.swing.JFrame {
             Base.serData("CompsDataBase.comps", computers);
         } else if(command[0].equalsIgnoreCase("load")) {
             loadUser();
+        } else if(command[0].equalsIgnoreCase("admin")) {
+            admin();
         } else if(command[0].equalsIgnoreCase("exit")) {
             LOG.log(Level.INFO, "User exit from game");
             dc();
@@ -378,6 +381,14 @@ public final class Hacknet extends javax.swing.JFrame {
         } else {
             print("Invalid command");
         }
+    }
+    
+    private void admin() {
+        Thread myThready = new Thread( () -> {
+            AdminWindow cl = new AdminWindow(user);
+            cl.setVisible(true);
+        });
+        myThready.start();
     }
 
     private void reset() {

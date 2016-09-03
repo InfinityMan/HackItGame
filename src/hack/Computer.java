@@ -132,11 +132,7 @@ public final class Computer implements Serializable {
                 needOpen--;
             }
         }
-        if (needOpen == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return needOpen == 0;
     }
     
     public String print() {
@@ -226,7 +222,7 @@ public final class Computer implements Serializable {
         files.add("reboot.dll");
         files.add("sys.dll");
         files.add("OS.dll");
-        for (int i = 0; i < Base.randomNumber(3, 7); i++) {
+        for (int i = 0; i < Base.randomNumber(4, 9); i++) {
             addFile(genFile());
         }
     }
@@ -344,10 +340,7 @@ public final class Computer implements Serializable {
             return false;
         }
         final Computer other = (Computer) obj;
-        if (!Objects.equals(this.ip, other.ip)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.ip, other.ip);
     }
 
     

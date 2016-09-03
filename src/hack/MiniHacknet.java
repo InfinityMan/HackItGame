@@ -33,6 +33,7 @@ public class MiniHacknet extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Hacking");
         setFocusable(false);
         setType(java.awt.Window.Type.POPUP);
 

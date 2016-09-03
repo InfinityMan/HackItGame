@@ -192,6 +192,7 @@ public class LabelHack extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Hacking");
         setMinimumSize(new java.awt.Dimension(462, 72));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
