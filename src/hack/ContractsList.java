@@ -146,8 +146,10 @@ public class ContractsList extends javax.swing.JFrame {
     }//GEN-LAST:event_UpdateActionPerformed
 
     private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
-        this.dispose();
-        user.rmCurrentContract(items.get(jComboBox1.getSelectedIndex()));
+        if(!user.currentContracts.isEmpty()) {
+            this.dispose();
+            user.rmCurrentContract(items.get(jComboBox1.getSelectedIndex()));
+        }
     }//GEN-LAST:event_RemoveActionPerformed
 
     
