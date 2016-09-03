@@ -194,43 +194,7 @@ public final class Hacknet extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadUser() {
-        LOG.addHandler(new Handler() {
-            
-            PrintWriter out;
-            String str;
-            boolean firstWrite = true;
-            {
-                File file = new File("log.txt").getAbsoluteFile();
-                
-                
-                try {
-                    if (!file.exists()) {
-                        file.createNewFile();
-                    }
-                    str = FileWorker.read(file);
-                    this.out = new PrintWriter(file);
-                } catch (IOException ex) {}
-            }
-            
-            @Override
-            public void publish(LogRecord record) {
-                if(firstWrite) {
-                    out.println(str);
-                    firstWrite = !firstWrite;
-                }
-                out.println(Logging.getMessageFromRecord(record));
-            }
-
-            @Override
-            public void flush() {
-                out.flush();
-            }
-
-            @Override
-            public void close() throws SecurityException {
-                out.close();
-            }
-        });
+        LOG.addHandler(Logging.stndHandler());
         print("Hello. This is only developer verison : "+GAME_VERSION);
         LOG.log(Level.INFO, "This is only developer verison : "+GAME_VERSION);
         try {
@@ -238,6 +202,13 @@ public final class Hacknet extends javax.swing.JFrame {
             LOG.log(Level.INFO, "User successfully loaded");
         } catch (IOException ex) {
             //user = new User("Dmig", "*******", 180, 17);
+            util.updateBase();
+            try {
+                this.computers = (ArrayList<Computer>) deserData("CompsDataBase.comps");
+            } catch (IOException e) {
+                LOG.info("List of computers is not founded");
+            }
+            
             print("Save files are not finded : Register");
             registerUser();
             print("User successfully registered");
@@ -303,8 +274,12 @@ public final class Hacknet extends javax.swing.JFrame {
             aw.setVisible(true);
             currentTarget.aw = aw;
         } else if(command[0].startsWith("hack")) {
-            LOG.log(Level.INFO, "User want hack "+command[1]);
-            hack(command[1]);
+            if(command.length >= 2) {
+                LOG.log(Level.INFO, "User want hack "+command[1]);
+                hack(command[1]);
+            } else {
+                print("No found subject; type hack [tagret]");
+            }
         } else if(command[0].equalsIgnoreCase("save")) {
             LOG.log(Level.INFO, "User save the game");
             dc();
@@ -320,7 +295,12 @@ public final class Hacknet extends javax.swing.JFrame {
             exit(0);
         } else if(command[0].equalsIgnoreCase("stats")) {
             LOG.log(Level.INFO, "User want know his stats");
+            try {
             print(user.print());
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                LOG.info("No stats");
+                print("No stats");
+            }
         } else if(command[0].equalsIgnoreCase("teos")) {
             //test command
         } else if(command[0].equalsIgnoreCase("missions")) {
@@ -349,7 +329,7 @@ public final class Hacknet extends javax.swing.JFrame {
             dc();
         } else if(command[0].startsWith("com")) {
             try {
-                if (user.searchForId(Base.stringToInt(command[1])).isComplited()) { //TODO (Null)
+                if (user.searchForId(Base.stringToInt(command[1])).isComplited()) { 
                     //award
                     print("You successfully completed a contract " + command[1]);
                     user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
@@ -442,8 +422,35 @@ public final class Hacknet extends javax.swing.JFrame {
         myThready.start();
     }
     
+    private Computer findTargetOfConInList(Computer comp) {
+        Computer ret = null;
+        for (Computer computer : computers) {
+            if(comp.equals(computer)) {
+                ret = computer;
+                break;
+            }
+        }
+        return ret;
+    }
+    
     private void genMission() {
         Contract con = new Contract(Contract.Type.DESTROY, user);
+        
+        con.target = findTargetOfConInList(con.target);
+        
+        for (int i = 0; i < 3; i++) {
+            con.target.addFile(con.target.genFile());
+        }
+        
+        if(con.type == Contract.Type.DESTROY || con.type == Contract.Type.COPY) {
+            for (int i = 0; i < con.target.sizeOfListFiles(); i++) {
+                System.out.println(con.target.getFile(i));
+            }
+            con.targetFile = con.target.getFile(Base.randomNumber(0, con.target.sizeOfListFiles()-1));
+            con.missionFull += "\n\n"+con.targetFile;
+        }
+        
+        
         print(con.id+", "+con.target.ip+", "+con.missionShort);
         user.currentContracts.add(con); //EEEEEEEEEEEEEEEEEEEEE
         user.setGettedContractsNumber(user.getGettedContractsNumber() + 1);
