@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import ru.epiclib.base.Base;
 import java.util.HashMap;
 import static java.lang.Thread.sleep;
+import java.util.Objects;
 
 
 public final class Computer implements Serializable {
@@ -205,7 +206,10 @@ public final class Computer implements Serializable {
         
         ArrayList<String> gf = new ArrayList<>();
         
-        gf.add(genFile());
+        
+        for (int i = 0; i < 10; i++) {
+            gf.add(genFile());
+        }
         
         files = gf;
         
@@ -293,6 +297,42 @@ public final class Computer implements Serializable {
         
     }
     private static final Logger LOG = Logger.getLogger(Computer.class.getName());
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.defenseList);
+        hash = 59 * hash + Objects.hashCode(this.files);
+        hash = 59 * hash + this.trace;
+        hash = 59 * hash + this.exp;
+        hash = 59 * hash + Objects.hashCode(this.ip);
+        hash = 59 * hash + Objects.hashCode(this.nameComputer);
+        hash = 59 * hash + Objects.hashCode(this.prefix);
+        hash = 59 * hash + (this.hacked ? 1 : 0);
+        hash = 59 * hash + (this.virused ? 1 : 0);
+        hash = 59 * hash + Objects.hashCode(this.listOfLog);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Computer other = (Computer) obj;
+        if (!Objects.equals(this.ip, other.ip)) {
+            return false;
+        }
+        return true;
+    }
+
+    
     
     
     
