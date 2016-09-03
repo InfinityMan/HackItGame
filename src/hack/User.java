@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import static ru.epiclib.base.Base.deserData;
 import static ru.epiclib.base.Base.serData;
 import static ru.epiclib.base.Base.stringToInt;
-import static ru.epiclib.base.FileWorker.read;
 
 
 public class User implements Serializable {
@@ -46,6 +45,8 @@ public class User implements Serializable {
     
     public ArrayList<Contract> availableContracts;
     public ArrayList<Contract> currentContracts;
+    
+    private double money = 0;
 
     /**
      * @return the powerCPU
@@ -83,6 +84,16 @@ public class User implements Serializable {
         if (ip.length() == 5) {
             this.ip = ip;
         }
+    }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        if(money >= 0) {
+            this.money = money;
+        } else throw new IllegalArgumentException();
     }
 
     /**
