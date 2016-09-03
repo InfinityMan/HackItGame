@@ -325,9 +325,13 @@ public final class Hacknet extends javax.swing.JFrame {
         } else if(command[0].startsWith("com")) {
             try {
                 if (user.searchForId(Base.stringToInt(command[1])).isComplited()) { 
-                    //award
-                    print("You successfully completed a contract " + command[1]);
-                    user.currentContracts.remove(user.searchForId(Base.stringToInt(command[1])));
+                    Contract completedCon = user.searchForId(Base.stringToInt(command[1]));
+                    print("You successfully completed a contract #" + command[1] + ", your award:\n"
+                            + " Contract task difficulty: "+ completedCon.getPriceOfContract()[0] + "\n"
+                            + " Computer hack difficulty: "+ completedCon.getPriceOfContract()[1]);
+                    double allMoney = completedCon.getPriceOfContract()[0] + completedCon.getPriceOfContract()[1];
+                    user.setMoney(user.getMoney()+ allMoney);
+                    user.currentContracts.remove(completedCon);
                 }
             } catch (NumberFormatException ex) {
                 print("Oh, please enter a number");

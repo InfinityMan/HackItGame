@@ -25,6 +25,8 @@ public final class Computer implements Serializable {
     public static final String[] TYPES = {"Old server","Local server","Small server","Normal server","Big server","Super server"};
     public static final String[] SUFFIX_NAME = {"workstation","station","base","frame","mainframe","grandframe"};
     
+    public static final double[] GRANT_FOR_HACK = {80,170,340,820,1800,3000};
+    
     private ArrayList<Protect> defenseList;
     private ArrayList<String> files;
     

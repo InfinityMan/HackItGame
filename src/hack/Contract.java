@@ -21,6 +21,8 @@ import ru.epiclib.base.FileWorker;
  * @author 1234
  */
 public final class Contract implements Serializable {
+    
+    public static final double[] GRANT_FOR_DIFFICULTY = {20,40,20}; 
 
     public Computer target;
 
@@ -121,6 +123,29 @@ public final class Contract implements Serializable {
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Get price of this contract
+     * @return first: basic price of contract ; second: price for difficulty
+     */
+    
+    public double[] getPriceOfContract() {
+        double priceOfContract = 0;
+        switch(type) {
+            case DESTROY:
+                priceOfContract = GRANT_FOR_DIFFICULTY[0];
+                break;
+            case COPY:
+                priceOfContract = GRANT_FOR_DIFFICULTY[1];
+                break;
+            case VIRUS:
+                priceOfContract = GRANT_FOR_DIFFICULTY[2];
+                break;
+        }
+        double priceOfTarget = Computer.GRANT_FOR_HACK[target.getType()];
+        double[] ret = {priceOfContract, priceOfTarget};
+        return ret;
     }
 
     @Override
