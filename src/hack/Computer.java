@@ -206,8 +206,10 @@ public final class Computer implements Serializable {
         
         ArrayList<String> gf = new ArrayList<>();
         
-        
-        for (int i = 0; i < 10; i++) {
+        gf.add("reboot.dll");
+        gf.add("sys.dll");
+        gf.add("OS.dll");
+        for (int i = 0; i < Base.randomNumber(8, 12); i++) {
             gf.add(genFile());
         }
         
@@ -215,6 +217,20 @@ public final class Computer implements Serializable {
         
         ip = genIP();
         
+    }
+    
+    public void updateFileSys() {
+        rmAllFiles();
+        files.add("reboot.dll");
+        files.add("sys.dll");
+        files.add("OS.dll");
+        for (int i = 0; i < Base.randomNumber(3, 7); i++) {
+            addFile(genFile());
+        }
+    }
+    
+    public void rmAllFiles() {
+        files.clear();
     }
     
     public String genFile() {
