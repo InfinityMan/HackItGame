@@ -22,10 +22,13 @@ import ru.epiclib.base.FileWorker;
  */
 public final class Contract implements Serializable {
     
+    private static final long serialVersionUID = 1L;
+    
     public static final double[] GRANT_FOR_DIFFICULTY = {20,40,20}; 
 
     public Computer target;
 
+    public String author;
     public String missionFull;
     public String missionShort;
     
@@ -42,13 +45,6 @@ public final class Contract implements Serializable {
         
         this.type = type;
         
-        String all = "";
-        try {
-            all = new Link().readRes("Missions.txt");
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "I'm have a problem! Not loaded missions: "+ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-        }
-        
         int intType = 0;
         
         switch(type) {
@@ -63,9 +59,25 @@ public final class Contract implements Serializable {
                 break;
         }
         
-        String[] mission = all.split("\n")[intType].split(";");
+        String allMissions = "";
+        String allAuthors = "";
+        try {
+            allMissions = new Link().readRes("Missions.txt");
+            allAuthors = new Link().readRes("names.txt");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "I'm have a problem! Not loaded missions or authors: "+ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+        }
         
-        missionFull = mission[0];
+        String[] mission = allMissions.split("\n")[intType].split(";");
+        String[] authors = allAuthors.split(";");
+        
+        if(Base.chance(62, 0)) {
+            author = "Unknown";
+        } else {
+            author = authors[Base.randomNumber(0, authors.length-1)];
+        }
+        
+        missionFull = "ID of this mission: " + id + "\nAuthor: " + author + "\n\n" + mission[0];
         missionShort = mission[Base.randomNumber(1, mission.length)];
         
         id = user.getGettedContractsNumber();
