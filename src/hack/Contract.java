@@ -5,6 +5,7 @@
  */
 package hack;
 
+import hack.res.Link;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -41,10 +42,9 @@ public final class Contract implements Serializable {
         
         String all = "";
         try {
-            all = FileWorker.read("Missions.txt");
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Not loaded missions","Error",JOptionPane.ERROR_MESSAGE);
-            
+            all = new Link().readRes("Missions.txt");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "I'm have a problem! Not loaded missions: "+ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
         }
         
         int intType = 0;
