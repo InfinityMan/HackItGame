@@ -82,7 +82,7 @@ public class BankAccount implements Serializable {
     }
 
     public void rmMoney(Double a) {
-        money += a;
+        money -= a;
     }
 
 }

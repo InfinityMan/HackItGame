@@ -43,6 +43,10 @@ public class User implements Serializable {
 
     public ArrayList<BankAccount> accounts;
     public int currentMainAccount = 0;
+    
+    public void addAccount(String name) {
+        accounts.add(new BankAccount(name));
+    }
 
     /**
      * @return the powerCPU

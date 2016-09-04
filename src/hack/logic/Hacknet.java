@@ -320,10 +320,43 @@ public final class Hacknet extends javax.swing.JFrame {
         } else if (command[0].equalsIgnoreCase("admin")) {
             admin();
         } else if (command[0].equalsIgnoreCase("money")) {
-            print("Your accounts: ");
-            for (int i = 0; i < user.accounts.size(); i++) {
-                BankAccount get = user.accounts.get(i);
-                print(" #" + i + " : " + get.getName() + " " + get.getId() + " " + get.getMoney() + "c \n");
+            if (command.length > 2) {
+                if(command[1].equalsIgnoreCase("add")) {
+                    user.addAccount(command[2]);
+                } else if(command.length > 4) {
+                    if(command[1].equalsIgnoreCase("transfer")) {
+                        int[] ids = new int[user.accounts.size()];
+                        boolean a = false,b = false;
+                        for (int i = 0; i < user.accounts.size(); i++) {
+                            ids[i] = i;
+                        }
+                        for (int i = 0; i < user.accounts.size(); i++) {
+                            if(Base.stringToInt(command[2]) == i) a = true;
+                        }
+                        for (int i = 0; i < user.accounts.size(); i++) {
+                            if(Base.stringToInt(command[3]) == i) b = true;
+                        }
+                        if(a && b) {
+                            if(user.accounts.get(Base.stringToInt(command[2])).getMoney() > Base.stringToDouble(command[4])) {
+                                user.accounts.get(Base.stringToInt(command[3])).addMoney(Base.stringToDouble(command[4]));
+                                user.accounts.get(Base.stringToInt(command[2])).rmMoney(Base.stringToDouble(command[4]));
+                                print("Operation completed successfully");
+                            } else {
+                                print("Not enough credits");
+                            }
+                        } else {
+                            print("Invalid ids of accounts");
+                        }
+                    }
+                }
+            } else {
+                print("Your accounts: ");
+                int current = user.currentMainAccount;
+                for (int i = 0; i < user.accounts.size(); i++) {
+                    BankAccount get = user.accounts.get(i);
+                    printNoN(" #" + i + " : " + get.getName() + " " + get.getId() + " " + get.getMoney() + "c ");
+                    if(i == current) print("(current)"); else print("");
+                }
             }
         } else if (command[0].equalsIgnoreCase("exit")) {
             LOG.log(Level.INFO, "User exit from game");
