@@ -14,96 +14,98 @@ import ru.epiclib.base.Base;
  * @author Dima
  */
 public class LabelHack extends javax.swing.JFrame {
-    
-    boolean[] elementsCompleted = {false,false,false,false,false,false,false,false};
-    
+
+    boolean[] elementsCompleted = {false, false, false, false, false, false, false, false};
+
     public String key = "";
-    
-    public enum TypeOfChars {ONLY_SMALL,ONLY_BIG,ONLY_NUMBERS,SMALL_AND_NUMBERS,BIG_AND_NUMBERS,BIG_AND_SMALL,ALL};
-    public enum Difficulty {VERY_LOW,LOW,NORMAL,HIGH,VERY_HIGH};
+
+    public enum TypeOfChars {
+        ONLY_SMALL, ONLY_BIG, ONLY_NUMBERS, SMALL_AND_NUMBERS, BIG_AND_NUMBERS, BIG_AND_SMALL, ALL
+    };
+
+    public enum Difficulty {
+        VERY_LOW, LOW, NORMAL, HIGH, VERY_HIGH
+    };
 
     public LabelHack() {
         initComponents();
     }
-    
+
     public void start(TypeOfChars type, Difficulty difficulty, int allTimeInSeconds) {
-        
-        
-        
-        double temp = allTimeInSeconds/8;
-        
+
+        double temp = allTimeInSeconds / 8;
+
         Double d = Math.floor(temp);
-        
+
         int secondsForElement = d.intValue();
-        int extraTime = allTimeInSeconds%8;
+        int extraTime = allTimeInSeconds % 8;
         int timesInSeconds = 0;
-        
-        switch(difficulty) {
-            case VERY_LOW :
+
+        switch (difficulty) {
+            case VERY_LOW:
                 timesInSeconds = 10;
                 break;
-            case LOW :
+            case LOW:
                 timesInSeconds = 8;
                 break;
-            case NORMAL :
+            case NORMAL:
                 timesInSeconds = 5;
                 break;
-            case HIGH :
+            case HIGH:
                 timesInSeconds = 2;
                 break;
-            case VERY_HIGH :
+            case VERY_HIGH:
                 timesInSeconds = 1;
                 break;
         }
-        
-        jetElement(secondsForElement+extraTime, timesInSeconds, type ,0);
-        jetElement(secondsForElement, timesInSeconds, type ,1);
-        jetElement(secondsForElement, timesInSeconds, type ,2);
-        jetElement(secondsForElement, timesInSeconds, type ,3);
-        jetElement(secondsForElement, timesInSeconds, type ,4);
-        jetElement(secondsForElement, timesInSeconds, type ,5);
-        jetElement(secondsForElement, timesInSeconds, type ,6);
-        jetElement(secondsForElement, timesInSeconds, type ,7);
-        
-        
+
+        jetElement(secondsForElement + extraTime, timesInSeconds, type, 0);
+        jetElement(secondsForElement, timesInSeconds, type, 1);
+        jetElement(secondsForElement, timesInSeconds, type, 2);
+        jetElement(secondsForElement, timesInSeconds, type, 3);
+        jetElement(secondsForElement, timesInSeconds, type, 4);
+        jetElement(secondsForElement, timesInSeconds, type, 5);
+        jetElement(secondsForElement, timesInSeconds, type, 6);
+        jetElement(secondsForElement, timesInSeconds, type, 7);
+
     }
-    
-    private void jetElement(int seconds,int timesInSecond, TypeOfChars typeOfChars, int number) {
-        
-        int waitInSeconds = 1000/timesInSecond;
+
+    private void jetElement(int seconds, int timesInSecond, TypeOfChars typeOfChars, int number) {
+
+        int waitInSeconds = 1000 / timesInSecond;
         ArrayList<String> aviaStrings = new ArrayList<>();
-        
-        switch(typeOfChars) {
-            case ONLY_NUMBERS :
+
+        switch (typeOfChars) {
+            case ONLY_NUMBERS:
                 addNumbers(aviaStrings);
                 break;
-            case SMALL_AND_NUMBERS :
+            case SMALL_AND_NUMBERS:
                 addNumbers(aviaStrings);
                 addSmall(aviaStrings);
                 break;
-            case ONLY_SMALL :
+            case ONLY_SMALL:
                 addSmall(aviaStrings);
                 break;
-            case ONLY_BIG :
+            case ONLY_BIG:
                 addBig(aviaStrings);
                 break;
-            case BIG_AND_SMALL :
+            case BIG_AND_SMALL:
                 addSmall(aviaStrings);
                 addBig(aviaStrings);
                 break;
-            case BIG_AND_NUMBERS :
+            case BIG_AND_NUMBERS:
                 addBig(aviaStrings);
                 addNumbers(aviaStrings);
                 break;
-            case ALL :
+            case ALL:
                 addNumbers(aviaStrings);
                 addSmall(aviaStrings);
                 addBig(aviaStrings);
                 break;
         }
-        
+
         javax.swing.JLabel label = new javax.swing.JLabel();
-        
+
         switch (number) {
             case 0:
                 label = jLabel1;
@@ -130,15 +132,15 @@ public class LabelHack extends javax.swing.JFrame {
                 label = jLabel8;
                 break;
         }
-        
+
         int iterations = 0;
-        
+
         try {
-            Thread.sleep(seconds*1000);
+            Thread.sleep(seconds * 1000);
             String charTemp = aviaStrings.get(Base.randomNumber(0, aviaStrings.size()));
             label.setText(charTemp);
             key += charTemp;
-            
+
 //        for (int i = 0; i < seconds; i++) {
 //            for (int j = 0; j < timesInSecond; j++) {
 //                label.setText(aviaStrings.get(iterations));
@@ -156,19 +158,18 @@ public class LabelHack extends javax.swing.JFrame {
             System.exit(1);
         }
 
-        
     }
-    
+
     private void addNumbers(ArrayList<String> start) {
         for (int i = 0; i < 10; i++) {
-            start.add(i+"");
+            start.add(i + "");
         }
     }
-    
+
     private void addSmall(ArrayList<String> start) {
         start.addAll(Arrays.asList(Base.ENGALPHAVET));
     }
-    
+
     private void addBig(ArrayList<String> start) {
         start.addAll(Arrays.asList(Base.ENGALPHAVETCAPS));
     }

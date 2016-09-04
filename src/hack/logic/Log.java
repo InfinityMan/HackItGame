@@ -13,15 +13,17 @@ import java.util.Objects;
  * @author Dima
  */
 public class Log implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
-    public enum Type {FILE_DELETED,FILE_COPIED,PROTECT_DISABLED,USER_CONNECTED,USER_DISCONNECTED}; //if u change this - change the constructor switch
-    
+
+    public enum Type {
+        FILE_DELETED, FILE_COPIED, PROTECT_DISABLED, USER_CONNECTED, USER_DISCONNECTED
+    }; //if u change this - change the constructor switch
+
     public Type type;
-    
+
     public String message;
-    
+
     private boolean deleted = false;
 
     public boolean isDeleted() {
@@ -31,29 +33,29 @@ public class Log implements Serializable {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
-    
+
     public Log(Type type, String userIP) {
-        
+
         this.type = type;
-        
-        switch(type) {
-            case FILE_DELETED :
-                message = "File deleted by "+userIP;
+
+        switch (type) {
+            case FILE_DELETED:
+                message = "File deleted by " + userIP;
                 break;
-            case FILE_COPIED :
-                message = "File copied by "+userIP;
+            case FILE_COPIED:
+                message = "File copied by " + userIP;
                 break;
-            case PROTECT_DISABLED :
-                message = "Protect disabled by "+userIP;
+            case PROTECT_DISABLED:
+                message = "Protect disabled by " + userIP;
                 break;
-            case USER_CONNECTED :
-                message = userIP+" connected";
+            case USER_CONNECTED:
+                message = userIP + " connected";
                 break;
-            case USER_DISCONNECTED :
-                message = userIP+" disconnected";
+            case USER_DISCONNECTED:
+                message = userIP + " disconnected";
                 break;
         }
-        
+
     }
 
     @Override
@@ -84,7 +86,5 @@ public class Log implements Serializable {
         }
         return true;
     }
-    
-    
-    
+
 }

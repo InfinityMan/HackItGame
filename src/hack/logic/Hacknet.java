@@ -30,18 +30,18 @@ import ru.epiclib.logging.Logging;
  * @author 1234
  */
 public final class Hacknet extends javax.swing.JFrame {
-    
+
     public static final String GAME_VERSION = "0.4a";
-    
+
     public User user;
-    
+
     public ArrayList<Computer> computers;
-    
+
     public Computer currentTarget;
-    
+
     public boolean loaded = false;
     public boolean debug = false;
-    
+
     /**
      *
      * @param args
@@ -58,16 +58,16 @@ public final class Hacknet extends javax.swing.JFrame {
             this.computers = (ArrayList<Computer>) deserData("CompsDataBase.comps");
         } catch (IOException ex) {
         }
-        
-        
+
         initComponents();
-        
+
     }
-    
+
     public static void updateBase() {
         try {
             FileWorker.delete("CompsDataBase.comps");
-        } catch (FileNotFoundException ex) {}
+        } catch (FileNotFoundException ex) {
+        }
         ArrayList<Computer> cmrs = new ArrayList<>();
         cmrs.add(new Computer(4, "Crystal", "Crys"));
         cmrs.add(new Computer(1, "Red", "Red"));
@@ -94,7 +94,7 @@ public final class Hacknet extends javax.swing.JFrame {
         cmrs.add(new Computer(2, "Kieon", "Kin"));
         Base.serData("CompsDataBase.comps", cmrs);
     }
-    
+
     /**
      *
      */
@@ -111,7 +111,7 @@ public final class Hacknet extends javax.swing.JFrame {
         });
 
     }
-    
+
     /**
      *
      * @param s
@@ -119,7 +119,7 @@ public final class Hacknet extends javax.swing.JFrame {
     public void print(Object s) {
         Console.setText(Console.getText() + s + "\n");
     }
-    
+
     public void printNoN(String s) {
         Console.setText(Console.getText() + s);
     }
@@ -223,8 +223,8 @@ public final class Hacknet extends javax.swing.JFrame {
 
     private void loadUser() {
         LOG.addHandler(Logging.stndHandler());
-        print("Hello. This is only developer verison : "+GAME_VERSION);
-        LOG.log(Level.INFO, "This is only developer verison : "+GAME_VERSION);
+        print("Hello. This is only developer verison : " + GAME_VERSION);
+        LOG.log(Level.INFO, "This is only developer verison : " + GAME_VERSION);
         try {
             user = load(this);
             LOG.log(Level.INFO, "User successfully loaded");
@@ -236,11 +236,11 @@ public final class Hacknet extends javax.swing.JFrame {
             } catch (IOException e) {
                 LOG.info("List of computers is not founded");
             }
-            
+
             print("Save files are not finded : Register");
             registerUser();
             print("User successfully registered");
-            LOG.log(Level.WARNING, "IOException of load : "+ex.getMessage());
+            LOG.log(Level.WARNING, "IOException of load : " + ex.getMessage());
         }
         loaded = true;
         LOG.log(Level.INFO, "Hacknet inited");
@@ -248,96 +248,96 @@ public final class Hacknet extends javax.swing.JFrame {
 
     private void registerUser() throws HeadlessException {
         String name, pass;
-        String tmp1 = JOptionPane.showInputDialog(null, "Enter your nickname","Registration",JOptionPane.QUESTION_MESSAGE);
-        while(tmp1.length() < 1) {
-            tmp1 = JOptionPane.showInputDialog(null, "Enter your nickname","Registration",JOptionPane.QUESTION_MESSAGE);
+        String tmp1 = JOptionPane.showInputDialog(null, "Enter your nickname", "Registration", JOptionPane.QUESTION_MESSAGE);
+        while (tmp1.length() < 1) {
+            tmp1 = JOptionPane.showInputDialog(null, "Enter your nickname", "Registration", JOptionPane.QUESTION_MESSAGE);
         }
         name = tmp1;
-        String tmp2 = JOptionPane.showInputDialog(null, "Enter your password","Registration",JOptionPane.QUESTION_MESSAGE);
-        while(tmp2.length() < 1) {
-            tmp2 = JOptionPane.showInputDialog(null, "Enter your password","Registration",JOptionPane.QUESTION_MESSAGE);
+        String tmp2 = JOptionPane.showInputDialog(null, "Enter your password", "Registration", JOptionPane.QUESTION_MESSAGE);
+        while (tmp2.length() < 1) {
+            tmp2 = JOptionPane.showInputDialog(null, "Enter your password", "Registration", JOptionPane.QUESTION_MESSAGE);
         }
         pass = tmp2;
         user = new User(name, pass, 0, 0);
-        LOG.log(Level.INFO, "User successfully registered with name \""+name+"\" and pass \""+pass+"\"");
+        LOG.log(Level.INFO, "User successfully registered with name \"" + name + "\" and pass \"" + pass + "\"");
     }
-    
+
     private void CommandTypeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CommandTypeKeyPressed
-        if(evt.getKeyCode() == VK_ENTER) {
-            
+        if (evt.getKeyCode() == VK_ENTER) {
+
             String commandAll = CommandType.getText();
-            print("> "+commandAll);
+            print("> " + commandAll);
             LOG.log(Level.INFO, "User command > " + commandAll);
             CommandType.setText("");
-            
+
             String[] command = commandAll.split(" ");
-            
-            if(loaded) {
+
+            if (loaded) {
                 scanCommand(command);
             } else if (command[0].equalsIgnoreCase("init")) {
                 loadUser();
             } else {
                 print("You need init the device");
             }
-            
+
         }
     }//GEN-LAST:event_CommandTypeKeyPressed
 
     private void scanCommand(String[] command) {
-        if(command[0].equalsIgnoreCase("mail")) {
+        if (command[0].equalsIgnoreCase("mail")) {
             mail();
-        } else if(command[0].startsWith("connect")) {
-            LOG.log(Level.INFO, "User try connect to "+command[1]);
+        } else if (command[0].startsWith("connect")) {
+            LOG.log(Level.INFO, "User try connect to " + command[1]);
             connect(command[1]);
-        } else if(command[0].equalsIgnoreCase("scan")) {
+        } else if (command[0].equalsIgnoreCase("scan")) {
             LOG.log(Level.INFO, "User scan the computer");
             print(currentTarget.printScan());
-        } else if(command[0].equalsIgnoreCase("list")) {
+        } else if (command[0].equalsIgnoreCase("list")) {
             print("List of computers: ");
             for (int i = 0; i < computers.size(); i++) {
                 Computer get = computers.get(i);
                 print(" " + get.print());
             }
-        } else if(command[0].equalsIgnoreCase("auth")) {
+        } else if (command[0].equalsIgnoreCase("auth")) {
             AuthWindow aw = new AuthWindow();
             aw.setVisible(true);
             currentTarget.aw = aw;
-        } else if(command[0].startsWith("hack")) {
-            if(command.length >= 2) {
-                LOG.log(Level.INFO, "User want hack "+command[1]);
+        } else if (command[0].startsWith("hack")) {
+            if (command.length >= 2) {
+                LOG.log(Level.INFO, "User want hack " + command[1]);
                 hack(command[1]);
             } else {
                 print("No found subject; type hack [tagret]");
             }
-        } else if(command[0].equalsIgnoreCase("save")) {
+        } else if (command[0].equalsIgnoreCase("save")) {
             LOG.log(Level.INFO, "User save the game");
             dc();
             user.save();
             Base.serData("CompsDataBase.comps", computers);
-        } else if(command[0].equalsIgnoreCase("load")) {
+        } else if (command[0].equalsIgnoreCase("load")) {
             loadUser();
-        } else if(command[0].equalsIgnoreCase("admin")) {
+        } else if (command[0].equalsIgnoreCase("admin")) {
             admin();
-        } else if(command[0].equalsIgnoreCase("exit")) {
+        } else if (command[0].equalsIgnoreCase("exit")) {
             LOG.log(Level.INFO, "User exit from game");
             dc();
             user.save();
             Base.serData("CompsDataBase.comps", computers);
             exit(0);
-        } else if(command[0].equalsIgnoreCase("stats")) {
+        } else if (command[0].equalsIgnoreCase("stats")) {
             LOG.log(Level.INFO, "User want know his stats");
             print(user.print());
-        } else if(command[0].equalsIgnoreCase("teos")) {
+        } else if (command[0].equalsIgnoreCase("teos")) {
             //test command
-        } else if(command[0].equalsIgnoreCase("missions")) {
+        } else if (command[0].equalsIgnoreCase("missions")) {
             missions();
-        } else if(command[0].equalsIgnoreCase("mission")) {
+        } else if (command[0].equalsIgnoreCase("mission")) {
             genMission();
-        } else if(command[0].equalsIgnoreCase("files")) {
+        } else if (command[0].equalsIgnoreCase("files")) {
             for (int i = 0; i < currentTarget.sizeOfListFiles(); i++) {
                 print(currentTarget.getFile(i));
             }
-        } else if(command[0].equalsIgnoreCase("logs")) {
+        } else if (command[0].equalsIgnoreCase("logs")) {
             if (!currentTarget.listOfLog.isEmpty()) {
                 currentTarget.listOfLog.entrySet().stream().forEach((en) -> {
                     Integer key = en.getKey();
@@ -347,13 +347,13 @@ public final class Hacknet extends javax.swing.JFrame {
             } else {
                 print("There are no logs");
             }
-        } else if(command[0].equalsIgnoreCase("reset")) {
+        } else if (command[0].equalsIgnoreCase("reset")) {
             reset();
-        } else if(command[0].equalsIgnoreCase("rm")) {
+        } else if (command[0].equalsIgnoreCase("rm")) {
             rm(command[1]);
-        } else if(command[0].equalsIgnoreCase("dc")) {
+        } else if (command[0].equalsIgnoreCase("dc")) {
             dc();
-        } else if(command[0].startsWith("com")) {
+        } else if (command[0].startsWith("com")) {
             try {
                 boolean awarded = false;
                 int userNumber = Base.stringToInt(command[1]);
@@ -380,13 +380,15 @@ public final class Hacknet extends javax.swing.JFrame {
                         break;
                     }
                 }
-                if(!awarded) print("Invalid number, check the missions page");
+                if (!awarded) {
+                    print("Invalid number, check the missions page");
+                }
             } catch (NumberFormatException ex) {
                 print("Oh, please enter a number");
             }
 
         } else if (command[0].equalsIgnoreCase("virus")) {
-            if(currentTarget.hacked) {
+            if (currentTarget.hacked) {
                 Thread tmpThread = new Thread(() -> {
                     try {
                         print("Start virusing device...\n Copy from disk...");
@@ -410,9 +412,9 @@ public final class Hacknet extends javax.swing.JFrame {
             print("Invalid command");
         }
     }
-    
+
     private void admin() {
-        Thread myThready = new Thread( () -> {
+        Thread myThready = new Thread(() -> {
             AdminWindow cl = new AdminWindow(user);
             cl.setVisible(true);
         });
@@ -432,20 +434,20 @@ public final class Hacknet extends javax.swing.JFrame {
     public void dc() {
         currentTarget = null;
     }
-    
+
     private boolean scanForAH() { //SCAN FOR ANTIHACK IN COMPUTER (ADD GUI)
         boolean have = currentTarget.hasProtect(Protect.Type.ANTIHACK);
-        if(have) {
+        if (have) {
             print("AntiHack finded");
         } else {
             print("AntiHack no finded");
         }
         return have;
     }
-    
+
     public void rm(String file) {
-        if(currentTarget != null) {
-            if(currentTarget.hacked) {
+        if (currentTarget != null) {
+            if (currentTarget.hacked) {
                 if (!file.equals("*")) {
                     if (currentTarget.hasFile(file)) {
                         if (currentTarget.rmFile(file, user.getIp())) {
@@ -464,56 +466,54 @@ public final class Hacknet extends javax.swing.JFrame {
             }
         }
     }
-    
-    
+
     /**
      *
      */
     public void mail() {
         currentTarget.hacked = true;
     }
-    
+
     private void missions() {
-        Thread myThready = new Thread( () -> {
-            ContractsList cl = new ContractsList(user,false);
+        Thread myThready = new Thread(() -> {
+            ContractsList cl = new ContractsList(user, false);
             cl.setList(user.currentContracts);
             cl.setVisible(true);
         });
         myThready.start();
     }
-    
+
     private Computer findTargetOfConInList(Computer comp) {
         Computer ret = null;
         for (Computer computer : computers) {
-            if(comp.equals(computer)) {
+            if (comp.equals(computer)) {
                 ret = computer;
                 break;
             }
         }
         return ret;
     }
-    
+
     private void genMission() {
         Contract con = new Contract(Contract.Type.DESTROY, user);
-        
+
         con.target = findTargetOfConInList(con.target);
-        
+
         con.target.updateFileSys();
-        
-        if(con.type == Contract.Type.DESTROY || con.type == Contract.Type.COPY) {
+
+        if (con.type == Contract.Type.DESTROY || con.type == Contract.Type.COPY) {
             for (int i = 0; i < con.target.sizeOfListFiles(); i++) {
                 System.out.println(con.target.getFile(i));
             }
-            con.targetFile = con.target.getFile(Base.randomNumber(0, con.target.sizeOfListFiles()-1));
-            con.missionFull += "\n\n"+con.targetFile;
+            con.targetFile = con.target.getFile(Base.randomNumber(0, con.target.sizeOfListFiles() - 1));
+            con.missionFull += "\n\n" + con.targetFile;
         }
-        
-        
-        print(con.id+", "+con.target.ip+", "+con.missionShort);
+
+        print(con.id + ", " + con.target.ip + ", " + con.missionShort);
         user.currentContracts.add(con); //EEEEEEEEEEEEEEEEEEEEE
         user.setGettedContractsNumber(user.getGettedContractsNumber() + 1);
     }
-    
+
     /**
      *
      * @param subject
@@ -539,7 +539,7 @@ public final class Hacknet extends javax.swing.JFrame {
                 hack(Protect.Type.ZEUS);
                 break;
             case "AntiHack":
-                if(scanForAH()) {
+                if (scanForAH()) {
                     hack(Protect.Type.ANTIHACK);
                 }
                 break;
@@ -557,34 +557,38 @@ public final class Hacknet extends javax.swing.JFrame {
                 print("Not found subject");
         }
     }
-    
-    
-    
+
     private boolean canHackProtect(Protect.Type type) {
-        
-        if(!new Protect(type).gateway) {
+
+        if (!new Protect(type).gateway) {
             return true;
         }
-        
-        switch(type) {
-            case PROXY :
-                if(currentTarget.protectHacked(Protect.Type.PROTE)) return true;
-            case FIREWALL :
-                if(currentTarget.protectHacked(Protect.Type.PROXY)) return true;
-            case PROTE :
-                if(currentTarget.protectHacked(Protect.Type.ZEUS)) return true;
-            case ZEUS :
+
+        switch (type) {
+            case PROXY:
+                if (currentTarget.protectHacked(Protect.Type.PROTE)) {
+                    return true;
+                }
+            case FIREWALL:
+                if (currentTarget.protectHacked(Protect.Type.PROXY)) {
+                    return true;
+                }
+            case PROTE:
+                if (currentTarget.protectHacked(Protect.Type.ZEUS)) {
+                    return true;
+                }
+            case ZEUS:
                 return true;
-            case ANTIHACK :
+            case ANTIHACK:
                 return true;
-            default :
+            default:
                 return true;
         }
     }
-    
+
     private void hack(Protect.Type type) {
         if (canHackProtect(type)) {
-            if(currentTarget.hasProtect(type)) {
+            if (currentTarget.hasProtect(type)) {
                 currentTarget.getProtect(type).hackThis();
             } else {
                 print("Protect not finded");
@@ -593,42 +597,43 @@ public final class Hacknet extends javax.swing.JFrame {
             print("You can't hack this");
         }
     }
-    
+
     /**
      *
      * @param ip
      */
     public void connect(String ip) {
-        
+
         Computer target = null;
-        
+
         print("Connecting...");
-        
+
         /*try {
         Thread.sleep(1000);
         } catch (InterruptedException ex) {
         System.err.println("Problem Prg.");
         System.exit(1);
         }*/
-        
         for (int i = 0; i < computers.size(); i++) {
             Computer get = computers.get(i);
-            if(get.ip.equals(ip)) target = get;
+            if (get.ip.equals(ip)) {
+                target = get;
+            }
         }
-        
-        if(target != null) {
+
+        if (target != null) {
             target.loadHacknetToProtect(this);
             currentTarget = target;
-            print("Connected to "+target.nameComputer);
+            print("Connected to " + target.nameComputer);
             AuthWindow aw = new AuthWindow();
             currentTarget.aw = aw;
             aw.setVisible(true);
         } else {
             print("Invalid ip");
         }
-        
+
     }
-    
+
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton1ActionPerformed

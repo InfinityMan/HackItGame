@@ -17,35 +17,30 @@ import static ru.epiclib.base.Base.deserData;
 import static ru.epiclib.base.Base.serData;
 import static ru.epiclib.base.Base.stringToInt;
 
-
 public class User implements Serializable {
-    
+
     private static final long serialVersionUID = 4L;
-    
+
     //computer:
-    
     public ArrayList<Software> soft;
     public ArrayList<String> files;
     private int powerCPU = Computer.CPUS_POWER[1];
-    
+
     private String ip;
-    
+
     //end
-    
     //user txts:
-    
     private String userPass = "********";
     private String nick = "Dmig";
-    
+
     //end
-    
     private int exp;
-    
+
     private int gettedContractsNumber = 0;
-    
+
     public ArrayList<Contract> availableContracts;
     public ArrayList<Contract> currentContracts;
-    
+
     private double money = 0;
 
     /**
@@ -60,11 +55,14 @@ public class User implements Serializable {
      */
     public void setPowerCPU(int powerCPU) {
         boolean canBeSetted = false;
-        
+
         for (int powerCPUtemp : Computer.CPUS_POWER) {
-            if(powerCPU == powerCPUtemp) canBeSetted = true; break;
+            if (powerCPU == powerCPUtemp) {
+                canBeSetted = true;
+            }
+            break;
         }
-        
+
         if (canBeSetted) {
             this.powerCPU = powerCPU;
         }
@@ -91,9 +89,11 @@ public class User implements Serializable {
     }
 
     public void setMoney(double money) {
-        if(money >= 0) {
+        if (money >= 0) {
             this.money = money;
-        } else throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -139,7 +139,7 @@ public class User implements Serializable {
      * @param exp the exp to set
      */
     public void setExp(int exp) {
-        if(exp >= 0) {
+        if (exp >= 0) {
             this.exp = exp;
         }
     }
@@ -159,15 +159,15 @@ public class User implements Serializable {
             this.gettedContractsNumber = gettedContractsNumber;
         }
     }
-    
-    public User(String nick,String userPass, int exp, int getCon) {
+
+    public User(String nick, String userPass, int exp, int getCon) {
         this.nick = nick;
         this.userPass = userPass;
         this.exp = exp;
         this.gettedContractsNumber = getCon;
-        
+
         ip = Computer.genIP();
-        
+
         availableContracts = new ArrayList<>();
         currentContracts = new ArrayList<>();
     }
@@ -181,43 +181,43 @@ public class User implements Serializable {
 
         return loadedUser;
     }
-    
+
     public void save() {
         serData("hAcKsave.hsf", this);
     }
-    
+
     public void rmCurrentContract(int id) {
         Iterator it = currentContracts.iterator();
         while (it.hasNext()) {
             Contract cont = (Contract) it.next();
-            if(cont.id == id) {
+            if (cont.id == id) {
                 it.remove();
             }
         }
     }
-    
+
     public void rmCurrentContract(Contract con) {
         rmCurrentContract(con.id);
     }
-    
+
     public Contract searchForId(int id) {
         for (int i = 0; i < currentContracts.size(); i++) {
             Contract get = currentContracts.get(i);
-            if(get.id == id) {
+            if (get.id == id) {
                 return get;
             }
         }
         return null;
     }
-    
+
     public void addMission(Contract contr) {
         currentContracts.add(contr);
     }
-    
+
     public static int levelNum(int exp) {
         return levelOperations(exp, true);
     }
-    
+
     private static int levelOperations(int exp, boolean levelNum) {
         String[] expToLevelStr = null;
         try {
@@ -227,33 +227,33 @@ public class User implements Serializable {
         } catch (IOException ex) {
             exit(1);
         }
-        int[] expToLevel = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+        int[] expToLevel = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         for (int i = 0; i < expToLevelStr.length; i++) {
-            expToLevel[i] = stringToInt(expToLevelStr[i]);  
+            expToLevel[i] = stringToInt(expToLevelStr[i]);
         }
         int level = 0, currentExp = exp;
-        while(currentExp >= expToLevel[level] && level != 58) {
+        while (currentExp >= expToLevel[level] && level != 58) {
             currentExp -= expToLevel[level];
             level++;
         }
-        
+
         int retForMethodToNextLevelExp = 0;
-        if(level != 58) {
-            retForMethodToNextLevelExp = expToLevel[level]-currentExp;
+        if (level != 58) {
+            retForMethodToNextLevelExp = expToLevel[level] - currentExp;
         }
-        
-        if(levelNum) {
+
+        if (levelNum) {
             return level;
         } else {
             return retForMethodToNextLevelExp;
         }
-        
+
     }
 
     public static int toNextLevelExp(int exp) {
         return levelOperations(exp, false);
     }
-    
+
     /**
      *
      * @param exp
@@ -262,42 +262,41 @@ public class User implements Serializable {
     public static String levelText(int exp) {
         int level = levelNum(exp);
         String[] nameLevel = {};
-        
+
         //{"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""}
-        
         try {
             nameLevel = new Link().readRes("level.txt").split("\n")[1].split(" ");
         } catch (IOException ex) {
             exit(1);
         }
-        return nameLevel[level-1];
-    
+        return nameLevel[level - 1];
+
     }
- 
+
     /**
      *
      * @return
      */
     public String print() {
-        return "Nickname: "+getNick()+"\n"
-                + "Password: "+getUserPass()+"\n"
-                + "Level: "+levelText(getExp())+", to next level: "+toNextLevelExp(getExp())+"\n"
-                + "Contracts gets: "+getGettedContractsNumber();
+        return "Nickname: " + getNick() + "\n"
+                + "Password: " + getUserPass() + "\n"
+                + "Level: " + levelText(getExp()) + ", to next level: " + toNextLevelExp(getExp()) + "\n"
+                + "Contracts gets: " + getGettedContractsNumber();
     }
-    
+
     public String printCurrentContracts() {
-        if(!currentContracts.isEmpty()) {
+        if (!currentContracts.isEmpty()) {
             String ret = "Current missions: \n";
             for (int i = 0; i < currentContracts.size(); i++) {
                 Contract get = currentContracts.get(i);
-                ret += "IP: "+get.target.ip+",Mission: "+get.missionShort+"\n";
+                ret += "IP: " + get.target.ip + ",Mission: " + get.missionShort + "\n";
             }
             return ret;
         } else {
             return "No current missions";
         }
     }
-    
+
     private static final Logger LOG = Logger.getLogger(User.class.getName());
-     
+
 }

@@ -17,17 +17,17 @@ public class ContractsList extends javax.swing.JFrame {
 
     public ArrayList<Contract> items;
     public User user;
-    
+
     private boolean inited = false;
     public boolean canAcceptNew;
-    
+
     public ContractsList(User user, boolean canAcceptNew) {
         this.canAcceptNew = canAcceptNew;
         this.user = user;
         items = new ArrayList<>();
         initComponents();
     }
-    
+
     public void setList(ArrayList<Contract> missions) {
         jComboBox1.removeAllItems();
         items.clear();
@@ -127,7 +127,7 @@ public class ContractsList extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptActionPerformed
-        if(canAcceptNew) {
+        if (canAcceptNew) {
             user.addMission(items.get(jComboBox1.getSelectedIndex()));
         }
     }//GEN-LAST:event_AcceptActionPerformed
@@ -144,19 +144,18 @@ public class ContractsList extends javax.swing.JFrame {
         if (!canAcceptNew) {
             setList(user.currentContracts);
         } else {
-            
+
         }
     }//GEN-LAST:event_UpdateActionPerformed
 
     private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
-        if(!user.currentContracts.isEmpty()) {
+        if (!user.currentContracts.isEmpty()) {
             this.dispose();
             user.rmCurrentContract(items.get(jComboBox1.getSelectedIndex()));
         }
     }//GEN-LAST:event_RemoveActionPerformed
 
-    
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Accept;
     private javax.swing.JTextArea Desc;

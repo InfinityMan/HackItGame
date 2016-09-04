@@ -70,7 +70,7 @@ public class MiniHacknet extends javax.swing.JFrame {
     public void print(String s) {
         jTextArea1.setText(jTextArea1.getText() + s + "\n");
     }
-    
+
     public void printNoN(String s) {
         jTextArea1.setText(jTextArea1.getText() + s);
     }

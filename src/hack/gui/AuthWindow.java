@@ -17,11 +17,11 @@ public class AuthWindow extends javax.swing.JFrame {
     public AuthWindow() {
         initComponents();
     }
-    
+
     public void setPass(String password) {
         pass.setText(password);
     }
-    
+
     public void setUsername(String username) {
         login.setText(username);
     }
@@ -87,7 +87,6 @@ public class AuthWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_signInButtonActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

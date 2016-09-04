@@ -15,7 +15,7 @@ import ru.epiclib.base.Base;
 public class AdminWindow extends javax.swing.JFrame {
 
     User user;
-    
+
     public AdminWindow(User user) {
         this.user = user;
         initComponents();
@@ -88,11 +88,11 @@ public class AdminWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addExpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExpActionPerformed
-        user.setExp(user.getExp()+Base.stringToInt(exp.getText()));
+        user.setExp(user.getExp() + Base.stringToInt(exp.getText()));
     }//GEN-LAST:event_addExpActionPerformed
 
     private void addMoneyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMoneyActionPerformed
-        user.setMoney(user.getMoney()+Base.stringToInt(money.getText()));
+        user.setMoney(user.getMoney() + Base.stringToInt(money.getText()));
     }//GEN-LAST:event_addMoneyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

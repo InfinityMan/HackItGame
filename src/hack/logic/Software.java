@@ -12,9 +12,9 @@ import java.io.Serializable;
  * @author Dima
  */
 public class Software implements Serializable {
-    
-    public String name,desc;
-    
-    public int price,version,type;
-    
+
+    public String name, desc;
+
+    public int price, version, type;
+
 }

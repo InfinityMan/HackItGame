@@ -19,88 +19,89 @@ import ru.epiclib.gui.Util;
  * @author 1234
  */
 public class Protect implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     public int needPower;
-    
+
     public boolean gateway;
 
     transient public Hacknet hacknet;
-    
+
     public boolean open = false; //or "hacked"
-    
-    public enum Type {ALPHA,ANTIHACK,ELLO,FIREWALL,PROTE,PROXY,SPRO,ZEUS};
+
+    public enum Type {
+        ALPHA, ANTIHACK, ELLO, FIREWALL, PROTE, PROXY, SPRO, ZEUS
+    };
     public Type type;
-    
+
     //------------------------------
-    
     public Protect(Type type, Hacknet hacknet) {
         this(type);
         this.hacknet = hacknet;
     }
-    
+
     public Protect(Type type) {
-        
+
         this.type = type;
-        
+
         int needSeconds;
-        
-        switch(type) {
-            case ALPHA :
+
+        switch (type) {
+            case ALPHA:
                 gateway = false;
                 needSeconds = 60;
                 break;
-            case ANTIHACK :
+            case ANTIHACK:
                 gateway = true;
                 needSeconds = 45;
                 break;
-            case ELLO :
+            case ELLO:
                 gateway = false;
                 needSeconds = 120;
                 break;
-            case FIREWALL :
+            case FIREWALL:
                 gateway = true;
                 needSeconds = 45;
                 break;
-            case PROTE :
+            case PROTE:
                 gateway = true;
                 needSeconds = 70;
                 break;
-            case PROXY :
+            case PROXY:
                 gateway = true;
                 needSeconds = 30;
                 break;
-            case SPRO :
+            case SPRO:
                 gateway = false;
                 needSeconds = 20;
                 break;
-            case ZEUS :
+            case ZEUS:
                 gateway = true;
                 needSeconds = 180;
                 break;
-            default :
+            default:
                 gateway = false;
                 needSeconds = 0;
         }
-        
-        needPower = needSeconds*Computer.CPUS_POWER[1];
-        
+
+        needPower = needSeconds * Computer.CPUS_POWER[1];
+
     }
-    
+
     public void hackThis() {
-        
+
         try {
             Util.setStyle();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(Protect.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Thread myThready = new Thread( () -> {
+        Thread myThready = new Thread(() -> {
             MiniHacknet mh;
             mh = new MiniHacknet();
             mh.setVisible(true);
-            
+
             switch (type) {
                 case ALPHA:
                     break;
@@ -137,9 +138,9 @@ public class Protect implements Serializable {
                 default:
                     throw new Error("Protect.hack.switch:default!!!");
             }
-            
-            mh.print("Complete hack of "+printThis());
-            hacknet.print("Complete hack of "+printThis());
+
+            mh.print("Complete hack of " + printThis());
+            hacknet.print("Complete hack of " + printThis());
             open = true;
             try {
                 sleep(1_500);
@@ -150,28 +151,28 @@ public class Protect implements Serializable {
         });
         myThready.start();
     }
-    
+
     public String printThis() {
-        switch(type) {
-            case ALPHA :
+        switch (type) {
+            case ALPHA:
                 return "Alpha";
-            case ANTIHACK :
+            case ANTIHACK:
                 return "Antihack";
-            case ELLO :
+            case ELLO:
                 return "Ello";
-            case FIREWALL :
+            case FIREWALL:
                 return "Firewall";
-            case PROTE :
+            case PROTE:
                 return "Prote";
-            case PROXY :
+            case PROXY:
                 return "Proxy";
-            case SPRO :
+            case SPRO:
                 return "SPro";
-            case ZEUS :
+            case ZEUS:
                 return "Zeus";
-            default :
+            default:
                 return "Unknown type";
         }
     }
-    
+
 }
