@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack;
+package hack.gui;
 
+import hack.Contract;
+import hack.User;
 import java.util.ArrayList;
 
 /**

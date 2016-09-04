@@ -5,6 +5,7 @@
  */
 package hack;
 
+import hack.gui.MiniHacknet;
 import java.io.Serializable;
 import static java.lang.System.exit;
 import static java.lang.Thread.sleep;

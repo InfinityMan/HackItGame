@@ -5,6 +5,9 @@
  */
 package hack;
 
+import hack.gui.AuthWindow;
+import hack.gui.ContractsList;
+import hack.gui.AdminWindow;
 import static hack.User.load;
 import static java.awt.EventQueue.invokeLater;
 import java.awt.HeadlessException;

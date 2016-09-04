@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack;
+package hack.gui;
 
+import hack.User;
 import ru.epiclib.base.Base;
 
 /**
