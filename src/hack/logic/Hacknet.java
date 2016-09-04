@@ -103,10 +103,16 @@ public final class Hacknet extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             System.out.println("0");
         }
-
-        invokeLater(() -> {
-            new Hacknet().setVisible(true);
+        
+        Thread main = new Thread(() -> {
+            Hacknet hacknet = new Hacknet();
+            hacknet.setVisible(true);
         });
+        main.start();
+
+//        invokeLater(() -> {
+//            new Hacknet().setVisible(true);
+//        });
 
     }
 
@@ -669,13 +675,7 @@ public final class Hacknet extends javax.swing.JFrame {
         Computer target = null;
 
         print("Connecting...");
-
-        /*try {
-        Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-        System.err.println("Problem Prg.");
-        System.exit(1);
-        }*/
+        
         for (int i = 0; i < computers.size(); i++) {
             Computer get = computers.get(i);
             if (get.ip.equals(ip)) {
