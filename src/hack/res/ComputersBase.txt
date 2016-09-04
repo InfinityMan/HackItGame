@@ -28,3 +28,11 @@
 5,Indel,Inl
 0,AlinaFashion,AF
 1,Giftio,Gft
+0,Colt,Clt
+3,Difi,Df
+4,Jeti,Jet
+3,TiPi,TP
+0,AdDcE,ADE
+2,Ajet,Aj
+4,Wise,Ws
+1,Sed,Sd
