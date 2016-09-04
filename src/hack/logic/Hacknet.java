@@ -9,6 +9,7 @@ import hack.gui.AuthWindow;
 import hack.gui.ContractsList;
 import hack.gui.AdminWindow;
 import static hack.logic.User.load;
+import hack.res.Link;
 import static java.awt.EventQueue.invokeLater;
 import java.awt.HeadlessException;
 import static java.awt.event.KeyEvent.VK_ENTER;
@@ -64,34 +65,28 @@ public final class Hacknet extends javax.swing.JFrame {
     }
 
     public static void updateBase() {
+        
         try {
             FileWorker.delete("CompsDataBase.comps");
         } catch (FileNotFoundException ex) {
         }
+        
+        String allComps = "";
+        try {
+            allComps = new Link().readRes("ComputersBase.txt");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Not loaded computers", "Error", JOptionPane.ERROR_MESSAGE);
+            exit(1);
+        }
+        
         ArrayList<Computer> cmrs = new ArrayList<>();
-        cmrs.add(new Computer(4, "Crystal", "Crys"));
-        cmrs.add(new Computer(1, "Red", "Red"));
-        cmrs.add(new Computer(5, "Mios", "Mi"));
-        cmrs.add(new Computer(2, "Hato", "Hato"));
-        cmrs.add(new Computer(0, "Andre", "An"));
-        cmrs.add(new Computer(3, "Bino", "Bin"));
-        cmrs.add(new Computer(1, "Fero", "Fer"));
-        cmrs.add(new Computer(2, "Kir", "Kir"));
-        cmrs.add(new Computer(0, "Ivan", "Ivan"));
-        cmrs.add(new Computer(4, "Mirt", "Mirt"));
-        cmrs.add(new Computer(2, "Fios", "Fios"));
-        cmrs.add(new Computer(1, "Alt", "Alt"));
-        cmrs.add(new Computer(3, "Steos", "Ste"));
-        cmrs.add(new Computer(5, "Goegle", "Gog"));
-        cmrs.add(new Computer(0, "Tea", "Tea"));
-        cmrs.add(new Computer(3, "Books", "Bok"));
-        cmrs.add(new Computer(1, "School №463", "S463"));
-        cmrs.add(new Computer(5, "Cybero", "Cbr"));
-        cmrs.add(new Computer(4, "Litera", "Lit"));
-        cmrs.add(new Computer(2, "Panda", "Pnd"));
-        cmrs.add(new Computer(5, "Stim", "Stm"));
-        cmrs.add(new Computer(3, "Deos", "Des"));
-        cmrs.add(new Computer(2, "Kieon", "Kin"));
+        String[] comps = allComps.split("\n");
+        for (int i = 0; i < comps.length; i++) {
+            String comp = comps[i];
+            String[] params = comp.split(",");
+            cmrs.add(new Computer(Base.stringToInt(params[0]), params[1], params[2]));
+        }
+        
         Base.serData("CompsDataBase.comps", cmrs);
     }
 
