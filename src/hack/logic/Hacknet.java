@@ -12,6 +12,7 @@ import static hack.logic.User.load;
 import hack.res.Link;
 import static java.awt.EventQueue.invokeLater;
 import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -43,6 +44,8 @@ public final class Hacknet extends javax.swing.JFrame {
     public boolean loaded = false;
     public boolean debug = false;
 
+    private String lastCommand = "";
+
     /**
      *
      * @param args
@@ -65,12 +68,13 @@ public final class Hacknet extends javax.swing.JFrame {
     }
 
     public static void updateBase() {
-        
+
         try {
             FileWorker.delete("CompsDataBase.comps");
         } catch (FileNotFoundException ex) {
         }
-        
+
+        @SuppressWarnings("UnusedAssignment")
         String allComps = "";
         try {
             allComps = new Link().readRes("ComputersBase.txt");
@@ -78,15 +82,14 @@ public final class Hacknet extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Not loaded computers", "Error", JOptionPane.ERROR_MESSAGE);
             exit(1);
         }
-        
+
         ArrayList<Computer> cmrs = new ArrayList<>();
         String[] comps = allComps.split("\n");
-        for (int i = 0; i < comps.length; i++) {
-            String comp = comps[i];
+        for (String comp : comps) {
             String[] params = comp.split(",");
             cmrs.add(new Computer(Base.stringToInt(params[0]), params[1], params[2]));
         }
-        
+
         Base.serData("CompsDataBase.comps", cmrs);
     }
 
@@ -98,7 +101,7 @@ public final class Hacknet extends javax.swing.JFrame {
         try {
             Util.setStyle();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(Hacknet.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("0");
         }
 
         invokeLater(() -> {
@@ -235,7 +238,7 @@ public final class Hacknet extends javax.swing.JFrame {
             print("Save files are not finded : Register");
             registerUser();
             print("User successfully registered");
-            LOG.log(Level.WARNING, "IOException of load : " + ex.getMessage());
+            LOG.log(Level.WARNING, "IOException of load : {0}", ex.getMessage());
         }
         loaded = true;
         LOG.log(Level.INFO, "Hacknet inited");
@@ -254,7 +257,7 @@ public final class Hacknet extends javax.swing.JFrame {
         }
         pass = tmp2;
         user = new User(name, pass, 0, 0);
-        LOG.log(Level.INFO, "User successfully registered with name \"" + name + "\" and pass \"" + pass + "\"");
+        LOG.log(Level.INFO, "User successfully registered with name \"{0}\" and pass \"{1}\"", new Object[]{name, pass});
     }
 
     private void CommandTypeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CommandTypeKeyPressed
@@ -262,8 +265,9 @@ public final class Hacknet extends javax.swing.JFrame {
 
             String commandAll = CommandType.getText();
             print("> " + commandAll);
-            LOG.log(Level.INFO, "User command > " + commandAll);
+            LOG.log(Level.INFO, "User command > {0}", commandAll);
             CommandType.setText("");
+            lastCommand = commandAll;
 
             String[] command = commandAll.split(" ");
 
@@ -275,6 +279,8 @@ public final class Hacknet extends javax.swing.JFrame {
                 print("You need init the device");
             }
 
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            CommandType.setText(lastCommand);
         }
     }//GEN-LAST:event_CommandTypeKeyPressed
 
@@ -282,7 +288,7 @@ public final class Hacknet extends javax.swing.JFrame {
         if (command[0].equalsIgnoreCase("mail")) {
             mail();
         } else if (command[0].startsWith("connect")) {
-            LOG.log(Level.INFO, "User try connect to " + command[1]);
+            LOG.log(Level.INFO, "User try connect to {0}", command[1]);
             connect(command[1]);
         } else if (command[0].equalsIgnoreCase("scan")) {
             LOG.log(Level.INFO, "User scan the computer");
@@ -299,7 +305,7 @@ public final class Hacknet extends javax.swing.JFrame {
             currentTarget.aw = aw;
         } else if (command[0].startsWith("hack")) {
             if (command.length >= 2) {
-                LOG.log(Level.INFO, "User want hack " + command[1]);
+                LOG.log(Level.INFO, "User want hack {0}", command[1]);
                 hack(command[1]);
             } else {
                 print("No found subject; type hack [tagret]");
