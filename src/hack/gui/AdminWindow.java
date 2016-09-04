@@ -5,7 +5,7 @@
  */
 package hack.gui;
 
-import hack.User;
+import hack.logic.User;
 import ru.epiclib.base.Base;
 
 /**

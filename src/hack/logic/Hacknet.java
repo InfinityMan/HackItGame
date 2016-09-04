@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack;
+package hack.logic;
 
 import hack.gui.AuthWindow;
 import hack.gui.ContractsList;
 import hack.gui.AdminWindow;
-import static hack.User.load;
+import static hack.logic.User.load;
 import static java.awt.EventQueue.invokeLater;
 import java.awt.HeadlessException;
 import static java.awt.event.KeyEvent.VK_ENTER;
@@ -62,6 +62,37 @@ public final class Hacknet extends javax.swing.JFrame {
         
         initComponents();
         
+    }
+    
+    public static void updateBase() {
+        try {
+            FileWorker.delete("CompsDataBase.comps");
+        } catch (FileNotFoundException ex) {}
+        ArrayList<Computer> cmrs = new ArrayList<>();
+        cmrs.add(new Computer(4, "Crystal", "Crys"));
+        cmrs.add(new Computer(1, "Red", "Red"));
+        cmrs.add(new Computer(5, "Mios", "Mi"));
+        cmrs.add(new Computer(2, "Hato", "Hato"));
+        cmrs.add(new Computer(0, "Andre", "An"));
+        cmrs.add(new Computer(3, "Bino", "Bin"));
+        cmrs.add(new Computer(1, "Fero", "Fer"));
+        cmrs.add(new Computer(2, "Kir", "Kir"));
+        cmrs.add(new Computer(0, "Ivan", "Ivan"));
+        cmrs.add(new Computer(4, "Mirt", "Mirt"));
+        cmrs.add(new Computer(2, "Fios", "Fios"));
+        cmrs.add(new Computer(1, "Alt", "Alt"));
+        cmrs.add(new Computer(3, "Steos", "Ste"));
+        cmrs.add(new Computer(5, "Goegle", "Gog"));
+        cmrs.add(new Computer(0, "Tea", "Tea"));
+        cmrs.add(new Computer(3, "Books", "Bok"));
+        cmrs.add(new Computer(1, "School №463", "S463"));
+        cmrs.add(new Computer(5, "Cybero", "Cbr"));
+        cmrs.add(new Computer(4, "Litera", "Lit"));
+        cmrs.add(new Computer(2, "Panda", "Pnd"));
+        cmrs.add(new Computer(5, "Stim", "Stm"));
+        cmrs.add(new Computer(3, "Deos", "Des"));
+        cmrs.add(new Computer(2, "Kieon", "Kin"));
+        Base.serData("CompsDataBase.comps", cmrs);
     }
     
     /**
@@ -199,7 +230,7 @@ public final class Hacknet extends javax.swing.JFrame {
             LOG.log(Level.INFO, "User successfully loaded");
         } catch (IOException ex) {
             //user = new User("Dmig", "*******", 180, 17);
-            util.updateBase();
+            updateBase();
             try {
                 this.computers = (ArrayList<Computer>) deserData("CompsDataBase.comps");
             } catch (IOException e) {

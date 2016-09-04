@@ -5,8 +5,8 @@
  */
 package hack.gui;
 
-import hack.Contract;
-import hack.User;
+import hack.logic.Contract;
+import hack.logic.User;
 import java.util.ArrayList;
 
 /**
