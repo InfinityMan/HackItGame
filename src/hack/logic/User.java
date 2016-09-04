@@ -19,7 +19,7 @@ import static ru.epiclib.base.Base.stringToInt;
 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 4L;
+    private static final long serialVersionUID = 5L;
 
     //computer:
     public ArrayList<Software> soft;
@@ -41,7 +41,8 @@ public class User implements Serializable {
     public ArrayList<Contract> availableContracts;
     public ArrayList<Contract> currentContracts;
 
-    private double money = 0;
+    public ArrayList<BankAccount> accounts;
+    public int currentMainAccount = 0;
 
     /**
      * @return the powerCPU
@@ -81,18 +82,6 @@ public class User implements Serializable {
     public void setIp(String ip) {
         if (ip.length() == 5) {
             this.ip = ip;
-        }
-    }
-
-    public double getMoney() {
-        return money;
-    }
-
-    public void setMoney(double money) {
-        if (money >= 0) {
-            this.money = money;
-        } else {
-            throw new IllegalArgumentException();
         }
     }
 
@@ -170,6 +159,10 @@ public class User implements Serializable {
 
         availableContracts = new ArrayList<>();
         currentContracts = new ArrayList<>();
+        accounts = new ArrayList<>();
+        
+        accounts.add(new BankAccount("Main"));
+        accounts.get(0).addMoney(1000d);
     }
 
     public static User load(Hacknet hacknet) throws IOException {

@@ -319,6 +319,12 @@ public final class Hacknet extends javax.swing.JFrame {
             loadUser();
         } else if (command[0].equalsIgnoreCase("admin")) {
             admin();
+        } else if (command[0].equalsIgnoreCase("money")) {
+            print("Your accounts: ");
+            for (int i = 0; i < user.accounts.size(); i++) {
+                BankAccount get = user.accounts.get(i);
+                print(" #" + i + " : " + get.getName() + " " + get.getId() + " " + get.getMoney() + "c \n");
+            }
         } else if (command[0].equalsIgnoreCase("exit")) {
             LOG.log(Level.INFO, "User exit from game");
             dc();
@@ -372,7 +378,7 @@ public final class Hacknet extends javax.swing.JFrame {
                                     + " Contract task difficulty: " + completedCon.getPriceOfContract()[0] + "\n"
                                     + " Computer hack difficulty: " + completedCon.getPriceOfContract()[1]);
                             double allMoney = completedCon.getPriceOfContract()[0] + completedCon.getPriceOfContract()[1];
-                            user.setMoney(user.getMoney() + allMoney);
+                            user.accounts.get(user.currentMainAccount).addMoney(allMoney);
                             user.currentContracts.remove(completedCon);
                             awarded = true;
                         } else {

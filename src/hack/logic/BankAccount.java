@@ -5,13 +5,16 @@
  */
 package hack.logic;
 
+import java.io.Serializable;
 import ru.epiclib.base.Base;
 
 /**
  *
  * @author Dima
  */
-public class BankAccount {
+public class BankAccount implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
 
     private String id;
     private String name;

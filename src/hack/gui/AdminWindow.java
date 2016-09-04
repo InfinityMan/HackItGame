@@ -92,7 +92,7 @@ public class AdminWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_addExpActionPerformed
 
     private void addMoneyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMoneyActionPerformed
-        user.setMoney(user.getMoney() + Base.stringToInt(money.getText()));
+        user.accounts.get(user.currentMainAccount).addMoney(Base.stringToDouble(money.getText()));
     }//GEN-LAST:event_addMoneyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
