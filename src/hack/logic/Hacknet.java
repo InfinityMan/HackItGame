@@ -33,7 +33,7 @@ import ru.epiclib.logging.Logging;
  */
 public final class Hacknet extends javax.swing.JFrame {
 
-    public static final String GAME_VERSION = "0.4a";
+    public static final String GAME_VERSION = "0.6";
 
     public User user;
 
@@ -425,32 +425,7 @@ public final class Hacknet extends javax.swing.JFrame {
                     user.currentMainAccount = Base.stringToInt(command[2]);
                 } else if (command.length > 4) {
                     if (command[1].equalsIgnoreCase("transfer")) {
-                        int[] ids = new int[user.accounts.size()];
-                        boolean a = false, b = false;
-                        for (int i = 0; i < user.accounts.size(); i++) {
-                            ids[i] = i;
-                        }
-                        for (int i = 0; i < ids.length; i++) {
-                            if (Base.stringToInt(command[2]) == ids[i]) {
-                                a = true;
-                            }
-                        }
-                        for (int i = 0; i < ids.length; i++) {
-                            if (Base.stringToInt(command[3]) == ids[i]) {
-                                b = true;
-                            }
-                        }
-                        if (a && b) {
-                            if (user.accounts.get(Base.stringToInt(command[2])).getMoney() > Base.stringToDouble(command[4])) {
-                                user.accounts.get(Base.stringToInt(command[3])).addMoney(Base.stringToDouble(command[4]));
-                                user.accounts.get(Base.stringToInt(command[2])).rmMoney(Base.stringToDouble(command[4]));
-                                print("Operation completed successfully");
-                            } else {
-                                print("Not enough credits");
-                            }
-                        } else {
-                            print("Invalid ids of accounts");
-                        }
+                        moneyTransfer(command);
                     }
                 }
             } else {
@@ -468,6 +443,35 @@ public final class Hacknet extends javax.swing.JFrame {
             }
         } catch (NumberFormatException ex) {
             print("Please use a numbers (you can read about this command >help cmd");
+        }
+    }
+
+    private void moneyTransfer(String[] command) throws NumberFormatException {
+        int[] ids = new int[user.accounts.size()];
+        boolean a = false, b = false;
+        for (int i = 0; i < user.accounts.size(); i++) {
+            ids[i] = i;
+        }
+        for (int i = 0; i < ids.length; i++) {
+            if (Base.stringToInt(command[2]) == ids[i]) {
+                a = true;
+            }
+        }
+        for (int i = 0; i < ids.length; i++) {
+            if (Base.stringToInt(command[3]) == ids[i]) {
+                b = true;
+            }
+        }
+        if (a && b) {
+            if (user.accounts.get(Base.stringToInt(command[2])).getMoney() > Base.stringToDouble(command[4])) {
+                user.accounts.get(Base.stringToInt(command[3])).addMoney(Base.stringToDouble(command[4]));
+                user.accounts.get(Base.stringToInt(command[2])).rmMoney(Base.stringToDouble(command[4]));
+                print("Operation completed successfully");
+            } else {
+                print("Not enough credits");
+            }
+        } else {
+            print("Invalid ids of accounts");
         }
     }
 
