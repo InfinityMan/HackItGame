@@ -103,7 +103,7 @@ public final class Hacknet extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             System.out.println("0");
         }
-        
+
         Thread main = new Thread(() -> {
             Hacknet hacknet = new Hacknet();
             hacknet.setVisible(true);
@@ -113,7 +113,6 @@ public final class Hacknet extends javax.swing.JFrame {
 //        invokeLater(() -> {
 //            new Hacknet().setVisible(true);
 //        });
-
     }
 
     /**
@@ -242,15 +241,48 @@ public final class Hacknet extends javax.swing.JFrame {
             }
 
             print("Save files are not finded : Register");
-            registerUser();
+            registerUser(getPlates());
             print("User successfully registered");
             LOG.log(Level.WARNING, "IOException of load : {0}", ex.getMessage());
         }
         loaded = true;
         LOG.log(Level.INFO, "Hacknet inited");
     }
+    
+    private Plate[] getPlates() {
+        
+        ArrayList<Plate> plates = new ArrayList<>();
 
-    private void registerUser() throws HeadlessException {
+        String allPlates = "";
+        
+        try {
+            allPlates = new Link().readRes("Plates.txt");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Not loaded plates; exit from game");
+            exit(1);
+        }
+        
+        String[] platesStr = allPlates.split("\n");
+        
+        for (int i = 0; i < platesStr.length; i++) {
+            String[] params = platesStr[i].split(",");
+            int[] tempParams = new int[6];
+            for (int j = 0; j < tempParams.length; j++) {
+                tempParams[j] = Base.stringToInt(params[j]);
+            }
+            plates.add(new Plate(tempParams[0], tempParams[1], tempParams[2], tempParams[3], tempParams[4], tempParams[5], Base.stringToDouble(params[6]), params[7], Base.stringToInt(params[8])));
+        }
+        
+        Plate[] platesRet = new Plate[plates.size()];
+        
+        for (int i = 0; i < plates.size(); i++) {
+            platesRet[i] = plates.get(i);
+        }
+        
+        return platesRet;
+    }
+
+    private void registerUser(Plate[] plates) throws HeadlessException {
         String name, pass;
         String tmp1 = JOptionPane.showInputDialog(null, "Enter your nickname", "Registration", JOptionPane.QUESTION_MESSAGE);
         while (tmp1.length() < 1) {
@@ -262,7 +294,7 @@ public final class Hacknet extends javax.swing.JFrame {
             tmp2 = JOptionPane.showInputDialog(null, "Enter your password", "Registration", JOptionPane.QUESTION_MESSAGE);
         }
         pass = tmp2;
-        user = new User(name, pass, 0, 0);
+        user = new User(name, pass, 0, 0, plates);
         LOG.log(Level.INFO, "User successfully registered with name \"{0}\" and pass \"{1}\"", new Object[]{name, pass});
     }
 
@@ -294,8 +326,12 @@ public final class Hacknet extends javax.swing.JFrame {
         if (command[0].equalsIgnoreCase("mail")) {
             mail();
         } else if (command[0].startsWith("connect")) {
-            LOG.log(Level.INFO, "User try connect to {0}", command[1]);
-            connect(command[1]);
+            if (currentTarget == null) {
+                LOG.log(Level.INFO, "User try connect to {0}", command[1]);
+                connect(command[1]);
+            } else {
+                print("You need to disconnect from current computer");
+            }
         } else if (command[0].equalsIgnoreCase("scan")) {
             LOG.log(Level.INFO, "User scan the computer");
             print(currentTarget.printScan());
@@ -328,11 +364,7 @@ public final class Hacknet extends javax.swing.JFrame {
         } else if (command[0].equalsIgnoreCase("money")) {
             money(command);
         } else if (command[0].equalsIgnoreCase("exit")) {
-            LOG.log(Level.INFO, "User exit from game");
-            dc();
-            user.save();
-            Base.serData("CompsDataBase.comps", computers);
-            exit(0);
+            userExit();
         } else if (command[0].equalsIgnoreCase("stats")) {
             LOG.log(Level.INFO, "User want know his stats");
             print(user.print());
@@ -343,20 +375,7 @@ public final class Hacknet extends javax.swing.JFrame {
         } else if (command[0].equalsIgnoreCase("mission")) {
             genMission();
         } else if (command[0].equalsIgnoreCase("files")) {
-//            for (int i = 0; i < currentTarget.sizeOfListFiles(); i++) {
-//                print(currentTarget.getFile(i));
-//            }
-            if (currentTarget != null) {
-                Thread myThready = new Thread(() -> {
-                    ListGUI c = new ListGUI(currentTarget, user);
-                    c.setList();
-                    c.setVisible(true);
-                });
-                myThready.start();
-            } else {
-                print("No target");
-            }
-
+            files();
         } else if (command[0].equalsIgnoreCase("logs")) {
             if (!currentTarget.listOfLog.isEmpty()) {
                 currentTarget.listOfLog.entrySet().stream().forEach((en) -> {
@@ -370,79 +389,115 @@ public final class Hacknet extends javax.swing.JFrame {
         } else if (command[0].equalsIgnoreCase("reset")) {
             reset();
         } else if (command[0].equalsIgnoreCase("help")) {
-            if(command[1].equalsIgnoreCase("cmd")) {
-                print("(Current version of game is "+GAME_VERSION + ")");
-                String allHelp = "";
-                try {
-                    allHelp = new Link().readRes("HelpCmd.txt");
-                } catch (IOException ex) {
-                    Logger.getLogger(Hacknet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                String[] help = allHelp.split("\n");
-                for (String help1 : help) {
-                    print("  "+help1);
-                }
-                print("End of help");
-            }
+            help(command);
         } else if (command[0].equalsIgnoreCase("dc")) {
             dc();
-        } else if (command[0].startsWith("com")) {
-            try {
-                boolean awarded = false;
-                int userNumber = Base.stringToInt(command[1]);
-                int[] currentContractsIds = new int[user.currentContracts.size()];
-                for (int i = 0; i < user.currentContracts.size(); i++) {
-                    Contract get = user.currentContracts.get(i);
-                    currentContractsIds[i] = get.id;
-                }
-                for (int i = 0; i < currentContractsIds.length; i++) {
-                    int currentContractId = currentContractsIds[i];
-                    if (currentContractId == userNumber) {
-                        if (user.searchForId(userNumber).isComplited()) {
-                            Contract completedCon = user.searchForId(Base.stringToInt(command[1]));
-                            print("You successfully completed a contract #" + command[1] + ", your award:\n"
-                                    + " Contract task difficulty: " + completedCon.getPriceOfContract()[0] + "\n"
-                                    + " Computer hack difficulty: " + completedCon.getPriceOfContract()[1]);
-                            double allMoney = completedCon.getPriceOfContract()[0] + completedCon.getPriceOfContract()[1];
-                            user.accounts.get(user.currentMainAccount).addMoney(allMoney);
-                            user.currentContracts.remove(completedCon);
-                            awarded = true;
-                        } else {
-                            print("You dont complete the mission");
-                        }
-                        break;
-                    }
-                }
-                if (!awarded) {
-                    print("Invalid number, check the missions page");
-                }
-            } catch (NumberFormatException ex) {
-                print("Oh, please enter a number");
-            }
-
+        } else if (command[0].startsWith("finish")) {
+            finishContract(command);
         } else if (command[0].equalsIgnoreCase("virus")) {
-            if (currentTarget.hacked) {
-                Thread tmpThread = new Thread(() -> {
-                    try {
-                        print("Start virusing device...\n Copy from disk...");
-                        Thread.sleep(1700);
-                        print("Complited\nUpload to target...");
-                        Thread.sleep(3000);
-                        print("Complited\nLaunching...");
-                        Thread.sleep(2100);
-                        print("Complited. Computer successfully virused");
-                        currentTarget.virused = true;
-                    } catch (InterruptedException ex) {
-                        System.err.println(ex);
-                        System.exit(1);
-                    }
-                });
-                tmpThread.start();
-            } else {
-                print("You need admin access");
-            }
+            virusTarget();
         } else {
             print("Invalid command");
+        }
+    }
+
+    private void userExit() {
+        LOG.log(Level.INFO, "User exit from game");
+        dc();
+        user.save();
+        Base.serData("CompsDataBase.comps", computers);
+        exit(0);
+    }
+
+    private void files() {
+        if (currentTarget != null) {
+            if (currentTarget.hacked) {
+                Thread myThready = new Thread(() -> {
+                    ListGUI c = new ListGUI(currentTarget, user);
+                    c.setList();
+                    c.setVisible(true);
+                });
+                myThready.start();
+            } else {
+                print("Computer is not hacked");
+            }
+        } else {
+            print("No target");
+        }
+    }
+
+    private void help(String[] command) {
+        if (command[1].equalsIgnoreCase("cmd")) {
+            print("(Current version of game is " + GAME_VERSION + ")");
+            String allHelp = "";
+            try {
+                allHelp = new Link().readRes("HelpCmd.txt");
+            } catch (IOException ex) {
+                Logger.getLogger(Hacknet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String[] help = allHelp.split("\n");
+            for (String help1 : help) {
+                print("  " + help1);
+            }
+            print("End of help");
+        }
+    }
+
+    private void virusTarget() {
+        if (currentTarget.hacked) {
+            Thread tmpThread = new Thread(() -> {
+                try {
+                    print("Start virusing device...\n Copy from disk...");
+                    Thread.sleep(1700);
+                    print("Complited\nUpload to target...");
+                    Thread.sleep(3000);
+                    print("Complited\nLaunching...");
+                    Thread.sleep(2100);
+                    print("Complited. Computer successfully virused");
+                    currentTarget.virused = true;
+                } catch (InterruptedException ex) {
+                    System.err.println(ex);
+                    System.exit(1);
+                }
+            });
+            tmpThread.start();
+        } else {
+            print("You need admin access");
+        }
+    }
+
+    private void finishContract(String[] command) {
+        try {
+            boolean awarded = false;
+            int userNumber = Base.stringToInt(command[1]);
+            int[] currentContractsIds = new int[user.currentContracts.size()];
+            for (int i = 0; i < user.currentContracts.size(); i++) {
+                Contract get = user.currentContracts.get(i);
+                currentContractsIds[i] = get.id;
+            }
+            for (int i = 0; i < currentContractsIds.length; i++) {
+                int currentContractId = currentContractsIds[i];
+                if (currentContractId == userNumber) {
+                    if (user.searchForId(userNumber).isComplited()) {
+                        Contract completedCon = user.searchForId(Base.stringToInt(command[1]));
+                        print("You successfully completed a contract #" + command[1] + ", your award:\n"
+                                + " Contract task difficulty: " + completedCon.getPriceOfContract()[0] + "\n"
+                                + " Computer hack difficulty: " + completedCon.getPriceOfContract()[1]);
+                        double allMoney = completedCon.getPriceOfContract()[0] + completedCon.getPriceOfContract()[1];
+                        user.accounts.get(user.currentMainAccount).addMoney(allMoney);
+                        user.currentContracts.remove(completedCon);
+                        awarded = true;
+                    } else {
+                        print("You dont complete the mission");
+                    }
+                    break;
+                }
+            }
+            if (!awarded) {
+                print("Invalid number, check the missions page");
+            }
+        } catch (NumberFormatException ex) {
+            print("Oh, please enter a number");
         }
     }
 
@@ -493,7 +548,7 @@ public final class Hacknet extends javax.swing.JFrame {
             }
         }
         if (a && b) {
-            if (user.accounts.get(Base.stringToInt(command[2])).getMoney() > Base.stringToDouble(command[4])) {
+            if (user.accounts.get(Base.stringToInt(command[2])).getMoney() >= Base.stringToDouble(command[4])) {
                 user.accounts.get(Base.stringToInt(command[3])).addMoney(Base.stringToDouble(command[4]));
                 user.accounts.get(Base.stringToInt(command[2])).rmMoney(Base.stringToDouble(command[4]));
                 print("Operation completed successfully");
@@ -514,7 +569,7 @@ public final class Hacknet extends javax.swing.JFrame {
     }
 
     private void reset() {
-        user = new User("Dmig", "*******", 0, 0);
+        user = new User("Dmig", "*******", 0, 0, getPlates());
         try {
             FileWorker.delete("hAcKsave.hsf");
         } catch (FileNotFoundException ex) {
