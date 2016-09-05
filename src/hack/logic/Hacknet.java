@@ -369,8 +369,21 @@ public final class Hacknet extends javax.swing.JFrame {
             }
         } else if (command[0].equalsIgnoreCase("reset")) {
             reset();
-        } else if (command[0].equalsIgnoreCase("rm")) {
-            rm(command[1]);
+        } else if (command[0].equalsIgnoreCase("help")) {
+            if(command[1].equalsIgnoreCase("cmd")) {
+                print("(Current version of game is "+GAME_VERSION + ")");
+                String allHelp = "";
+                try {
+                    allHelp = new Link().readRes("HelpCmd.txt");
+                } catch (IOException ex) {
+                    Logger.getLogger(Hacknet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                String[] help = allHelp.split("\n");
+                for (String help1 : help) {
+                    print("  "+help1);
+                }
+                print("End of help");
+            }
         } else if (command[0].equalsIgnoreCase("dc")) {
             dc();
         } else if (command[0].startsWith("com")) {
@@ -522,28 +535,6 @@ public final class Hacknet extends javax.swing.JFrame {
             print("AntiHack no finded");
         }
         return have;
-    }
-
-    public void rm(String file) {
-        if (currentTarget != null) {
-            if (currentTarget.hacked) {
-                if (!file.equals("*")) {
-                    if (currentTarget.hasFile(file)) {
-                        if (currentTarget.rmFile(file, user.getIp())) {
-                            print("File " + file + " deleted");
-                        } else {
-                            print("Super error");
-                        }
-                    } else {
-                        print("Oh, file is not exits");
-                    }
-                } else {
-                    currentTarget.rmAllFiles();
-                }
-            } else {
-                print("Computer is not hacked");
-            }
-        }
     }
 
     /**
