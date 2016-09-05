@@ -44,6 +44,20 @@ public final class Computer implements Serializable {
     public HashMap<Integer, Log> listOfLog;
 
     //--------------------------------------------------------------------------
+    
+    public String[] getFileArray() {
+
+        String[] ret = new String[files.size()];
+
+        for (int i = 0; i < files.size(); i++) {
+            String get = files.get(i);
+            ret[i] = get;
+        }
+
+        return ret;
+
+    }
+    
     public void addToFilesList(String str) {
         files.add(str);
     }

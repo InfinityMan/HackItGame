@@ -8,9 +8,9 @@ package hack.logic;
 import hack.gui.AuthWindow;
 import hack.gui.ContractsList;
 import hack.gui.AdminWindow;
+import hack.gui.ListGUI;
 import static hack.logic.User.load;
 import hack.res.Link;
-import static java.awt.EventQueue.invokeLater;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
@@ -343,9 +343,20 @@ public final class Hacknet extends javax.swing.JFrame {
         } else if (command[0].equalsIgnoreCase("mission")) {
             genMission();
         } else if (command[0].equalsIgnoreCase("files")) {
-            for (int i = 0; i < currentTarget.sizeOfListFiles(); i++) {
-                print(currentTarget.getFile(i));
+//            for (int i = 0; i < currentTarget.sizeOfListFiles(); i++) {
+//                print(currentTarget.getFile(i));
+//            }
+            if (currentTarget != null) {
+                Thread myThready = new Thread(() -> {
+                    ListGUI c = new ListGUI(currentTarget, user);
+                    c.setList();
+                    c.setVisible(true);
+                });
+                myThready.start();
+            } else {
+                print("No target");
             }
+
         } else if (command[0].equalsIgnoreCase("logs")) {
             if (!currentTarget.listOfLog.isEmpty()) {
                 currentTarget.listOfLog.entrySet().stream().forEach((en) -> {
@@ -675,7 +686,7 @@ public final class Hacknet extends javax.swing.JFrame {
         Computer target = null;
 
         print("Connecting...");
-        
+
         for (int i = 0; i < computers.size(); i++) {
             Computer get = computers.get(i);
             if (get.ip.equals(ip)) {
