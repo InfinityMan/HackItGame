@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.logic;
+package hack.logic.hardware;
+
+import java.io.Serializable;
 
 /**
  *
  * @author Dima
  */
-public class HardwareModule {
-    //To ram and another
+public class RamModule extends HardwareModule implements Serializable {
+    
 }
