@@ -21,7 +21,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 6L;
     
-    private static Plate[] PLATES;
+    public static Plate[] PLATES;
 
     //computer:
     public ArrayList<Software> soft;
@@ -173,6 +173,7 @@ public class User implements Serializable {
         accounts.get(0).addMoney(1000d);
         
         PLATES = plates;
+        plate = PLATES[0];
     }
 
     public static User load(Hacknet hacknet) throws IOException {
@@ -299,6 +300,16 @@ public class User implements Serializable {
             return "No current missions";
         }
     }
+
+    public Plate getPlate() {
+        return plate;
+    }
+
+    public void setPlate(Plate plate) {
+        this.plate = plate;
+    }
+    
+    
 
     private static final Logger LOG = Logger.getLogger(User.class.getName());
 

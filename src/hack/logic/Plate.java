@@ -103,4 +103,11 @@ public class Plate implements Serializable {
         return price;
     }
 
+    @Override
+    public String toString() {
+        return "Plate{" + "name=" + name + ", power=" + power + ", os=" + os + ", price=" + price + ", cpus=" + cpus.length + ", uprgCpus=" + uprgCpus.length + ", ramDDR3=" + ramDDR3.length + ", ramDDR4=" + ramDDR4.length + ", hardDrive=" + hardDrive.length + ", internet=" + internet.length + '}';
+    }
+    
+    
+
 }

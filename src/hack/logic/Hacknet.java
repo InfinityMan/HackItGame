@@ -372,6 +372,8 @@ public final class Hacknet extends javax.swing.JFrame {
             //test command
         } else if (command[0].equalsIgnoreCase("missions")) {
             missions();
+        } else if (command[0].equalsIgnoreCase("compinfo")) {
+            print(user.getPlate().toString());
         } else if (command[0].equalsIgnoreCase("mission")) {
             genMission();
         } else if (command[0].equalsIgnoreCase("files")) {
