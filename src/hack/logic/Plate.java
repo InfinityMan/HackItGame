@@ -13,14 +13,31 @@ import java.io.Serializable;
  */
 public class Plate implements Serializable {
     
+    private static final long serialVersionUID = 1L;
+    
     public final String name;
     
     private int[] cpus;
-    private int[] ram;
+    private int[] uprgCpus;
     
-    public Plate(int cpusNumber, int ramNumber, String name) {
-        cpus = new int[cpusNumber];
-        ram = new int[ramNumber];
+    private int[] ramDDR3;
+    private int[] ramDDR4;
+    
+    private int[] hardDrive;
+    
+    private int[] internet;
+    
+    private double price;
+    
+    public Plate(int cpusNum, int uprgCpusNum, int ram3Num, int ram4Num, int hardNum, int intNum, double price, String name) {
+        cpus = new int[cpusNum];
+        uprgCpus = new int[uprgCpusNum];
+        
+        ramDDR3 = new int[ram3Num];
+        ramDDR4 = new int[ram4Num];
+        
+        hardDrive = new int[hardNum];
+        internet = new int[intNum];
         
         this.name = name;
     }
@@ -33,14 +50,44 @@ public class Plate implements Serializable {
         this.cpus = cpus;
     }
 
-    public int[] getRam() {
-        return ram;
+    public int[] getUprgCpus() {
+        return uprgCpus;
     }
 
-    public void setRam(int[] ram) {
-        this.ram = ram;
+    public void setUprgCpus(int[] uprgCpus) {
+        this.uprgCpus = uprgCpus;
     }
-    
-    
-    
+
+    public int[] getRamDDR3() {
+        return ramDDR3;
+    }
+
+    public void setRamDDR3(int[] ramDDR3) {
+        this.ramDDR3 = ramDDR3;
+    }
+
+    public int[] getRamDDR4() {
+        return ramDDR4;
+    }
+
+    public void setRamDDR4(int[] ramDDR4) {
+        this.ramDDR4 = ramDDR4;
+    }
+
+    public int[] getHardDrive() {
+        return hardDrive;
+    }
+
+    public void setHardDrive(int[] hardDrive) {
+        this.hardDrive = hardDrive;
+    }
+
+    public int[] getInternet() {
+        return internet;
+    }
+
+    public void setInternet(int[] internet) {
+        this.internet = internet;
+    }
+
 }
