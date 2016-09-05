@@ -15,7 +15,13 @@ public class Plate implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
+    public static final String[] OS = {"Doors 95","Doors 2000","Iris 2","Nickel 4","Steel","Tungusten Pro"};
+    
     public final String name;
+    public final int power;
+    public final String os;
+            
+    private final double price;
     
     private int[] cpus;
     private int[] uprgCpus;
@@ -27,9 +33,12 @@ public class Plate implements Serializable {
     
     private int[] internet;
     
-    private double price;
+
     
-    public Plate(int cpusNum, int uprgCpusNum, int ram3Num, int ram4Num, int hardNum, int intNum, double price, String name) {
+    
+
+    
+    public Plate(int cpusNum, int uprgCpusNum, int ram3Num, int ram4Num, int hardNum, int intNum, double price, String name, int power) {
         cpus = new int[cpusNum];
         uprgCpus = new int[uprgCpusNum];
         
@@ -40,6 +49,11 @@ public class Plate implements Serializable {
         internet = new int[intNum];
         
         this.name = name;
+        
+        this.power = power;
+        this.os = OS[power];
+        
+        this.price = price;
     }
 
     public int[] getCpus() {
@@ -88,6 +102,10 @@ public class Plate implements Serializable {
 
     public void setInternet(int[] internet) {
         this.internet = internet;
+    }
+    
+    public double getPrice() {
+        return price;
     }
 
 }
