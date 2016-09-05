@@ -19,7 +19,9 @@ import static ru.epiclib.base.Base.stringToInt;
 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 5L;
+    private static final long serialVersionUID = 6L;
+    
+    private static Plate[] PLATES;
 
     //computer:
     public ArrayList<Software> soft;
@@ -43,6 +45,8 @@ public class User implements Serializable {
 
     public ArrayList<BankAccount> accounts;
     public int currentMainAccount = 0;
+    
+    private Plate plate;
     
     public void addAccount(String name) {
         accounts.add(new BankAccount(name));
@@ -153,7 +157,7 @@ public class User implements Serializable {
         }
     }
 
-    public User(String nick, String userPass, int exp, int getCon) {
+    public User(String nick, String userPass, int exp, int getCon, Plate[] plates) {
         this.nick = nick;
         this.userPass = userPass;
         this.exp = exp;
@@ -167,6 +171,8 @@ public class User implements Serializable {
         
         accounts.add(new BankAccount("Main"));
         accounts.get(0).addMoney(1000d);
+        
+        PLATES = plates;
     }
 
     public static User load(Hacknet hacknet) throws IOException {
