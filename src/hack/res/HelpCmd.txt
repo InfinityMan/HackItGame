@@ -1,4 +1,4 @@
-The help cmd for version 0.6
+The help cmd for version 0.6.1s
 
 connect [ip] - connects you to *ip*
 scan - Scan the target computer
@@ -18,5 +18,5 @@ files - List of files
 logs - List of logs on target computer
 reset - Resets the game
 dc - Disconnect from target computer
-com [index] - Complete the mission with *index*
+finish [index] - Complete the mission with *index*
 virus - Virusing the target computer
