@@ -1,3 +1,3 @@
-Взломайте нужное устройство и удалите указанный файл;Уничтожьте файл сохранения на игровом сервере;Сотрите файл с исследовательского сервера;Удалите файл с кодом из сервера IT-компании;Удалите файл с компьютера нарушителя закона
-Взломайте нужное устройство и скачайте себе на компьютер указанный файл, после чего отправьте на е-мейл;Передайте нам чертёж оружия
-Взломайте и заразите указанное устройство;Заразите устройство на этом ip;Заразите игровой сервер
+Hack the target and delete the file;Remove savefile on game server;Delete file from science server;Remove file from server of IT Company
+Hack the target, copy that file, send it to our e-mail;Give us the blueprint of weapon;Copy the code of new game
+Virus the target;Virus device on this ip;Virus game server
