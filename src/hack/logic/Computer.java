@@ -7,6 +7,8 @@ package hack.logic;
 
 import hack.gui.AuthWindow;
 import hack.gui.LabelHack;
+import hack.gui.ListGUI;
+import hack.logic.exceptions.ComputerIsNotHackedException;
 import java.io.Serializable;
 import static java.lang.System.exit;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public final class Computer implements Serializable {
     public boolean hacked = false, virused = false, scanned = false;
 
     transient public AuthWindow aw;
+    transient public ListGUI filesGUI;
 
     public HashMap<Integer, Log> listOfLog;
 
@@ -247,6 +250,19 @@ public final class Computer implements Serializable {
         this.hacked = false;
         this.scanned = false;
         this.virused = false;
+        
+        this.aw.dispose();
+        this.filesGUI.update();
+        this.filesGUI.dispose();
+    }
+    
+    public void doFilesGUI(User user) throws ComputerIsNotHackedException {
+        if (hacked) {
+            filesGUI.update();
+            filesGUI.setVisible(true);
+        } else {
+            throw new ComputerIsNotHackedException();
+        }
     }
 
     public void updateFileSys() {
