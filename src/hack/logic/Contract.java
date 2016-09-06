@@ -76,10 +76,7 @@ public final class Contract implements Serializable {
         } else {
             author = authors[Base.randomNumber(0, authors.length - 1)];
         }
-
-        missionFull = "ID of this mission: " + id + "\nAuthor: " + author + "\n\n" + mission[0];
-        missionShort = mission[Base.randomNumber(1, mission.length)];
-
+        
         id = user.getGettedContractsNumber();
 
         int typeOfTarget = 0;
@@ -117,6 +114,9 @@ public final class Contract implements Serializable {
         }
 
         target = lvlComps.get(Base.randomNumber(0, lvlComps.size()));
+        
+        missionFull = "ID of this mission: " + id + "\nAuthor: " + author + "\nTarget: " + target.ip + "\n\n" + mission[0];
+        missionShort = mission[Base.randomNumber(1, mission.length)];
 
     }
 
