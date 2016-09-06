@@ -88,9 +88,7 @@ public class User implements Serializable {
      * @param ip the ip to set
      */
     public void setIp(String ip) {
-        if (ip.length() == 5) {
-            this.ip = ip;
-        }
+        this.ip = ip;
     }
 
     /**

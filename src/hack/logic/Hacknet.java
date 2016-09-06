@@ -165,13 +165,14 @@ public final class Hacknet extends javax.swing.JFrame {
         Console.setFont(new java.awt.Font("Franklin Gothic Medium", 0, 13)); // NOI18N
         Console.setRows(5);
         Console.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        Console.setFocusable(false);
         jScrollPane1.setViewportView(Console);
 
         jProgressBar1.setToolTipText("Trace");
 
         jProgressBar2.setToolTipText("RAM");
 
-        jToggleButton1.setText("Pause");
+        jToggleButton1.setText("????");
         jToggleButton1.setMaximumSize(new java.awt.Dimension(0, 0));
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,7 +180,7 @@ public final class Hacknet extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
+        jButton1.setText("????");
         jButton1.setPreferredSize(new java.awt.Dimension(70, 23));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,7 +188,7 @@ public final class Hacknet extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("jButton2");
+        jButton2.setText("????");
         jButton2.setMinimumSize(new java.awt.Dimension(70, 23));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -202,11 +203,11 @@ public final class Hacknet extends javax.swing.JFrame {
                     .addComponent(jProgressBar2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

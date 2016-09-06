@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public final class Computer implements Serializable {
 
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 4L;
 
     public static final int[] CPUS_POWER = {100, 200, 400, 600, 800, 1600};
     public static final int[] EXPS = {8, 14, 22, 48, 80, 190};
@@ -289,7 +289,8 @@ public final class Computer implements Serializable {
     }
 
     public static String genIP() {
-        return Base.randomCombineString(5);
+        String ip = Base.randomCombineString(3) + "." + Base.randomCombineString(2) + "." + Base.randomCombineString(3);
+        return ip;
     }
 
     public void loadHacknetToProtect(Hacknet hacknet) {
