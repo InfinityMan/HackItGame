@@ -31,6 +31,7 @@ public class ContractsList extends javax.swing.JFrame {
     public void setList(ArrayList<Contract> missions) {
         jComboBox1.removeAllItems();
         items.clear();
+        Desc.setText("Description of mission");
         for (int i = 0; i < missions.size(); i++) {
             Contract get = missions.get(i);
             jComboBox1.addItem(get.id + " " + get.missionShort);
@@ -74,7 +75,8 @@ public class ContractsList extends javax.swing.JFrame {
 
         Desc.setColumns(20);
         Desc.setRows(5);
-        Desc.setText("The mission desc");
+        Desc.setText("Description of mission");
+        Desc.setFocusable(false);
         jScrollPane2.setViewportView(Desc);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Temp" }));

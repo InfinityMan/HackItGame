@@ -19,7 +19,7 @@ import static ru.epiclib.base.Base.stringToInt;
 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 6L;
+    private static final long serialVersionUID = 7L;
     
     public static Plate[] PLATES;
 
@@ -47,6 +47,13 @@ public class User implements Serializable {
     public int currentMainAccount = 0;
     
     private Plate plate;
+    
+    //Utility
+    
+    public int numberOfHackedComps = 0;
+    public int numberOfProtectsHacked = 0;
+    public Double numberOfMoneyGetted = 0.0;
+    public int numberOfCommands = 0;
     
     public void addAccount(String name) {
         accounts.add(new BankAccount(name));
@@ -283,7 +290,11 @@ public class User implements Serializable {
         return "Nickname: " + getNick() + "\n"
                 + "Password: " + getUserPass() + "\n"
                 + "Level: " + levelText(getExp()) + ", to next level: " + toNextLevelExp(getExp()) + "\n"
-                + "Contracts gets: " + getGettedContractsNumber();
+                + "Contracts gets: " + getGettedContractsNumber() + "\n"
+                + "Computers hacked: " + numberOfHackedComps + "\n"
+                + "Protects hacked: "+ numberOfProtectsHacked + "\n"
+                + "Commands entered: "+ numberOfCommands + "\n"
+                + "Money got: " + numberOfMoneyGetted;
     }
 
     public String printCurrentContracts() {

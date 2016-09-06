@@ -410,6 +410,7 @@ public final class Hacknet extends javax.swing.JFrame {
         } else {
             print("Invalid command");
         }
+        user.numberOfCommands++;
     }
 
     private void userExit() {
@@ -494,6 +495,7 @@ public final class Hacknet extends javax.swing.JFrame {
                         double allMoney = completedCon.getPriceOfContract()[0] + completedCon.getPriceOfContract()[1];
                         user.accounts.get(user.currentMainAccount).addMoney(allMoney);
                         user.currentContracts.remove(completedCon);
+                        user.numberOfMoneyGetted += allMoney;
                         awarded = true;
                     } else {
                         print("You dont complete the mission");
@@ -695,6 +697,7 @@ public final class Hacknet extends javax.swing.JFrame {
             case "pass":
                 if (currentTarget.userCanHackThis()) {
                     currentTarget.hack(user);
+                    user.numberOfHackedComps++;
                 } else {
                     print("Protects are not destroyed");
                 }
@@ -736,6 +739,7 @@ public final class Hacknet extends javax.swing.JFrame {
         if (canHackProtect(type)) {
             if (currentTarget.hasProtect(type)) {
                 currentTarget.getProtect(type).hackThis();
+                user.numberOfProtectsHacked++;
             } else {
                 print("Protect not finded");
             }
