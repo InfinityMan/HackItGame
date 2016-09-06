@@ -37,7 +37,7 @@ public final class Computer implements Serializable {
 
     public String prefix;
 
-    public boolean hacked = false, virused = false;
+    public boolean hacked = false, virused = false, scanned = false;
 
     transient public AuthWindow aw;
 
@@ -237,6 +237,17 @@ public final class Computer implements Serializable {
         ip = genIP();
 
     }
+    
+    public void reloadComputer() {
+        updateFileSys();
+        for (int i = 0; i < defenseList.size(); i++) {
+            Protect get = defenseList.get(i);
+            get.open = false;
+        }
+        this.hacked = false;
+        this.scanned = false;
+        this.virused = false;
+    }
 
     public void updateFileSys() {
         rmAllFiles();
@@ -344,6 +355,11 @@ public final class Computer implements Serializable {
         hash = 59 * hash + (this.virused ? 1 : 0);
         hash = 59 * hash + Objects.hashCode(this.listOfLog);
         return hash;
+    }
+    
+    public boolean ipsEquals(Computer computer) {
+        final Computer other = computer;
+        return Objects.equals(this.ip, other.ip);
     }
 
     @Override
