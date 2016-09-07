@@ -34,7 +34,7 @@ public final class Contract implements Serializable {
     public int needLvl;
 
     public enum Type {
-        DESTROY, COPY, VIRUS
+        DESTROY_FILE, DESTROY_MULTFILE, DESTROY, COPY, VIRUS
     };
 
     public Type type;
@@ -48,7 +48,7 @@ public final class Contract implements Serializable {
         int intType = 0;
 
         switch (type) {
-            case DESTROY:
+            case DESTROY_FILE:
                 intType = 0;
                 break;
             case COPY:
@@ -113,15 +113,19 @@ public final class Contract implements Serializable {
             }
         }
 
-        target = lvlComps.get(Base.randomNumber(0, lvlComps.size()));
+        target = lvlComps.get(Base.randomNumber(0, lvlComps.size()-1));
         
-        missionFull = "ID of this mission: " + id + "\nAuthor: " + author + "\nTarget: " + target.ip + "\n\n" + mission[0];
-        missionShort = mission[Base.randomNumber(1, mission.length)];
+        missionFull = "ID of this mission: " + id + "\nAuthor: " + author + "\nTarget: " + target.ip + "\n\n" + mission[0] + "\n\n" + targetFile;
+        missionShort = mission[Base.randomNumber(1, mission.length-1)];
+        
+        if (type == Contract.Type.DESTROY_FILE || type == Contract.Type.COPY) {
+            targetFile = target.getFile(Base.randomNumber(0, target.sizeOfListFiles() - 1));
+        }
 
     }
 
     public boolean isComplited(String userIp) {
-        if (type == Type.DESTROY) {
+        if (type == Type.DESTROY_FILE) {
             boolean ret = false;
             for (Map.Entry<Integer, Log> a : target.listOfLog.entrySet()) {
                 Integer key = a.getKey();
@@ -138,7 +142,7 @@ public final class Contract implements Serializable {
     }
 
     public boolean isComplited() {
-        if (type == Type.DESTROY) {
+        if (type == Type.DESTROY_FILE) {
             return !target.hasFile(targetFile);
         } else {
             return false;
@@ -153,7 +157,7 @@ public final class Contract implements Serializable {
     public double[] getPriceOfContract() {
         double priceOfContract = 0;
         switch (type) {
-            case DESTROY:
+            case DESTROY_FILE:
                 priceOfContract = GRANT_FOR_DIFFICULTY[0];
                 break;
             case COPY:
