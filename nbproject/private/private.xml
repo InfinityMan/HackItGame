@@ -42,6 +42,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Dima/Hack/src/hack/logic/hardware/RamModule.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/res/HelpCmd.txt</file>
             <file>file:/C:/Dima/Hack/src/hack/logic/hardware/HardDiskModule.java</file>
             <file>file:/C:/Dima/Hack/src/hack/logic/hardware/CpuModule.java</file>
             <file>file:/C:/Dima/Hack/src/hack/gui/ContractsList.java</file>
@@ -53,6 +54,8 @@
             <file>file:/C:/Dima/Hack/src/hack/gui/AdminWindow.java</file>
             <file>file:/C:/Dima/Hack/src/hack/gui/ListGUI.java</file>
             <file>file:/C:/Dima/Hack/src/hack/logic/hardware/HardwareModule.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/logic/exceptions/ComputerIsNotHackedException.java</file>
+            <file>file:/C:/Dima/Hack/src/hack/logic/Contract.java</file>
             <file>file:/C:/Dima/Hack/src/hack/res/Plates.txt</file>
             <file>file:/C:/Dima/Hack/src/hack/res/Authors.txt</file>
             <file>file:/C:/Dima/Hack/src/hack/logic/Plate.java</file>

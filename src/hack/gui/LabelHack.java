@@ -137,7 +137,7 @@ public class LabelHack extends javax.swing.JFrame {
 
         try {
             Thread.sleep(seconds * 1000);
-            String charTemp = aviaStrings.get(Base.randomNumber(0, aviaStrings.size()));
+            String charTemp = aviaStrings.get(Base.randomNumber(0, aviaStrings.size() - 1));
             label.setText(charTemp);
             key += charTemp;
 

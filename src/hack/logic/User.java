@@ -181,12 +181,11 @@ public class User implements Serializable {
         plate = PLATES[0];
     }
 
-    public static User load(Hacknet hacknet) throws IOException {
+    public static User load() throws IOException {
         User loadedUser;
 
         loadedUser = (User) deserData("hAcKsave.hsf");
-        hacknet.print("Save file are finded : " + loadedUser.getNick());
-        hacknet.print("Save loaded: " + loadedUser.getNick());
+
 
         return loadedUser;
     }

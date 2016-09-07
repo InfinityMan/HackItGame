@@ -237,7 +237,7 @@ public final class Hacknet extends javax.swing.JFrame {
         print("Hello. This is only developer verison : " + GAME_VERSION);
         LOG.log(Level.INFO, "This is only developer verison : " + GAME_VERSION);
         try {
-            user = load(this);
+            user = load();
             LOG.log(Level.INFO, "User successfully loaded");
         } catch (IOException ex) {
             //user = new User("Dmig", "*******", 180, 17);
@@ -341,9 +341,13 @@ public final class Hacknet extends javax.swing.JFrame {
                 print("You need to disconnect from current computer");
             }
         } else if (command[0].equalsIgnoreCase("scan")) {
-            currentTarget.scanned = true;
-            LOG.log(Level.INFO, "User scan the computer");
-            print(currentTarget.printScan());
+            if (currentTarget != null) {
+                currentTarget.scanned = true;
+                LOG.log(Level.INFO, "User scan the computer");
+                print(currentTarget.printScan());
+            } else {
+                print("Not finded target");
+            }
         } else if (command[0].equalsIgnoreCase("list")) {
             print("List of computers: ");
             for (int i = 0; i < computers.size(); i++) {
@@ -356,8 +360,12 @@ public final class Hacknet extends javax.swing.JFrame {
             currentTarget.aw = aw;
         } else if (command[0].equalsIgnoreCase("hack")) {
             if (command.length >= 2) {
-                LOG.log(Level.INFO, "User want hack {0}", command[1]);
-                hack(command[1]);
+                if(currentTarget.scanned) {
+                    LOG.log(Level.INFO, "User want hack {0}", command[1]);
+                    hack(command[1]);
+                } else {
+                   print("Computer is not scanned");
+                }
             } else {
                 print("No found subject; type hack [tagret]");
             }
@@ -642,20 +650,14 @@ public final class Hacknet extends javax.swing.JFrame {
     }
 
     private void genMission() {
-        Contract con = new Contract(Contract.Type.DESTROY, user);
+        Contract con = new Contract(Contract.Type.DESTROY_FILE, user);
 
         con.target = findTargetOfConInList(con.target);
 
         con.target.hacked = false;
         con.target.updateFileSys();
 
-        if (con.type == Contract.Type.DESTROY || con.type == Contract.Type.COPY) {
-            for (int i = 0; i < con.target.sizeOfListFiles(); i++) {
-                System.out.println(con.target.getFile(i));
-            }
-            con.targetFile = con.target.getFile(Base.randomNumber(0, con.target.sizeOfListFiles() - 1));
-            con.missionFull += "\n\n" + con.targetFile;
-        }
+        
 
         print(con.id + ", " + con.target.ip + ", " + con.missionShort);
         user.currentContracts.add(con); //EEEEEEEEEEEEEEEEEEEEE

@@ -40,7 +40,7 @@ public class BankAccount implements Serializable {
 
         for (int i = 0; i < 8; i++) {
             if (i != 3) {
-                c += Base.randomNumber(0, 10);
+                c += Base.randomNumber(0, 9);
             } else {
                 c += "-";
             }

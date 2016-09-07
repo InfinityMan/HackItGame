@@ -231,7 +231,7 @@ public final class Computer implements Serializable {
         gf.add("reboot.dll");
         gf.add("sys.dll");
         gf.add("OS.dll");
-        for (int i = 0; i < Base.randomNumber(8, 12); i++) {
+        for (int i = 0; i < Base.randomNumber(8, 11); i++) {
             gf.add(genFile());
         }
 
@@ -270,7 +270,7 @@ public final class Computer implements Serializable {
         files.add("reboot.dll");
         files.add("sys.dll");
         files.add("OS.dll");
-        for (int i = 0; i < Base.randomNumber(4, 9); i++) {
+        for (int i = 0; i < Base.randomNumber(4, 8); i++) {
             addFile(genFile());
         }
     }
