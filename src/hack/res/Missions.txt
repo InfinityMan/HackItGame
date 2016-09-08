@@ -1,3 +1,5 @@
 Hack the target and delete the file;Remove savefile on game server;Delete file from science server;Remove file from server of IT Company
+Hack the target and delete these files;Remove savefiles on game server;Delete file from science server;Remove file from server of IT Company
+Hack and destroy all files on this target;Shut down game save server
 Hack the target, copy that file, send it to our e-mail;Give us the blueprint of weapon;Copy the code of new game
 Virus the target;Virus device on this ip;Virus game server
