@@ -25,8 +25,8 @@ public class User implements Serializable {
     public static Plate[] PLATES;
 
     //computer:
-    public ArrayList<Software> soft;
-    public ArrayList<String> files;
+    public ArrayList<Software> soft = new ArrayList<>();
+    public ArrayList<String> files = new ArrayList<>();
     private int powerCPU = Computer.CPUS_POWER[1];
 
     private String ip;

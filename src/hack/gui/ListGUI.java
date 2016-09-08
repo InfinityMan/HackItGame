@@ -106,7 +106,7 @@ public class ListGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        user.files.add(comp.getFile(jList1.getSelectedIndex())); 
+        user.files.add(comp.getFile(jList1.getSelectedIndex()));
     }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
