@@ -7,6 +7,7 @@ package hack.gui;
 
 import hack.logic.Contract;
 import hack.logic.User;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 /**
@@ -14,30 +15,26 @@ import java.util.ArrayList;
  * @author Dima
  */
 public class ContractsList extends javax.swing.JFrame {
-
-    public ArrayList<Contract> items;
+    
     public User user;
 
     private boolean inited = false;
 
     public ContractsList(User user) {
         this.user = user;
-        items = new ArrayList<>();
         initComponents();
     }
 
-    public void setList(ArrayList<Contract> missions) {
+    public void setList() {
         jComboBox1.removeAllItems();
-        items.clear();
         Desc.setText("Description of mission");
-        for (int i = 0; i < missions.size(); i++) {
-            Contract get = missions.get(i);
+        for (int i = 0; i < user.currentContracts.size(); i++) {
+            Contract get = user.currentContracts.get(i);
             jComboBox1.addItem(get.id + " " + get.missionShort);
-            items.add(get);
         }
         inited = true;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -118,22 +115,20 @@ public class ContractsList extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         if (inited) {
             if (jComboBox1.getSelectedIndex() != -1) {
-                Desc.setText(items.get(jComboBox1.getSelectedIndex()).missionFull);
+                Desc.setText(user.currentContracts.get(jComboBox1.getSelectedIndex()).missionFull);
             }
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
-
-            setList(user.currentContracts);
-
+        setList();
     }//GEN-LAST:event_UpdateActionPerformed
 
     private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
-        setList(user.currentContracts);
-        if (!user.currentContracts.isEmpty()) {
-            this.dispose();
-            user.rmCurrentContract(items.get(jComboBox1.getSelectedIndex()));
+        setList();
+        if (!user.currentContracts.isEmpty() && jComboBox1.getSelectedIndex() != -1) {
+            user.rmCurrentContract(user.currentContracts.get(jComboBox1.getSelectedIndex()));
+            setList();
         }
     }//GEN-LAST:event_RemoveActionPerformed
 
