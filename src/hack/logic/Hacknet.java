@@ -8,6 +8,7 @@ package hack.logic;
 import hack.gui.AuthWindow;
 import hack.gui.ContractsList;
 import hack.gui.AdminWindow;
+import hack.gui.GetMissionGUI;
 import hack.gui.ListGUI;
 import static hack.logic.User.load;
 import hack.logic.exceptions.ComputerIsNotHackedException;
@@ -597,10 +598,12 @@ public final class Hacknet extends javax.swing.JFrame {
     }
 
     public void dc() {
-        currentTarget.reloadComputer();
-        setTargetOfConInList(currentTarget);
-        
-        currentTarget = null;
+        if (currentTarget != null) {
+            currentTarget.reloadComputer();
+            setTargetOfConInList(currentTarget);
+
+            currentTarget = null;
+        }
     }
 
     private boolean scanForAH() { //SCAN FOR ANTIHACK IN COMPUTER (ADD GUI)
@@ -650,10 +653,20 @@ public final class Hacknet extends javax.swing.JFrame {
     }
 
     private void genMission() {
-        Contract con = new Contract(user, this);
-        print(con.id + ", " + con.target.ip + ", " + con.missionShort);
-        user.currentContracts.add(con); //EEEEEEEEEEEEEEEEEEEEE
-        user.setGettedContractsNumber(user.getGettedContractsNumber() + 1);
+        
+        user.setListAvailableContracts(this);
+
+        Thread myThready = new Thread(() -> {
+            GetMissionGUI cl = new GetMissionGUI(user, this);
+            cl.setList();
+            cl.setVisible(true);
+        });
+        myThready.start();
+        
+//        Contract con = new Contract(user, this);
+//        print(con.id + ", " + con.target.ip + ", " + con.missionShort);
+//        user.currentContracts.add(con); //EEEEEEEEEEEEEEEEEEEEE
+//        user.setGettedContractsNumber(user.getGettedContractsNumber() + 1);
     }
 
     /**
