@@ -42,7 +42,7 @@ public final class Contract implements Serializable {
     public String targetFile;
     public String[] targetFiles;
 
-    public Contract(User user) {
+    public Contract(User user, Hacknet hacknet) {
         
         int intType = Base.randomNumber(0, 4);
         switch(intType) {
@@ -118,6 +118,33 @@ public final class Contract implements Serializable {
         }
 
         target = lvlComps.get(Base.randomNumber(0, lvlComps.size()-1));
+        
+        target = hacknet.findTargetOfConInList(target);
+        
+        target.updateFileSys();
+        
+        if (type == Contract.Type.DESTROY_FILE || type == Contract.Type.COPY) {
+            targetFile = target.getFile(Base.randomNumber(0, target.sizeOfListFiles() - 1));
+        } else if(type ==  Contract.Type.DESTROY_MULTFILE) {
+            int randomFiles  = Base.randomNumber(2, 4);
+            ArrayList<String> files2 = target.getFiles();
+            for (int i = 0; i < randomFiles; i++) {
+                targetFiles = new String[target.getSizeFileArray()];
+                int random = Base.randomNumber(0, files2.size() - 1);
+                targetFiles[i] = files2.get(random);
+                files2.remove(random);
+            }
+        } else if(type == Contract.Type.DESTROY) {
+            targetFiles = new String[target.getSizeFileArray()];
+            for (int i = 0; i < target.getSizeFileArray(); i++) {
+                targetFiles[i] = target.getFile(i);
+            }
+        }
+        
+        missionFull = "ID of this mission: " + id + "\nAuthor: " + author + "\nTarget: " + target.ip + "\n\n" + mission[0] + "\n\n" + targetFile;
+        missionShort = mission[Base.randomNumber(1, mission.length-1)];
+
+        target.hacked = false;
         
         
 

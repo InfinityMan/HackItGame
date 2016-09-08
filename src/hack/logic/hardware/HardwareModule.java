@@ -16,6 +16,6 @@ public abstract class HardwareModule implements Serializable {
     public Double price;
     public Double power;
 
-    public Double name;
+    public String name;
 
 }

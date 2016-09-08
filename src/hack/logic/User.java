@@ -56,9 +56,9 @@ public class User implements Serializable {
     public Double numberOfMoneyGetted = 0.0;
     public int numberOfCommands = 0;
     
-    public void setListAvailableContracts() {
+    public void setListAvailableContracts(Hacknet hacknet) {
         for (int i = 0; i < Base.randomNumber(5, 8); i++) {
-            availableContracts.add(new Contract(this));
+            availableContracts.add(new Contract(this, hacknet));
         }
     }
     
