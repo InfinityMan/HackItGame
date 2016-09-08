@@ -1,4 +1,4 @@
-The help cmd for version 0.6.1s
+The help cmd for version 0.7
 
 connect [ip] - connects you to *ip*
 scan - Scan the target computer
@@ -13,7 +13,7 @@ money transfer [from] [to] [amout] - Transfer money with *amout* *from* one acco
 exit - Closes the game with save
 stats - Your statistic
 missions - List of missions
-mission - Get the mission
+getmission - Get the mission
 files - List of files
 logs - List of logs on target computer
 reset - Resets the game
