@@ -35,7 +35,7 @@ import ru.epiclib.logging.Logging;
  */
 public final class Hacknet extends javax.swing.JFrame {
 
-    public static final String GAME_VERSION = "0.6.1s";
+    public static final String GAME_VERSION = "0.7";
 
     public User user;
 
