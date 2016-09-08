@@ -28,11 +28,9 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="Accept" min="-2" pref="118" max="-2" attributes="0"/>
+                      <Component id="Remove" pref="200" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="Remove" pref="156" max="32767" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="Update" min="-2" pref="118" max="-2" attributes="0"/>
+                      <Component id="Update" pref="200" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane2" max="32767" attributes="0"/>
                   <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
@@ -51,7 +49,6 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="Update" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="Accept" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Remove" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -66,14 +63,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UpdateActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="Accept">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Accept"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AcceptActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">

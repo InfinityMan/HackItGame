@@ -19,10 +19,8 @@ public class ContractsList extends javax.swing.JFrame {
     public User user;
 
     private boolean inited = false;
-    public boolean canAcceptNew;
 
-    public ContractsList(User user, boolean canAcceptNew) {
-        this.canAcceptNew = canAcceptNew;
+    public ContractsList(User user) {
         this.user = user;
         items = new ArrayList<>();
         initComponents();
@@ -50,7 +48,6 @@ public class ContractsList extends javax.swing.JFrame {
     private void initComponents() {
 
         Update = new javax.swing.JButton();
-        Accept = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         Desc = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -63,13 +60,6 @@ public class ContractsList extends javax.swing.JFrame {
         Update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 UpdateActionPerformed(evt);
-            }
-        });
-
-        Accept.setText("Accept");
-        Accept.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AcceptActionPerformed(evt);
             }
         });
 
@@ -101,11 +91,9 @@ public class ContractsList extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Accept, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Remove, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Remove, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Update, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Update, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
                     .addComponent(jScrollPane2)
                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -120,19 +108,12 @@ public class ContractsList extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Update)
-                    .addComponent(Accept)
                     .addComponent(Remove))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void AcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptActionPerformed
-        if (canAcceptNew) {
-            user.addMission(items.get(jComboBox1.getSelectedIndex()));
-        }
-    }//GEN-LAST:event_AcceptActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         if (inited) {
@@ -143,14 +124,13 @@ public class ContractsList extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
-        if (!canAcceptNew) {
-            setList(user.currentContracts);
-        } else {
 
-        }
+            setList(user.currentContracts);
+
     }//GEN-LAST:event_UpdateActionPerformed
 
     private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
+        setList(user.currentContracts);
         if (!user.currentContracts.isEmpty()) {
             this.dispose();
             user.rmCurrentContract(items.get(jComboBox1.getSelectedIndex()));
@@ -159,7 +139,6 @@ public class ContractsList extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Accept;
     private javax.swing.JTextArea Desc;
     private javax.swing.JButton Remove;
     private javax.swing.JButton Update;
