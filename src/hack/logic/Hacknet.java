@@ -495,7 +495,7 @@ public final class Hacknet extends javax.swing.JFrame {
             for (int i = 0; i < currentContractsIds.length; i++) {
                 int currentContractId = currentContractsIds[i];
                 if (currentContractId == userNumber) {
-                    if (user.searchForId(userNumber).isComplited()) {
+                    if (user.searchForId(userNumber).isComplited(user)) {
                         Contract completedCon = user.searchForId(Base.stringToInt(command[1]));
                         print("You successfully completed a contract #" + command[1] + ", your award:\n"
                                 + " Contract task difficulty: " + completedCon.getPriceOfContract()[0] + "\n"
@@ -622,8 +622,8 @@ public final class Hacknet extends javax.swing.JFrame {
 
     private void missions() {
         Thread myThready = new Thread(() -> {
-            ContractsList cl = new ContractsList(user, false);
-            cl.setList(user.currentContracts);
+            ContractsList cl = new ContractsList(user);
+            cl.setList();
             cl.setVisible(true);
         });
         myThready.start();
@@ -650,12 +650,49 @@ public final class Hacknet extends javax.swing.JFrame {
     }
 
     private void genMission() {
-        Contract con = new Contract(Contract.Type.DESTROY_FILE, user);
+        Contract con = new Contract(user);
 
         con.target = findTargetOfConInList(con.target);
+        
+        con.target.updateFileSys();
+        
+        int intType = 0;
+        
+        if (con.type == Contract.Type.DESTROY_FILE || con.type == Contract.Type.COPY) {
+            con.targetFile = con.target.getFile(Base.randomNumber(0, con.target.sizeOfListFiles() - 1));
+            if(con.type == Contract.Type.DESTROY_FILE) { intType = 0; } else { intType = 3; }
+        } else if(con.type ==  Contract.Type.DESTROY_MULTFILE) {
+            int randomFiles  = Base.randomNumber(2, 4);
+            ArrayList<String> files2 = con.target.getFiles();
+            for (int i = 0; i < randomFiles; i++) {
+                con.targetFiles = new String[con.target.getSizeFileArray()];
+                int random = Base.randomNumber(0, files2.size() - 1);
+                con.targetFiles[i] = files2.get(random);
+                files2.remove(random);
+            }
+            intType = 1;
+        } else if(con.type == Contract.Type.DESTROY) {
+            con.targetFiles = new String[con.target.getSizeFileArray()];
+            for (int i = 0; i < con.target.getSizeFileArray(); i++) {
+                con.targetFiles[i] = con.target.getFile(i);
+            }
+            intType = 2;
+        } else intType = 4;
+        
+        String allMissions = "";
+        String allAuthors = "";
+        try {
+            allMissions = new Link().readRes("Missions.txt");
+            allAuthors = new Link().readRes("Authors.txt");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "I'm have a problem! Not loaded missions or authors: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        String[] mission = allMissions.split("\n")[intType].split(";");
+        
+        con.missionFull = "ID of this mission: " + con.id + "\nAuthor: " + con.author + "\nTarget: " + con.target.ip + "\n\n" + mission[0] + "\n\n" + con.targetFile;
+        con.missionShort = mission[Base.randomNumber(1, mission.length-1)];
 
         con.target.hacked = false;
-        con.target.updateFileSys();
 
         
 

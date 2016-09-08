@@ -40,22 +40,26 @@ public final class Contract implements Serializable {
     public Type type;
 
     public String targetFile;
+    public String[] targetFiles;
 
-    public Contract(Type type, User user) {
-
-        this.type = type;
-
-        int intType = 0;
-
-        switch (type) {
-            case DESTROY_FILE:
-                intType = 0;
+    public Contract(User user) {
+        
+        int intType = Base.randomNumber(0, 4);
+        switch(intType) {
+            case 0:
+                type = Type.DESTROY_FILE;
                 break;
-            case COPY:
-                intType = 1;
+            case 1:
+                type = Type.DESTROY_MULTFILE;
                 break;
-            case VIRUS:
-                intType = 2;
+            case 2:
+                type = Type.DESTROY;
+                break;
+            case 3:
+                type = Type.COPY;
+                break;
+            case 4:
+                type = Type.VIRUS;
                 break;
         }
 
@@ -115,35 +119,31 @@ public final class Contract implements Serializable {
 
         target = lvlComps.get(Base.randomNumber(0, lvlComps.size()-1));
         
-        missionFull = "ID of this mission: " + id + "\nAuthor: " + author + "\nTarget: " + target.ip + "\n\n" + mission[0] + "\n\n" + targetFile;
-        missionShort = mission[Base.randomNumber(1, mission.length-1)];
         
-        if (type == Contract.Type.DESTROY_FILE || type == Contract.Type.COPY) {
-            targetFile = target.getFile(Base.randomNumber(0, target.sizeOfListFiles() - 1));
-        }
 
     }
 
-    public boolean isComplited(String userIp) {
-        if (type == Type.DESTROY_FILE) {
-            boolean ret = false;
-            for (Map.Entry<Integer, Log> a : target.listOfLog.entrySet()) {
-                Integer key = a.getKey();
-                Log value = a.getValue();
-                if (value.equals(new Log(Log.Type.FILE_DELETED, userIp))) {
-                    ret = true;
-                    break;
-                }
+    public boolean isComplited(User user) {
+        if (null != type) {
+            switch (type) {
+                case DESTROY_FILE:
+                    return !target.hasFile(targetFile);
+                case DESTROY_MULTFILE:
+                case DESTROY:
+                    boolean completed = true;
+                    for (String targetFile1 : targetFiles) {
+                        if (target.hasFile(targetFile1)) {
+                            completed = false;
+                        }
+                    }
+                    return completed;
+                case VIRUS:
+                    return target.virused;
+                case COPY:
+                    return user.files.contains(targetFile);
+                default:
+                    return false;
             }
-            return ret;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isComplited() {
-        if (type == Type.DESTROY_FILE) {
-            return !target.hasFile(targetFile);
         } else {
             return false;
         }
