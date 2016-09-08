@@ -13,6 +13,7 @@ import static java.lang.System.exit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
+import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
 import static ru.epiclib.base.Base.serData;
 import static ru.epiclib.base.Base.stringToInt;
@@ -54,6 +55,12 @@ public class User implements Serializable {
     public int numberOfProtectsHacked = 0;
     public Double numberOfMoneyGetted = 0.0;
     public int numberOfCommands = 0;
+    
+    public void setListAvailableContracts() {
+        for (int i = 0; i < Base.randomNumber(5, 8); i++) {
+            availableContracts.add(new Contract(this));
+        }
+    }
     
     public void addAccount(String name) {
         accounts.add(new BankAccount(name));
