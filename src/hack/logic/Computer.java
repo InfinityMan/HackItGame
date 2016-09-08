@@ -48,6 +48,14 @@ public final class Computer implements Serializable {
 
     //--------------------------------------------------------------------------
     
+    public int getSizeFileArray() {
+        return files.size();
+    }
+    
+    public ArrayList<String> getFiles() {
+        return files;
+    }
+     
     public String[] getFileArray() {
 
         String[] ret = new String[files.size()];
