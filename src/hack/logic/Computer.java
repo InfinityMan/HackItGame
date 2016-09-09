@@ -23,7 +23,7 @@ public final class Computer implements Serializable {
     private static final long serialVersionUID = 4L;
 
     public static final int[] CPUS_POWER = {100, 200, 400, 600, 800, 1600};
-    public static final int[] EXPS = {8, 14, 22, 48, 80, 190};
+    public static final int[] EXPS = {7, 12, 20, 44, 64, 82};
     public static final int[] LVL_TO_COMP = {1, 8, 17, 24, 32, 43};
     public static final String[] TYPES = {"Old server", "Local server", "Small server", "Normal server", "Big server", "Super server"};
     public static final String[] SUFFIX_NAME = {"workstation", "station", "base", "frame", "mainframe", "grandframe"};
@@ -259,9 +259,11 @@ public final class Computer implements Serializable {
         this.scanned = false;
         this.virused = false;
         
-        this.aw.dispose();
-        this.filesGUI.update();
-        this.filesGUI.dispose();
+        if (aw != null && filesGUI != null) {
+            this.aw.dispose();
+            this.filesGUI.update();
+            this.filesGUI.dispose();
+        }
     }
     
     public void doFilesGUI(User user) throws ComputerIsNotHackedException {

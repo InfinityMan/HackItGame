@@ -5,6 +5,7 @@
  */
 package hack.logic;
 
+import hack.logic.hardware.Plate;
 import hack.res.Link;
 import java.io.FileNotFoundException;
 import java.io.IOException;
