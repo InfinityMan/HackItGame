@@ -5,10 +5,15 @@
  */
 package hack.logic.hardware;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Dima
  */
-public class CpuModule {
+public class CpuModule extends HardwareModule implements Serializable {
+    
+    
+    boolean upgraded = false;
     
 }

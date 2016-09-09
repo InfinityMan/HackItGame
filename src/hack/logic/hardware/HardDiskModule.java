@@ -5,10 +5,12 @@
  */
 package hack.logic.hardware;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Dima
  */
-public class HardDiskModule {
+public class HardDiskModule extends HardwareModule implements Serializable {
     
 }

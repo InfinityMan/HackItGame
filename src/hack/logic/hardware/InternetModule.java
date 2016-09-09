@@ -5,10 +5,12 @@
  */
 package hack.logic.hardware;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Dima
  */
-public class InternetModule {
+public class InternetModule extends HardwareModule implements Serializable {
     
 }
