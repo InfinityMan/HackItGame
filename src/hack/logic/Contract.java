@@ -121,7 +121,8 @@ public final class Contract implements Serializable {
         
         target = hacknet.findTargetOfConInList(target);
         
-        target.updateFileSys();
+        target.reloadComputer();
+        hacknet.setTargetOfConInList(target);
         
         if (type == Contract.Type.DESTROY_FILE || type == Contract.Type.COPY) {
             targetFile = target.getFile(Base.randomNumber(0, target.sizeOfListFiles() - 1));

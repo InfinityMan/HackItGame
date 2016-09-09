@@ -5,6 +5,7 @@
  */
 package hack.logic;
 
+import hack.logic.hardware.Plate;
 import hack.gui.AuthWindow;
 import hack.gui.ContractsList;
 import hack.gui.AdminWindow;
@@ -599,9 +600,6 @@ public final class Hacknet extends javax.swing.JFrame {
 
     public void dc() {
         if (currentTarget != null) {
-            currentTarget.reloadComputer();
-            setTargetOfConInList(currentTarget);
-
             currentTarget = null;
         }
     }
@@ -773,6 +771,15 @@ public final class Hacknet extends javax.swing.JFrame {
         }
 
         if (target != null) {
+            boolean computerOnContract = false;
+            for (int i = 0; i < user.currentContracts.size(); i++) {
+                Computer get = user.currentContracts.get(i).target;
+                if(get.ipsEquals(target)) computerOnContract = true;
+            }
+            if(!computerOnContract) {
+                target.reloadComputer();
+                setTargetOfConInList(target);
+            }
             target.loadHacknetToProtect(this);
             currentTarget = target;
             print("Connected to " + target.nameComputer);
