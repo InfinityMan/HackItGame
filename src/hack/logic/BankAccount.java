@@ -36,7 +36,7 @@ public class BankAccount implements Serializable {
      * @return id
      */
     public final String genId() {
-        String c = Base.randomString(1);
+        String c = Base.randomString(1,true,false,false);
 
         for (int i = 0; i < 8; i++) {
             if (i != 3) {

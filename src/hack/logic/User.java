@@ -13,6 +13,7 @@ import java.io.Serializable;
 import static java.lang.System.exit;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
@@ -191,16 +192,24 @@ public class User implements Serializable {
     }
 
     public static User load() throws IOException {
-        User loadedUser;
+        User loadedUser = null;
 
-        loadedUser = (User) deserData("hAcKsave.hsf");
+        try {
+            loadedUser = (User) deserData("hAcKsave.hsf");
+        } catch (ClassNotFoundException ex) {
+            Hacknet.error("ClassNotFound in User.load()");
+        }
 
 
         return loadedUser;
     }
 
     public void save() {
-        serData("hAcKsave.hsf", this);
+        try {
+            serData("hAcKsave.hsf", this);
+        } catch (IOException ex) {
+            Hacknet.error("IOException in User.save()");
+        }
     }
 
     public void rmCurrentContract(int id) {

@@ -6,10 +6,13 @@
 package hack.logic;
 
 import hack.res.Link;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import ru.epiclib.base.Base;
 import static ru.epiclib.base.Base.deserData;
@@ -104,8 +107,12 @@ public final class Contract implements Serializable {
 
         try {
             computers = (ArrayList<Computer>) deserData("CompsDataBase.comps");
+        } catch (FileNotFoundException ex) {
+            Hacknet.error("CompBase not found in Contract()");
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Not loaded computers", "Error", JOptionPane.ERROR_MESSAGE);
+            Hacknet.error("IOException in Contract()");
+        } catch (ClassNotFoundException ex) {
+            Hacknet.error("O my god! There are a very strange error! in Contract()");
         }
 
         ArrayList<Computer> lvlComps = new ArrayList<>();
