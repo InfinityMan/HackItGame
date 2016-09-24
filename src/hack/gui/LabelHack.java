@@ -30,6 +30,10 @@ public class LabelHack extends javax.swing.JFrame {
     public LabelHack() {
         initComponents();
     }
+    
+    public void cheat(TypeOfChars type, Difficulty difficulty) {
+        start(type,difficulty,1);
+    }
 
     public void start(TypeOfChars type, Difficulty difficulty, int allTimeInSeconds) {
 

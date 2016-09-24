@@ -64,6 +64,8 @@ public final class Hacknet extends javax.swing.JFrame {
         try {
             this.computers = (ArrayList<Computer>) deserData("CompsDataBase.comps");
         } catch (IOException ex) {
+        } catch (ClassNotFoundException ex) {
+            error("ClassNotFound in Hacknet()");
         }
 
         initComponents();
@@ -82,7 +84,7 @@ public final class Hacknet extends javax.swing.JFrame {
         try {
             allComps = new Link().readRes("ComputersBase.txt");
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Not loaded computers", "Error", JOptionPane.ERROR_MESSAGE);
+            error("Not loaded computers");
             exit(1);
         }
 
@@ -93,7 +95,11 @@ public final class Hacknet extends javax.swing.JFrame {
             cmrs.add(new Computer(Base.stringToInt(params[0]), params[1], params[2]));
         }
 
-        Base.serData("CompsDataBase.comps", cmrs);
+        try {
+            Base.serData("CompsDataBase.comps", cmrs);
+        } catch (IOException ex) {
+            error("IOException in Hacknet.updateBase()");
+        }
     }
 
     /**
@@ -104,7 +110,7 @@ public final class Hacknet extends javax.swing.JFrame {
         try {
             Util.setStyle();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            System.out.println("0");
+            error("Style crashed");
         }
 
         Thread main = new Thread(() -> {
@@ -150,7 +156,9 @@ public final class Hacknet extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HackIt");
+        setMaximumSize(new java.awt.Dimension(400, 2147483647));
         setMinimumSize(new java.awt.Dimension(400, 400));
+        setPreferredSize(new java.awt.Dimension(400, 600));
 
         CommandType.setFont(new java.awt.Font("Franklin Gothic Medium", 0, 14)); // NOI18N
         CommandType.setToolTipText("Type your command here");
@@ -205,11 +213,11 @@ public final class Hacknet extends javax.swing.JFrame {
                     .addComponent(jProgressBar2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                        .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)))
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -248,6 +256,8 @@ public final class Hacknet extends javax.swing.JFrame {
                 this.computers = (ArrayList<Computer>) deserData("CompsDataBase.comps");
             } catch (IOException e) {
                 LOG.info("List of computers is not founded");
+            } catch (ClassNotFoundException ex1) {
+                error("ClassNotFound in Hacknet.loadUser()");
             }
 
             print("Save files are not finded : Register");
@@ -268,7 +278,7 @@ public final class Hacknet extends javax.swing.JFrame {
         try {
             allPlates = new Link().readRes("Plates.txt");
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Not loaded plates; exit from game");
+            error("Not loaded plates");
             exit(1);
         }
         
@@ -375,7 +385,11 @@ public final class Hacknet extends javax.swing.JFrame {
             LOG.log(Level.INFO, "User save the game");
             dc();
             user.save();
-            Base.serData("CompsDataBase.comps", computers);
+            try {
+                Base.serData("CompsDataBase.comps", computers);
+            } catch (IOException ex) {
+                error("IOException in user command \"save\"");
+            }
         } else if (command[0].equalsIgnoreCase("load")) {
             loadUser();
         } else if (command[0].equalsIgnoreCase("admin")) {
@@ -429,7 +443,11 @@ public final class Hacknet extends javax.swing.JFrame {
             dc();
         }
         user.save();
-        Base.serData("CompsDataBase.comps", computers);
+        try {
+            Base.serData("CompsDataBase.comps", computers);
+        } catch (IOException ex) {
+            error("IOException in Hacknet.userExit()");
+        }
         exit(0);
     }
 
@@ -452,7 +470,7 @@ public final class Hacknet extends javax.swing.JFrame {
             try {
                 allHelp = new Link().readRes("HelpCmd.txt");
             } catch (IOException ex) {
-                Logger.getLogger(Hacknet.class.getName()).log(Level.SEVERE, null, ex);
+                error("IOException in load help cmd");
             }
             String[] help = allHelp.split("\n");
             for (String help1 : help) {
@@ -475,7 +493,7 @@ public final class Hacknet extends javax.swing.JFrame {
                     print("Complited. Computer successfully virused");
                     currentTarget.virused = true;
                 } catch (InterruptedException ex) {
-                    System.err.println(ex);
+                    error("Interrupted error in virusing");
                     System.exit(1);
                 }
             });
@@ -547,7 +565,7 @@ public final class Hacknet extends javax.swing.JFrame {
                 }
             }
         } catch (NumberFormatException ex) {
-            print("Please use a numbers (you can read about this command >help cmd");
+            print("Please use a numbers (you can read about this command >help cmd)");
         }
     }
 
@@ -582,7 +600,7 @@ public final class Hacknet extends javax.swing.JFrame {
 
     private void admin() {
         Thread myThready = new Thread(() -> {
-            AdminWindow cl = new AdminWindow(user);
+            AdminWindow cl = new AdminWindow(user,this);
             cl.setVisible(true);
         });
         myThready.start();
@@ -593,7 +611,7 @@ public final class Hacknet extends javax.swing.JFrame {
         try {
             FileWorker.delete("hAcKsave.hsf");
         } catch (FileNotFoundException ex) {
-            System.err.println(ex + " for reset save file");
+            error("Strange exception in Hacknet.reset()");
         }
         print("Your save file successfully reseted");
     }
@@ -792,6 +810,11 @@ public final class Hacknet extends javax.swing.JFrame {
             print("Invalid ip");
         }
 
+    }
+    
+    public static void error(String text) {
+        JOptionPane.showMessageDialog(null, text, "Error", JOptionPane.ERROR_MESSAGE);
+        LOG.warning("There are a error: "+text);
     }
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed

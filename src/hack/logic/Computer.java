@@ -43,6 +43,7 @@ public final class Computer implements Serializable {
 
     transient public AuthWindow aw;
     transient public ListGUI filesGUI;
+    transient public Hacknet hacknet;
 
     public HashMap<Integer, Log> listOfLog;
 
@@ -299,7 +300,7 @@ public final class Computer implements Serializable {
     }
 
     public static String genIP() {
-        String ip = Base.randomCombineString(3) + "." + Base.randomCombineString(2) + "." + Base.randomCombineString(3);
+        String ip = Base.randomString(2,true,true,true) + "." + Base.randomString(5,true,true,true);
         return ip;
     }
 
@@ -340,23 +341,30 @@ public final class Computer implements Serializable {
         return first + second + third;
 
     }
-
-    public void hack(final User user) {
-
+    
+    public void hackCore(final User user, boolean cheat) {
         Thread myThready = new Thread(() -> {
             LabelHack lh;
             lh = new LabelHack();
             lh.setVisible(true);
 
             aw.setUsername("admin");
-            lh.start(LabelHack.TypeOfChars.ALL, LabelHack.Difficulty.VERY_LOW, exp * 2);
+            if(!cheat) {
+                lh.start(LabelHack.TypeOfChars.ALL, LabelHack.Difficulty.VERY_LOW, exp * 2);
+            } else {
+                lh.cheat(LabelHack.TypeOfChars.ALL, LabelHack.Difficulty.VERY_LOW);
+            }
             aw.setPass(lh.key);
 
             hacked = true;
             user.setExp(user.getExp() + exp);
 
             try {
-                sleep(3_000);
+                if(!cheat) {
+                    sleep(3_000);
+                } else {
+                    sleep(1_500);
+                }
             } catch (InterruptedException ex) {
                 exit(1);
             }
@@ -364,7 +372,21 @@ public final class Computer implements Serializable {
             lh.dispose();
         });
         myThready.start();
+    }
+    
+    public void hackCheat(final User user, Hacknet hacknet) {
+        for (int i = 0; i < defenseList.size(); i++) {
+            Protect get = defenseList.get(i);
+            get.open = true;
+            hacknet.print(" "+get.printThis()+" disabled!");
+        }
+        scanned = true;
+        hackCore(user,true);
+        hacknet.print("Hack of computer completed");
+    }
 
+    public void hack(final User user) {
+        hackCore(user,false);
     }
     private static final Logger LOG = Logger.getLogger(Computer.class.getName());
 

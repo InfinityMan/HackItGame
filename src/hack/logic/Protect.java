@@ -115,7 +115,7 @@ public class Protect implements Serializable {
                     break;
                 case PROXY:
                     for (int i = needPower; i > 0; i = i - hacknet.user.getPowerCPU() * 2) {
-                        mh.print(Base.randomCombineString(16));
+                        mh.print(Base.randomString(16,true,false,true));
                         try {
                             sleep(500);
                         } catch (InterruptedException ex) {
