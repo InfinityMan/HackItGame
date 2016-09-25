@@ -25,6 +25,6 @@ import java.io.Serializable;
 public class CpuModule extends HardwareModule implements Serializable {
     
     
-    boolean upgraded = false;
+    public boolean upgraded = false;
     
 }

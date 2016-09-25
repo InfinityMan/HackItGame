@@ -24,6 +24,6 @@ import java.io.Serializable;
  */
 public class RamModule extends HardwareModule implements Serializable {
     
-    boolean upgraded = false;
+    public boolean upgraded = false;
     
 }
