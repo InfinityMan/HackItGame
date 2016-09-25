@@ -27,10 +27,26 @@ import java.io.InputStreamReader;
  * @author Dima
  */
 public final class Link {
+    
+    /**
+     * Get the array of strokes in [file_name]
+     * @param file_name Name of file
+     * @return Array of strokes
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
 
     public String[] readResArray(String file_name) throws IOException, FileNotFoundException {
         return readRes(file_name).split("\n");
     }
+    
+    /**
+     * Get all text in file with '\n'
+     * @param file_name Name of file
+     * @return Text
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
 
     public String readRes(String file_name) throws IOException, FileNotFoundException {
         InputStream is = this.getClass().getResourceAsStream(file_name);
