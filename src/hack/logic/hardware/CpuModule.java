@@ -26,5 +26,16 @@ public class CpuModule extends HardwareModule implements Serializable {
     
     
     public boolean upgraded = false;
+
+    public CpuModule(String name, Double power, Double price, boolean upgraded) {
+        this.name = name;
+        this.power = power;
+        this.price = price;
+        this.upgraded = upgraded;
+    }
+    
+    
+    
+    
     
 }

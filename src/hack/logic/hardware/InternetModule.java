@@ -24,4 +24,10 @@ import java.io.Serializable;
  */
 public class InternetModule extends HardwareModule implements Serializable {
     
+    public InternetModule(String name, Double power, Double price) {
+        this.name = name;
+        this.power = power;
+        this.price = price;
+    }
+    
 }

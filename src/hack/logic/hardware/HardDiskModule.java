@@ -24,4 +24,10 @@ import java.io.Serializable;
  */
 public class HardDiskModule extends HardwareModule implements Serializable {
     
+    public HardDiskModule(String name, Double power, Double price) {
+        this.name = name;
+        this.power = power;
+        this.price = price;
+    }
+    
 }
