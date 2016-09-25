@@ -62,15 +62,12 @@ public class LabelHack extends javax.swing.JFrame {
                 timesInSeconds = 1;
                 break;
         }
-
-        jetElement(secondsForElement + extraTime, timesInSeconds, type, 0);
-        jetElement(secondsForElement, timesInSeconds, type, 1);
-        jetElement(secondsForElement, timesInSeconds, type, 2);
-        jetElement(secondsForElement, timesInSeconds, type, 3);
-        jetElement(secondsForElement, timesInSeconds, type, 4);
-        jetElement(secondsForElement, timesInSeconds, type, 5);
-        jetElement(secondsForElement, timesInSeconds, type, 6);
-        jetElement(secondsForElement, timesInSeconds, type, 7);
+        
+        for (int i = 0; i < 8; i++) {
+            int a = secondsForElement;
+            if(i == 0) a += extraTime;
+            jetElement(a, timesInSeconds, type, i);
+        }
 
     }
 
