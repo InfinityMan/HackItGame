@@ -16,6 +16,7 @@
  */
 package hack.logic.hardware;
 
+import hack.logic.Hacknet;
 import java.io.Serializable;
 
 /**
@@ -24,7 +25,7 @@ import java.io.Serializable;
  */
 public class Plate implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     public static final String[] OS = {"Doors 95", "Doors 2000", "Iris 2", "Nickel 4", "Steel", "Tungusten Pro"};
 
@@ -34,25 +35,25 @@ public class Plate implements Serializable {
 
     private final double price;
 
-    private int[] cpus;
-    private int[] uprgCpus;
+    private CpuModule[] cpus;
+    private CpuModule[] uprgCpus;
 
-    private int[] ramDDR3;
-    private int[] ramDDR4;
+    private RamModule[] ramDDR3;
+    private RamModule[] ramDDR4;
 
-    private int[] hardDrive;
+    private HardDiskModule[] hardDrive;
 
-    private int[] internet;
+    private InternetModule[] internet;
 
-    public Plate(int cpusNum, int uprgCpusNum, int ram3Num, int ram4Num, int hardNum, int intNum, double price, String name, int power) {
-        cpus = new int[cpusNum];
-        uprgCpus = new int[uprgCpusNum];
+    public Plate(int cpusNum, int uprgCpusNum, int ram3Num, int ram4Num, int hardNum, int intNum, double price, String name, int power, Hacknet hacknet) {
+        cpus = new CpuModule[cpusNum];
+        uprgCpus = new CpuModule[uprgCpusNum];
 
-        ramDDR3 = new int[ram3Num];
-        ramDDR4 = new int[ram4Num];
+        ramDDR3 = new RamModule[ram3Num];
+        ramDDR4 = new RamModule[ram4Num];
 
-        hardDrive = new int[hardNum];
-        internet = new int[intNum];
+        hardDrive = new HardDiskModule[hardNum];
+        internet = new InternetModule[intNum];
 
         this.name = name;
 
@@ -60,53 +61,85 @@ public class Plate implements Serializable {
         this.os = OS[power];
 
         this.price = price;
+        
+        installDefaultHardware(hacknet);
+    }
+    
+    public final void installDefaultHardware(Hacknet hacknet) {
+        if(cpus.length > 0) {
+            cpus[0] = hacknet.cpus[1];
+        } else if(uprgCpus.length > 0) {
+            uprgCpus[0] = hacknet.cpusUp[0];
+        } else {
+            Hacknet.error("Error with loading plates: Plate class");
+        }
+        
+        if(ramDDR3.length > 0) {
+            ramDDR3[0] = hacknet.rams[1];
+        } else if(ramDDR4.length > 0) {
+            ramDDR4[0] = hacknet.ramsUp[0];
+        } else {
+            Hacknet.error("Error with loading plates: Plate class");
+        }
+        
+        if(hardDrive.length > 0) {
+            hardDrive[0] = hacknet.hards[0];
+        } else {
+            Hacknet.error("Error with loading plates: Plate class");
+        }
+        
+        if(internet.length > 0) {
+            internet[0] = hacknet.internets[0];
+        } else {
+            Hacknet.error("Error with loading plates: Plate class");
+        }
     }
 
-    public int[] getCpus() {
+    public CpuModule[] getCpus() {
         return cpus;
     }
 
-    public void setCpus(int[] cpus) {
+    public void setCpus(CpuModule[] cpus) {
         this.cpus = cpus;
     }
 
-    public int[] getUprgCpus() {
+    public CpuModule[] getUprgCpus() {
         return uprgCpus;
     }
 
-    public void setUprgCpus(int[] uprgCpus) {
+    public void setUprgCpus(CpuModule[] uprgCpus) {
         this.uprgCpus = uprgCpus;
     }
 
-    public int[] getRamDDR3() {
+    public RamModule[] getRamDDR3() {
         return ramDDR3;
     }
 
-    public void setRamDDR3(int[] ramDDR3) {
+    public void setRamDDR3(RamModule[] ramDDR3) {
         this.ramDDR3 = ramDDR3;
     }
 
-    public int[] getRamDDR4() {
+    public RamModule[] getRamDDR4() {
         return ramDDR4;
     }
 
-    public void setRamDDR4(int[] ramDDR4) {
+    public void setRamDDR4(RamModule[] ramDDR4) {
         this.ramDDR4 = ramDDR4;
     }
 
-    public int[] getHardDrive() {
+    public HardDiskModule[] getHardDrive() {
         return hardDrive;
     }
 
-    public void setHardDrive(int[] hardDrive) {
+    public void setHardDrive(HardDiskModule[] hardDrive) {
         this.hardDrive = hardDrive;
     }
 
-    public int[] getInternet() {
+    public InternetModule[] getInternet() {
         return internet;
     }
 
-    public void setInternet(int[] internet) {
+    public void setInternet(InternetModule[] internet) {
         this.internet = internet;
     }
 
