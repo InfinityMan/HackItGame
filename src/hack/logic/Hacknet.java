@@ -24,6 +24,7 @@ import hack.gui.GetMissionGUI;
 import hack.gui.ListGUI;
 import static hack.logic.User.load;
 import hack.logic.exceptions.ComputerIsNotHackedException;
+import hack.logic.hardware.*;
 import hack.res.Link;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
@@ -59,6 +60,13 @@ public final class Hacknet extends javax.swing.JFrame {
     public boolean debug = false;
 
     private String lastCommand = "";
+    
+    public CpuModule[] cpus;
+    public CpuModule[] cpusUp;
+    public RamModule[] rams;
+    public RamModule[] ramsUp;
+    public HardDiskModule[] hards;
+    public InternetModule[] internets;
 
     /**
      *
@@ -112,10 +120,19 @@ public final class Hacknet extends javax.swing.JFrame {
             error("IOException in Hacknet.updateBase()");
         }
     }
-
-    /**
-     *
-     */
+    
+    public void installHard() {
+        cpus = (CpuModule[]) HardwareModule.loadHardware(0, false);
+        cpusUp = (CpuModule[]) HardwareModule.loadHardware(0, true);
+        
+        rams = (RamModule[]) HardwareModule.loadHardware(1, false);
+        ramsUp = (RamModule[]) HardwareModule.loadHardware(1, true);
+        
+        hards = (HardDiskModule[]) HardwareModule.loadHardware(2, true);
+        
+        internets = (InternetModule[]) HardwareModule.loadHardware(3, true);
+    }
+    
     public static void init() {
 
         try {
