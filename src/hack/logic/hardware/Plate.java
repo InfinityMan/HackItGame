@@ -65,6 +65,51 @@ public class Plate implements Serializable {
         installDefaultHardware(hacknet);
     }
     
+    /**
+     * 0 = cpu; 1 = upCpu; 2 = ram; 3 = upRam; 4 = hardDrive; 5 = internet
+     * @param type Look up
+     * @return index of free place in type
+     */
+    
+    public int getIndexOfFreePlace(int type) {
+        HardwareModule[] a = null;
+        switch(type) {
+            case 0:
+                a = cpus;
+                break;
+            case 1:
+                a = uprgCpus;
+                break;
+            case 2:
+                a = ramDDR3;
+                break;
+            case 3:
+                a = ramDDR4;
+                break;
+            case 4:
+                a = hardDrive;
+                break;
+            case 5:
+                a = internet;
+                break;
+        }
+        
+        boolean b = false;
+        int index = -1;
+        for (int i = 0; i < 6; i++) {
+            if(a[i] == null) {
+                b = true;
+                index = i;
+                break;
+            }
+        }
+        if(b) {
+            return index;
+        } else {
+            return -1;
+        }
+    }
+    
     public final void installDefaultHardware(Hacknet hacknet) {
         if(cpus.length > 0) {
             cpus[0] = hacknet.cpus[1];
