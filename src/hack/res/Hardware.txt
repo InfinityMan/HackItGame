@@ -1,3 +1,9 @@
-Noob,0.5,40;Turtle,1,100;Pantera,2,200;Learou,4,500
-Neon,8,1000;Fefer,16,2000;Rocket,32,5000;Argonic,64,20000
-Noober,0.5,40;
+Noob;Turtle;Pantera;Learou
+Neon;Fefer;Rocket;Argonic
+
+Noober;Rock;Sarol;Jerra
+Pion;Hero;Zenon;Atlas
+
+Pork;Leafen;Qeroq;Titan
+
+Peol;Theta;Keo;Ion
