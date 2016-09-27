@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.epiclib.base.Base;
 import ru.epiclib.gui.Util;
+import static java.lang.Thread.sleep;
 
 /**
  *

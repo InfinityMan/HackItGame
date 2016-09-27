@@ -61,11 +61,13 @@ public final class Hacknet extends javax.swing.JFrame {
 
     private String lastCommand = "";
     
+    //Init in constructor
+    
     public CpuModule[] cpus;
     public CpuModule[] cpusUp;
     public RamModule[] rams;
     public RamModule[] ramsUp;
-    public HardDiskModule[] hards;
+    public HardDriveModule[] hards;
     public InternetModule[] internets;
 
     /**
@@ -80,6 +82,14 @@ public final class Hacknet extends javax.swing.JFrame {
      *
      */
     public Hacknet() {
+        
+        this.ramsUp = new RamModule[HardwareModule.DEFAULT_POWER_RAM_AND_CPU.length];
+        this.cpusUp = new CpuModule[HardwareModule.DEFAULT_POWER_RAM_AND_CPU.length];
+        this.cpus = new CpuModule[HardwareModule.DEFAULT_POWER_RAM_AND_CPU.length];
+        this.rams = new RamModule[HardwareModule.DEFAULT_POWER_RAM_AND_CPU.length];
+        this.hards = new HardDriveModule[HardwareModule.DEFAULT_POWER_HARD.length];
+        this.internets = new InternetModule[HardwareModule.DEFAULT_POWER_INTERNET.length];
+        
         try {
             this.computers = (ArrayList<Computer>) deserData("CompsDataBase.comps");
         } catch (IOException ex) {
@@ -128,7 +138,7 @@ public final class Hacknet extends javax.swing.JFrame {
         rams = (RamModule[]) HardwareModule.loadHardware(1, false);
         ramsUp = (RamModule[]) HardwareModule.loadHardware(1, true);
         
-        hards = (HardDiskModule[]) HardwareModule.loadHardware(2, true);
+        hards = (HardDriveModule[]) HardwareModule.loadHardware(2, true);
         
         internets = (InternetModule[]) HardwareModule.loadHardware(3, true);
     }
@@ -289,12 +299,203 @@ public final class Hacknet extends javax.swing.JFrame {
             }
 
             print("Save files are not finded : Register");
+            installHard();
             registerUser(getPlates());
             print("User successfully registered");
             LOG.log(Level.WARNING, "IOException of load : {0}", ex.getMessage());
         }
         loaded = true;
         LOG.log(Level.INFO, "Hacknet inited");
+        
+        
+    }
+    
+    public void getAllHardwareText() {
+        int[] lengths = {cpus.length,cpusUp.length,rams.length,ramsUp.length,hards.length,internets.length};
+        String[][] hardwares = new String[6][];
+        for (int i = 0; i < 6; i++) {
+            hardwares[i] = new String[lengths[i]];
+        }
+        for (int n = 0; n < 6; n++) {
+            switch(n) {
+                case 0:
+                    for (int i = 0; i < cpus.length; i++) {
+                        CpuModule cpu = cpus[i];
+                        hardwares[n][i] = cpu.toString();
+                    }
+                    break;
+                case 1:
+                    for (int i = 0; i < cpusUp.length; i++) {
+                        CpuModule cpuUp = cpusUp[i];
+                        hardwares[n][i] = cpuUp.toString();
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < rams.length; i++) {
+                        RamModule ram = rams[i];
+                        hardwares[n][i] = ram.toString();
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < ramsUp.length; i++) {
+                        RamModule ramUp = ramsUp[i];
+                        hardwares[n][i] = ramUp.toString();
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; i < hards.length; i++) {
+                        HardDriveModule hard = hards[i];
+                        hardwares[n][i] = hard.toString();
+                    }
+                    break;
+                case 5:
+                    for (int i = 0; i < internets.length; i++) {
+                        InternetModule internet = internets[i];
+                        hardwares[n][i] = internet.toString();
+                    }
+                    break;
+            }
+        }
+        for (int i = 0; i < hardwares.length; i++) {
+            switch(i) {
+                case 0:
+                    print("CPUs:");
+                    break;
+                case 1:
+                    print("Cool CPUs:");
+                    break;
+                case 2:
+                    print("RAMs:");
+                    break;
+                case 3:
+                    print("Cool RAMs:");
+                    break;
+                case 4:
+                    print("Hardwares:");
+                    break;
+                case 5:
+                    print("Internets:");
+                    break;
+                default:
+                    print("ERROR");
+            }
+            for (String hardware : hardwares[i]) {
+                print(hardware);
+            }
+        }
+    }
+    
+    public void getUserHardware() {
+        Plate userPlate = user.getPlate();
+        int[] lengths = {userPlate.getCpus().length, userPlate.getUprgCpus().length, userPlate.getRamDDR3().length, userPlate.getRamDDR4().length, userPlate.getHardDrive().length, userPlate.getInternet().length};
+        String[][] hardwares = new String[6][];
+        for (int i = 0; i < 6; i++) {
+            hardwares[i] = new String[lengths[i]];
+        }
+        for (int n = 0; n < 6; n++) {
+            switch (n) {
+                case 0:
+                    for (int i = 0; i < userPlate.getCpus().length; i++) {
+                        if (userPlate.getCpus()[i] != null) {
+                            CpuModule cpu = userPlate.getCpus()[i];
+                            hardwares[n][i] = "  " + cpu.toString();
+                        } else {
+                            hardwares[n][i] = "  Empty slot";
+                        }
+                    }
+                    break;
+                case 1:
+                    for (int i = 0; i < userPlate.getUprgCpus().length; i++) {
+                        if (userPlate.getUprgCpus()[i] != null) {
+                            CpuModule cpuUp = userPlate.getUprgCpus()[i];
+                            hardwares[n][i] = "  " + cpuUp.toString();
+                        } else {
+                            hardwares[n][i] = "  Empty slot";
+                        }
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < userPlate.getRamDDR3().length; i++) {
+                        if (userPlate.getRamDDR3()[i] != null) {
+                            RamModule ram = userPlate.getRamDDR3()[i];
+                            hardwares[n][i] = "  " + ram.toString();
+                        } else {
+                            hardwares[n][i] = "  Empty slot";
+                        }
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < userPlate.getRamDDR4().length; i++) {
+                        if (userPlate.getRamDDR4()[i] != null) {
+                            RamModule ramUp = userPlate.getRamDDR4()[i];
+                            hardwares[n][i] = "  " + ramUp.toString();
+                        } else {
+                            hardwares[n][i] = "  Empty slot";
+                        }
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; i < userPlate.getHardDrive().length; i++) {
+                        if (userPlate.getHardDrive()[i] != null) {
+                            HardDriveModule hard = userPlate.getHardDrive()[i];
+                            hardwares[n][i] = "  " + hard.toString();
+                        } else {
+                            hardwares[n][i] = "  Empty slot";
+                        }
+                    }
+                    break;
+                case 5:
+                    for (int i = 0; i < userPlate.getInternet().length; i++) {
+                        if (userPlate.getInternet()[i] != null) {
+                            InternetModule internet = userPlate.getInternet()[i];
+                            hardwares[n][i] = "  " + internet.toString();
+                        } else {
+                            hardwares[n][i] = "  Empty slot";
+                        }
+                    }
+                    break;
+            }
+        }
+        for (int i = 0; i < hardwares.length; i++) {
+            
+            switch (i) {
+                case 0:
+                    if (userPlate.getCpus().length > 0) {
+                        print("CPUs:");
+                    }
+                    break;
+                case 1:
+                    if (userPlate.getUprgCpus().length > 0) {
+                        print("Cool CPUs:");
+                    }
+                    break;
+                case 2:
+                    if (userPlate.getRamDDR3().length > 0) {
+                        print("RAMs:");
+                    }
+                    break;
+                case 3:
+                    if (userPlate.getRamDDR4().length > 0) {
+                        print("Cool RAMs:");
+                    }
+                    break;
+                case 4:
+                    if (userPlate.getHardDrive().length > 0) {
+                        print("Hard drives:");
+                    }
+                    break;
+                case 5:
+                    if (userPlate.getInternet().length > 0) {
+                        print("Internets:");
+                    }
+                    break;
+                default:
+                    print("ERROR");
+            }
+            for (String hardware : hardwares[i]) {
+                print(hardware);
+            }
+        }
     }
     
     private Plate[] getPlates() {
@@ -318,7 +519,7 @@ public final class Hacknet extends javax.swing.JFrame {
             for (int j = 0; j < tempParams.length; j++) {
                 tempParams[j] = Base.stringToInt(params[j]);
             }
-            plates.add(new Plate(tempParams[0], tempParams[1], tempParams[2], tempParams[3], tempParams[4], tempParams[5], Base.stringToDouble(params[6]), params[7], Base.stringToInt(params[8])));
+            plates.add(new Plate(tempParams[0], tempParams[1], tempParams[2], tempParams[3], tempParams[4], tempParams[5], Base.stringToDouble(params[6]), params[7], Base.stringToInt(params[8]),this));
         }
         
         Plate[] platesRet = new Plate[plates.size()];
@@ -459,6 +660,10 @@ public final class Hacknet extends javax.swing.JFrame {
             finishContract(command);
         } else if (command[0].equalsIgnoreCase("virus")) {
             virusTarget();
+        } else if (command[0].equalsIgnoreCase("hardware")) {
+            getAllHardwareText();
+        } else if (command[0].equalsIgnoreCase("userhardware")) {
+            getUserHardware();
         } else {
             print("Invalid command");
         }
