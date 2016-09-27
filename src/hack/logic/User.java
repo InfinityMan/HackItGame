@@ -16,6 +16,7 @@
  */
 package hack.logic;
 
+import hack.logic.hardware.HardwareModule;
 import hack.logic.hardware.Plate;
 import hack.res.Link;
 import java.io.FileNotFoundException;
@@ -61,6 +62,7 @@ public class User implements Serializable {
     public int currentMainAccount = 0;
     
     private Plate plate;
+    public ArrayList<HardwareModule> freeHardwares = new ArrayList<>();
     
     //Utility
     
@@ -201,7 +203,11 @@ public class User implements Serializable {
         accounts.get(0).addMoney(1000d);
         
         PLATES = plates;
-        plate = PLATES[0];
+        if(Hacknet.CHEAT) {
+            plate = PLATES[12];
+        } else {
+            plate = PLATES[0];
+        }
     }
 
     public static User load() throws IOException {

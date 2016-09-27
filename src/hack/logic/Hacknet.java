@@ -49,6 +49,8 @@ import ru.epiclib.logging.Logging;
 public final class Hacknet extends javax.swing.JFrame {
 
     public static final String GAME_VERSION = "0.7";
+    
+    public static boolean CHEAT = true;
 
     public User user;
 
@@ -398,9 +400,9 @@ public final class Hacknet extends javax.swing.JFrame {
                     for (int i = 0; i < userPlate.getCpus().length; i++) {
                         if (userPlate.getCpus()[i] != null) {
                             CpuModule cpu = userPlate.getCpus()[i];
-                            hardwares[n][i] = "  " + cpu.toString();
+                            hardwares[n][i] = "  #"+i+": " + cpu.toString();
                         } else {
-                            hardwares[n][i] = "  Empty slot";
+                            hardwares[n][i] = "  #"+i+": Empty slot";
                         }
                     }
                     break;
@@ -408,9 +410,9 @@ public final class Hacknet extends javax.swing.JFrame {
                     for (int i = 0; i < userPlate.getUprgCpus().length; i++) {
                         if (userPlate.getUprgCpus()[i] != null) {
                             CpuModule cpuUp = userPlate.getUprgCpus()[i];
-                            hardwares[n][i] = "  " + cpuUp.toString();
+                            hardwares[n][i] = "  #"+i+": " + cpuUp.toString();
                         } else {
-                            hardwares[n][i] = "  Empty slot";
+                            hardwares[n][i] = "  #"+i+": Empty slot";
                         }
                     }
                     break;
@@ -418,9 +420,9 @@ public final class Hacknet extends javax.swing.JFrame {
                     for (int i = 0; i < userPlate.getRamDDR3().length; i++) {
                         if (userPlate.getRamDDR3()[i] != null) {
                             RamModule ram = userPlate.getRamDDR3()[i];
-                            hardwares[n][i] = "  " + ram.toString();
+                            hardwares[n][i] = "  #"+i+": " + ram.toString();
                         } else {
-                            hardwares[n][i] = "  Empty slot";
+                            hardwares[n][i] = "  #"+i+": Empty slot";
                         }
                     }
                     break;
@@ -428,9 +430,9 @@ public final class Hacknet extends javax.swing.JFrame {
                     for (int i = 0; i < userPlate.getRamDDR4().length; i++) {
                         if (userPlate.getRamDDR4()[i] != null) {
                             RamModule ramUp = userPlate.getRamDDR4()[i];
-                            hardwares[n][i] = "  " + ramUp.toString();
+                            hardwares[n][i] = "  #"+i+": " + ramUp.toString();
                         } else {
-                            hardwares[n][i] = "  Empty slot";
+                            hardwares[n][i] = "  #"+i+": Empty slot";
                         }
                     }
                     break;
@@ -438,9 +440,9 @@ public final class Hacknet extends javax.swing.JFrame {
                     for (int i = 0; i < userPlate.getHardDrive().length; i++) {
                         if (userPlate.getHardDrive()[i] != null) {
                             HardDriveModule hard = userPlate.getHardDrive()[i];
-                            hardwares[n][i] = "  " + hard.toString();
+                            hardwares[n][i] = "  #"+i+": " + hard.toString();
                         } else {
-                            hardwares[n][i] = "  Empty slot";
+                            hardwares[n][i] = "  #"+i+": Empty slot";
                         }
                     }
                     break;
@@ -448,9 +450,9 @@ public final class Hacknet extends javax.swing.JFrame {
                     for (int i = 0; i < userPlate.getInternet().length; i++) {
                         if (userPlate.getInternet()[i] != null) {
                             InternetModule internet = userPlate.getInternet()[i];
-                            hardwares[n][i] = "  " + internet.toString();
+                            hardwares[n][i] = "  #"+i+": " + internet.toString();
                         } else {
-                            hardwares[n][i] = "  Empty slot";
+                            hardwares[n][i] = "  #"+i+": Empty slot";
                         }
                     }
                     break;
@@ -495,6 +497,17 @@ public final class Hacknet extends javax.swing.JFrame {
             for (String hardware : hardwares[i]) {
                 print(hardware);
             }
+        }
+
+        print("Free hardware: ");
+
+        if (!user.freeHardwares.isEmpty()) {
+            for (int i = 0; i < user.freeHardwares.size(); i++) {
+                HardwareModule get = user.freeHardwares.get(i);
+                print("  #"+i+": " + get.toString());
+            }
+        } else {
+            print("  No free hardware");
         }
     }
     
@@ -661,15 +674,54 @@ public final class Hacknet extends javax.swing.JFrame {
         } else if (command[0].equalsIgnoreCase("virus")) {
             virusTarget();
         } else if (command[0].equalsIgnoreCase("hardware")) {
-            getAllHardwareText();
-        } else if (command[0].equalsIgnoreCase("userhardware")) {
-            getUserHardware();
+            if(command[1].equalsIgnoreCase("my")) {
+                getUserHardware();
+            } else if(command[1].equalsIgnoreCase("all")) {
+                getAllHardwareText();
+            } else if(command[1].equalsIgnoreCase("buy")) {
+                if(command[2].length() > 0 && command[3].length() > 0) {
+                    int index = Base.stringToInt(command[3]);
+                    HardwareModule hm = null;
+                    switch(Base.stringToInt(command[2])) {
+                        case 0:
+                            hm = cpus[index];
+                            break;
+                        case 1:
+                            hm = cpusUp[index];
+                            break;
+                        case 2:
+                            hm = rams[index];
+                            break;
+                        case 3:
+                            hm = ramsUp[index];
+                            break;
+                        case 4:
+                            hm = hards[index];
+                            break;
+                        case 5:
+                            hm = internets[index];
+                            break;
+                        default:
+                            error("Error with buy of hardware");
+                    }
+                    if(user.accounts.get(user.currentMainAccount).getMoney() >= hm.price) {
+                        user.freeHardwares.add(hm);
+                        user.accounts.get(user.currentMainAccount).rmMoney(hm.price);
+                        print("Hardware added to you list of free hardwares: "+hm.toString());
+                    } else {
+                        print("Not enought money");
+                    }
+                } else {
+                    print("Invalid arguments; hardware buy [type] [index]");
+                }
+            }
         } else {
             print("Invalid command");
         }
         user.numberOfCommands++;
     }
-
+    
+    
     private void userExit() {
         LOG.log(Level.INFO, "User exit from game");
         if(currentTarget != null) {
@@ -849,10 +901,23 @@ public final class Hacknet extends javax.swing.JFrame {
         print("Your save file successfully reseted");
     }
 
-    public void dc() {
+    private void dc() {
         if (currentTarget != null) {
             currentTarget = null;
         }
+    }
+    
+    private void mail() {
+        currentTarget.hacked = true;
+    }
+    
+    private void missions() {
+        Thread myThready = new Thread(() -> {
+            ContractsList cl = new ContractsList(user);
+            cl.setList();
+            cl.setVisible(true);
+        });
+        myThready.start();
     }
 
     private boolean scanForAH() { //SCAN FOR ANTIHACK IN COMPUTER (ADD GUI)
@@ -863,22 +928,6 @@ public final class Hacknet extends javax.swing.JFrame {
             print("AntiHack no finded");
         }
         return have;
-    }
-
-    /**
-     *
-     */
-    public void mail() {
-        currentTarget.hacked = true;
-    }
-
-    private void missions() {
-        Thread myThready = new Thread(() -> {
-            ContractsList cl = new ContractsList(user);
-            cl.setList();
-            cl.setVisible(true);
-        });
-        myThready.start();
     }
 
     protected Computer findTargetOfConInList(Computer comp) {

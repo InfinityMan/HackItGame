@@ -113,7 +113,7 @@ public abstract class HardwareModule implements Serializable {
 
     @Override
     public String toString() {
-        return name+";Price: "+price+";Power: "+power;
+        return name+"; Price: "+price+"; Power: "+power;
     }
     
     
