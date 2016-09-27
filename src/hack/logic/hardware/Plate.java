@@ -41,7 +41,7 @@ public class Plate implements Serializable {
     private RamModule[] ramDDR3;
     private RamModule[] ramDDR4;
 
-    private HardDiskModule[] hardDrive;
+    private HardDriveModule[] hardDrive;
 
     private InternetModule[] internet;
 
@@ -52,7 +52,7 @@ public class Plate implements Serializable {
         ramDDR3 = new RamModule[ram3Num];
         ramDDR4 = new RamModule[ram4Num];
 
-        hardDrive = new HardDiskModule[hardNum];
+        hardDrive = new HardDriveModule[hardNum];
         internet = new InternetModule[intNum];
 
         this.name = name;
@@ -120,7 +120,12 @@ public class Plate implements Serializable {
         }
         
         if(ramDDR3.length > 0) {
-            ramDDR3[0] = hacknet.rams[1];
+            if(ramDDR3.length == 2) {
+                ramDDR3[0] = hacknet.rams[0];
+                ramDDR3[1] = hacknet.rams[0];
+            } else {
+                ramDDR3[0] = hacknet.rams[1];
+            }
         } else if(ramDDR4.length > 0) {
             ramDDR4[0] = hacknet.ramsUp[0];
         } else {
@@ -172,11 +177,11 @@ public class Plate implements Serializable {
         this.ramDDR4 = ramDDR4;
     }
 
-    public HardDiskModule[] getHardDrive() {
+    public HardDriveModule[] getHardDrive() {
         return hardDrive;
     }
 
-    public void setHardDrive(HardDiskModule[] hardDrive) {
+    public void setHardDrive(HardDriveModule[] hardDrive) {
         this.hardDrive = hardDrive;
     }
 

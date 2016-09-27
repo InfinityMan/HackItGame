@@ -92,9 +92,9 @@ public abstract class HardwareModule implements Serializable {
                 }
                 break;
             case 2:
-                ret = new HardDiskModule[DEFAULT_POWER_HARD.length];
+                ret = new HardDriveModule[DEFAULT_POWER_HARD.length];
                 for (int i = 0; i < ret.length; i++) {
-                    ret[i] = new HardDiskModule(names[i],DEFAULT_POWER_HARD[i],DEFAULT_PRICE_HARD[i]);
+                    ret[i] = new HardDriveModule(names[i],DEFAULT_POWER_HARD[i],DEFAULT_PRICE_HARD[i]);
                 }
                 break;
             case 3:
@@ -110,5 +110,12 @@ public abstract class HardwareModule implements Serializable {
         
         return ret;
     }
+
+    @Override
+    public String toString() {
+        return name+";Price: "+price+";Power: "+power;
+    }
+    
+    
 
 }

@@ -28,6 +28,7 @@ import ru.epiclib.base.Base;
 import java.util.HashMap;
 import static java.lang.Thread.sleep;
 import java.util.Objects;
+import static java.lang.Thread.sleep;
 
 public final class Computer implements Serializable {
 
